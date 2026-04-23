@@ -1,5 +1,8 @@
 .vercel
 .DS_Store
+.mcp.json
+.env
+.claude/worktrees/
 _prompt_*.md
 _enhance_*.md
 _raw_*.txt
