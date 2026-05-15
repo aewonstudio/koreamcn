@@ -182,6 +182,72 @@ a { text-decoration: none; color: inherit; }
   .site-nav, .btn-nav-cta { display: none; }
   .mobile-toggle { display: block; }
 }
+/* ✏️ 모바일 메뉴 오버레이 */
+.site-nav.is-open {
+  display: flex !important;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(10, 15, 30, 0.97);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px 40px;
+}
+.site-nav.is-open > ul {
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+}
+.site-nav.is-open .nav-link {
+  font-size: 20px;
+  padding: 14px 0;
+  display: block;
+  text-align: center;
+}
+.site-nav.is-open .has-sub .sub-menu {
+  position: static;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  background: transparent;
+  padding: 0;
+  display: none;
+}
+.site-nav.is-open .has-sub.sub-open .sub-menu {
+  display: flex;
+}
+.site-nav.is-open .sub-menu li a {
+  font-size: 16px;
+  padding: 10px 0;
+  text-align: center;
+  color: rgba(255,255,255,0.6);
+}
+.site-nav.is-open .sub-menu li a:hover {
+  color: var(--color-accent);
+}
+/* 햄버거 → X 애니메이션 */
+.mobile-toggle.is-active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.mobile-toggle.is-active span:nth-child(2) {
+  opacity: 0;
+}
+.mobile-toggle.is-active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+.mobile-toggle.is-active {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10000;
+}
+.btn-nav-cta.mobile-show {
+  display: inline-flex !important;
+  margin-top: 20px;
+}
 
 /* ======================================================================
    SUB-HERO + SUB-TAB NAV
@@ -633,5 +699,42 @@ ScrollTrigger.create({
 })();
 </script>
 
+<script>
+/* ✏️ 모바일 메뉴 토글 */
+(function() {
+  var toggle = document.querySelector('.mobile-toggle');
+  var nav = document.querySelector('.site-nav');
+  var cta = document.querySelector('.btn-nav-cta');
+  if (!toggle || !nav) return;
+
+  toggle.addEventListener('click', function() {
+    var isOpen = nav.classList.toggle('is-open');
+    toggle.classList.toggle('is-active');
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    toggle.setAttribute('aria-label', isOpen ? '메뉴 닫기' : '메뉴 열기');
+    if (cta) cta.classList.toggle('mobile-show', isOpen);
+  });
+
+  /* 하위 메뉴 토글 (모바일) */
+  nav.querySelectorAll('.has-sub > .nav-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      if (nav.classList.contains('is-open')) {
+        e.preventDefault();
+        this.parentElement.classList.toggle('sub-open');
+      }
+    });
+  });
+
+  /* 메뉴 링크 클릭 시 닫기 */
+  nav.querySelectorAll('a:not(.nav-link)').forEach(function(link) {
+    link.addEventListener('click', function() {
+      nav.classList.remove('is-open');
+      toggle.classList.remove('is-active');
+      document.body.style.overflow = '';
+      if (cta) cta.classList.remove('mobile-show');
+    });
+  });
+})();
+</script>
 </body>
 </html>
