@@ -1,0 +1,292 @@
+<!-- TEMPLATE -->
+<section id="history" class="history-section">
+  <div class="history-container">
+    <header class="history-header reveal">
+      <span class="history-label">HISTORY</span>
+      <h2 class="history-title">History</h2>
+    </header>
+
+    <div class="history-timeline stagger-children">
+      <div class="history-item reveal">
+        <div class="history-item__year">2017</div>
+        <div class="history-item__separator">
+          <div class="history-dot"></div>
+        </div>
+        <div class="history-item__event">오동무역상사 설립 / 중국 창조마한 유한공사 한국 총판 계약</div>
+      </div>
+      <div class="history-item reveal">
+        <div class="history-item__year">2019</div>
+        <div class="history-item__separator">
+          <div class="history-dot"></div>
+        </div>
+        <div class="history-item__event">중국 500대 기업 GENNIUS와 업무 협력 협약</div>
+      </div>
+      <div class="history-item reveal">
+        <div class="history-item__year">2020</div>
+        <div class="history-item__separator">
+          <div class="history-dot"></div>
+        </div>
+        <div class="history-item__event">상하이 제이스제이 전략적 협약 / 제이스제이코리아 현지 법인 설립 / 주요 기관·대학 협력 네트워크 구축</div>
+      </div>
+      <div class="history-item reveal">
+        <div class="history-item__year">2021</div>
+        <div class="history-item__separator">
+          <div class="history-dot"></div>
+        </div>
+        <div class="history-item__event">MCN 사업 개시 / 중국 크로스보더 이커머스 사업 개시 / 티몰 공식 라이브커머스 협약</div>
+      </div>
+      <div class="history-item reveal">
+        <div class="history-item__year">2022</div>
+        <div class="history-item__separator">
+          <div class="history-dot"></div>
+        </div>
+        <div class="history-item__event">Bilibili 정식 대리 협약 / TikTok 라이브 협력 파트너십 확대</div>
+      </div>
+      <div class="history-item reveal">
+        <div class="history-item__year">2023</div>
+        <div class="history-item__separator">
+          <div class="history-dot"></div>
+        </div>
+        <div class="history-item__event">인천 거북섬 스튜디오 개설</div>
+      </div>
+      <div class="history-item reveal">
+        <div class="history-item__year">2024</div>
+        <div class="history-item__separator">
+          <div class="history-dot"></div>
+        </div>
+        <div class="history-item__event">KOREAMCN 법인 설립</div>
+      </div>
+      <div class="history-item reveal">
+        <div class="history-item__year">2025</div>
+        <div class="history-item__separator">
+          <div class="history-dot"></div>
+        </div>
+        <div class="history-item__event">KM HOLDINGS 설립</div>
+      </div>
+      <div class="history-item is-current reveal">
+        <div class="history-item__year">2026</div>
+        <div class="history-item__separator">
+          <div class="history-dot"></div>
+        </div>
+        <div class="history-item__event">상하이 수출본부 설립 / 중국 상품 수출 중심 사업 구조 전환 완료</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ==========================================================================
+   History Section
+   ========================================================================== */
+
+.history-section {
+  background-color: var(--color-bg-alt);
+  padding: 120px 0;
+  overflow: hidden; /* 스크롤 애니메이션 요소가 잘리지 않도록 */
+}
+
+.history-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.history-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.history-label {
+  color: var(--color-accent);
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.history-title {
+  color: var(--color-text-on-dark);
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-top: 8px;
+}
+
+/* 데스크탑 타임라인 (Desktop Timeline) */
+.history-timeline {
+  position: relative;
+}
+
+/* 중앙 수직 라인 */
+.history-timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.history-item {
+  display: flex;
+  position: relative;
+  align-items: flex-start; /* 이벤트 텍스트가 여러 줄일 경우를 대비하여 상단 정렬 */
+}
+
+/* 항목 간 간격 */
+.history-item + .history-item {
+  margin-top: 60px;
+}
+
+.history-item__year,
+.history-item__event {
+  width: calc(50% - 30px); /* 중앙 공간 확보 */
+  flex-shrink: 0;
+}
+
+.history-item__year {
+  order: 1;
+  text-align: right;
+  color: var(--color-text-on-dark);
+  font-family: var(--font-accent);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.4; /* 이벤트 텍스트와 수직 정렬을 돕기 위함 */
+  padding-right: 30px;
+}
+
+.history-item__separator {
+  order: 2;
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.history-dot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-accent);
+  background-color: transparent;
+  flex-shrink: 0;
+  margin-top: 7px; /* 폰트 라인에 맞춰 미세 조정 */
+}
+
+.history-item__event {
+  order: 3;
+  text-align: left;
+  color: var(--color-text-on-dark-sub);
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.7;
+  padding-left: 30px;
+}
+
+/* 짝수 항목 (지그재그 레이아웃) */
+.history-item:nth-child(even) .history-item__year {
+  order: 3;
+  text-align: left;
+  padding-right: 0;
+  padding-left: 30px;
+}
+
+.history-item:nth-child(even) .history-item__event {
+  order: 1;
+  text-align: right;
+  padding-left: 0;
+  padding-right: 30px;
+}
+
+/* 마지막 항목 (현재) 스타일 */
+.history-item.is-current .history-dot {
+  background-color: var(--color-accent);
+}
+
+/* ==========================================================================
+   Mobile (768px 이하)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .history-section {
+    padding: 80px 0;
+  }
+
+  .history-container {
+    padding: 0 20px;
+  }
+
+  .history-title {
+    font-size: 28px;
+  }
+
+  .history-label {
+    font-size: 13px;
+  }
+
+  /* 왼쪽 정렬된 타임라인으로 변경 */
+  .history-timeline {
+    padding-left: 30px; /* 라인과 콘텐츠 사이 간격 */
+  }
+
+  /* 왼쪽 수직 라인 */
+  .history-timeline::before {
+    left: 6px; /* 12px 도트의 중앙 */
+    transform: none;
+  }
+
+  .history-item {
+    display: block; /* Flex 레이아웃 해제 */
+  }
+
+  .history-item + .history-item {
+    margin-top: 40px;
+  }
+
+  .history-item__separator {
+    display: none; /* 데스크탑용 구분선 숨김 */
+  }
+  
+  /* 모바일용 도트 (가상 요소로 생성) */
+  .history-item::before {
+    content: '';
+    position: absolute;
+    left: -24px; /* (30px padding) - (6px 라인 위치) */
+    top: 6px; /* 폰트 라인에 맞춰 미세 조정 */
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--color-accent);
+    background-color: var(--color-bg-alt); /* 라인 위에 보이도록 배경색 지정 */
+  }
+
+  .history-item.is-current::before {
+    background-color: var(--color-accent);
+  }
+
+  .history-item__year,
+  .history-item__event {
+    width: 100%;
+    order: initial !important; /* order 속성 초기화 */
+    text-align: left !important; /* text-align 초기화 */
+    padding: 0;
+  }
+
+  .history-item__year {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .history-item__event {
+    font-size: 16px;
+  }
+}
+</style>
+
+<script>
+
+</script>

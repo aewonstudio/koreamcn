@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>파트너십 — KM Holdings | 한국 시장 진출의 전략적 파트너</title>
+
+    <!-- ✏️ Pretendard (한글) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <!-- ✏️ Inter (영문 숫자·라벨) + Noto Sans SC (중국어) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- ⚠️ GSAP 3 + ScrollTrigger + Lenis (수정 금지) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1/dist/lenis.min.js"></script>
+
+    <style>
+/* ======================================================================
+   DESIGN TOKENS (design-system.md)
+   ====================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* --- Brand --- */
+  --color-primary: #1E3A6E;
+  --color-accent: #E8603C;
+  --color-accent-soft: #E8603C;
+
+  /* --- Backgrounds --- */
+  --color-bg: #0A0F1C;
+  --color-bg-alt: #111827;
+  --color-bg-deeper: #080D18;
+  --color-bg-navy: #1E3A6E;
+  --color-bg-light: #F9F7F4;
+
+  /* --- Surfaces --- */
+  --color-surface: #111827;
+  --color-surface-glass: rgba(255, 255, 255, 0.05);
+  --glass-blur: blur(16px);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* --- Text --- */
+  --color-text-on-dark: #FFFFFF;
+  --color-text-on-dark-sub: rgba(255, 255, 255, 0.7);
+  --color-text-on-dark-muted: rgba(255, 255, 255, 0.4);
+  --color-text-on-light: #1A1D2B;
+  --color-text-on-light-sub: #6B7280;
+
+  /* --- Borders --- */
+  --color-border-dark: rgba(255, 255, 255, 0.1);
+  --color-border-dark-hover: rgba(255, 255, 255, 0.2);
+  --color-divider: rgba(255, 255, 255, 0.08);
+
+  /* --- Typography --- */
+  --font-display: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-accent: 'Inter', sans-serif;
+
+  /* --- Spacing --- */
+  --section-py: 120px;
+  --section-py-m: 80px;
+  --container-max: 1280px;
+  --container-px: 40px;
+  --container-px-m: 20px;
+  --card-gap: 24px;
+  --card-gap-m: 16px;
+  --card-pad: 32px;
+  --card-pad-m: 24px;
+
+  /* --- Components --- */
+  --radius: 0;
+
+  /* --- Motion --- */
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1.0);
+  --dur-fast: 0.3s;
+  --dur-base: 0.6s;
+}
+
+html { scroll-behavior: auto; }
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-on-dark);
+  background: var(--color-bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* ======================================================================
+   UTILITY
+   ====================================================================== */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+@media (max-width: 768px) {
+  .container { padding: 0 var(--container-px-m); }
+}
+
+/* ======================================================================
+   HEADER (about.html과 동일 — 파트너십 링크 활성 상태)
+   ====================================================================== */
+/* ✏️ 헤더 기본 스타일 */
+.site-header {
+  position: fixed; top: 0; left: 0; width: 100%; height: 64px;
+  z-index: 1000;
+  background: transparent;
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  border-bottom: 1px solid transparent;
+}
+/* ✏️ 스크롤 시 배경 변경 */
+.site-header.is-scrolled {
+  background: rgba(10, 15, 28, 0.92);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--color-divider);
+}
+.header-inner {
+  max-width: var(--container-max); height: 100%; margin: 0 auto;
+  padding: 0 var(--container-px);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.site-logo {
+  font-family: var(--font-accent); font-size: 20px; font-weight: 800;
+  color: var(--color-text-on-dark); letter-spacing: -0.02em;
+}
+.site-nav > ul {
+  display: flex; gap: 0; list-style: none;
+  height: 64px;
+}
+.nav-link {
+  display: flex; align-items: center;
+  height: 64px; padding: 0 20px;
+  font-size: 15px; font-weight: 500;
+  color: var(--color-text-on-dark-sub);
+  transition: color var(--dur-fast), background var(--dur-fast);
+  position: relative;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.nav-link:hover {
+  color: var(--color-text-on-dark);
+  background: rgba(255, 255, 255, 0.04);
+}
+.nav-link:hover::after { transform: scaleX(1); }
+/* ✏️ 현재 페이지 (파트너십) 활성 상태 */
+.nav-link.is-active {
+  color: var(--color-text-on-dark);
+}
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+.header-actions { display: flex; align-items: center; gap: 16px; }
+.btn-nav-cta {
+  background: var(--color-accent); color: #fff;
+  padding: 9px 22px; font-size: 14px; font-weight: 700;
+  border-radius: var(--radius);
+  transition: transform var(--dur-fast), box-shadow var(--dur-fast);
+}
+.btn-nav-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(194, 59, 59, 0.3);
+}
+.mobile-toggle {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 40px; height: 40px; padding: 8px;
+}
+.mobile-toggle span {
+  display: block; width: 24px; height: 2px;
+  background: var(--color-text-on-dark);
+  margin: 5px 0; transition: all 0.3s;
+}
+/* ⚠️ 2depth 드롭다운 서브메뉴 (수정 금지) */
+.has-sub { position: relative; }
+.sub-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  background: var(--color-bg-alt);
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  padding: 8px 0;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out), visibility 0.2s;
+  z-index: 1001;
+}
+.has-sub:hover .sub-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.sub-menu li a {
+  display: block;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.sub-menu li a:hover {
+  color: var(--color-accent);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 768px) {
+  .header-inner { padding: 0 var(--container-px-m); }
+  .site-nav, .btn-nav-cta { display: none; }
+  .mobile-toggle { display: block; }
+}
+
+/* ======================================================================
+   SUB-HERO — DARK-1 + 이미지 오버레이
+   ====================================================================== */
+/* ✏️ 서브 히어로 배너 — 60vh 중앙 정렬 */
+.sub-hero {
+  position: relative;
+  height: 60vh;
+  min-height: 400px;
+  background-color: var(--color-bg);
+  color: var(--color-text-on-dark);
+  overflow: hidden;
+}
+
+/* ✏️ 배경 이미지 + 오버레이 */
+.sub-hero__bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+.sub-hero__img {
+  width: 100%; height: 100%;
+  background-image: url('assets/images/subhero-partnership.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.sub-hero__bg::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(10, 15, 28, 0.7);
+}
+
+/* ✏️ 텍스트 콘텐츠 — 수직·수평 중앙 */
+.sub-hero__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding-top: 64px;
+}
+
+/* ✏️ 섹션 레이블 — 코랄 영문 uppercase */
+.sub-hero__label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 16px;
+}
+
+/* ✏️ 메인 타이틀 — 변경 시 여기 수정 */
+.sub-hero__title {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+}
+
+/* ✏️ 서브타이틀 */
+.sub-hero__text {
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text-on-dark-sub);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .sub-hero { height: 50vh; min-height: 320px; }
+  .sub-hero__label { font-size: 13px; }
+  .sub-hero__title { font-size: 36px; }
+  .sub-hero__text { font-size: 18px; }
+}
+
+/* ======================================================================
+   PARTNER VALUE — DARK-2, 4열 카드 그리드 (crossborder consulting 패턴)
+   ====================================================================== */
+.partner-value {
+  position: relative;
+  padding: var(--section-py) 0;
+  background: var(--color-bg-alt);
+  color: var(--color-text-on-dark);
+}
+.partner-value__header {
+  margin-bottom: 56px;
+  text-align: center;
+}
+.partner-value__label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+}
+.partner-value__title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-dark);
+  margin: 0;
+}
+
+/* ✏️ 4열 카드 그리드 — 테두리 카드, hover시 accent fill */
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.value-card {
+  padding: 40px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-right: none;
+  background: transparent;
+  transition: background 0.3s, border-color 0.3s;
+  cursor: pointer;
+}
+.value-card:last-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+.value-card:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+/* ✏️ 넘버 */
+.value-card__num {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-accent);
+  opacity: 0.6;
+  letter-spacing: 0.05em;
+  margin-bottom: 20px;
+  transition: opacity 0.3s, color 0.3s;
+}
+.value-card:hover .value-card__num {
+  opacity: 1;
+  color: rgba(255,255,255,0.8);
+}
+/* ✏️ 아이콘 */
+.value-card__icon {
+  width: 44px;
+  height: 44px;
+  color: var(--color-accent);
+  margin-bottom: 20px;
+  opacity: 0.7;
+  transition: opacity 0.3s, transform 0.3s, color 0.3s;
+}
+.value-card:hover .value-card__icon {
+  opacity: 1;
+  transform: translateY(-2px);
+  color: #fff;
+}
+/* ✏️ 타이틀 */
+.value-card__title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-on-dark);
+  margin-bottom: 16px;
+  line-height: 1.4;
+  transition: color 0.3s;
+}
+.value-card:hover .value-card__title {
+  color: #fff;
+}
+/* ✏️ 설명 */
+.value-card__desc {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--color-text-on-dark-sub);
+  transition: color 0.3s;
+}
+.value-card:hover .value-card__desc {
+  color: rgba(255,255,255,0.85);
+}
+
+@media (max-width: 1024px) {
+  .value-grid { grid-template-columns: repeat(2, 1fr); }
+  .value-card:nth-child(2) { border-right: 1px solid rgba(255,255,255,0.25); }
+  .value-card:nth-child(3),
+  .value-card:nth-child(4) { border-top: none; }
+}
+@media (max-width: 768px) {
+  .partner-value { padding: var(--section-py-m) 0; }
+  .partner-value__label { font-size: 13px; margin-bottom: 8px; }
+  .partner-value__title { font-size: 28px; }
+  .partner-value__header { margin-bottom: 40px; }
+  .value-grid { grid-template-columns: 1fr; }
+  .value-card {
+    border-right: 1px solid rgba(255,255,255,0.25);
+    border-bottom: none;
+  }
+  .value-card:last-child { border-bottom: 1px solid rgba(255,255,255,0.25); }
+  .value-card__num { font-size: 12px; margin-bottom: 16px; }
+  .value-card__title { font-size: 18px; }
+}
+
+/* ======================================================================
+   PARTNER PROCESS — DARK-1, 수평 6단계 프로세스 플로우
+   ====================================================================== */
+/* ✏️ 협력 프로세스 섹션 — 배경 DARK-1 */
+.partner-process {
+  padding: var(--section-py) 0;
+  background: var(--color-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ✏️ 섹션 헤더 — 좌측 정렬 */
+.partner-process__header {
+  margin-bottom: 64px;
+}
+.partner-process__label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+}
+.partner-process__title {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-dark);
+  margin: 0;
+}
+
+/* ✏️ 프로세스 플로우 — 6단계 수평 배치 */
+.process-flow {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  position: relative;
+}
+
+/* ✏️ 프로세스 연결선 — 스텝 간 수평선 */
+.process-flow__line {
+  position: absolute;
+  top: 24px;
+  left: calc(100% / 12);
+  right: calc(100% / 12);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 0;
+}
+/* ✏️ 연결선 채움 — 노드가 지나간 뒤 accent 색상으로 변환 */
+.process-flow__line-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background: var(--color-accent);
+}
+/* ✏️ 이동 노드 */
+.process-flow__node {
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px rgba(194,59,59,0.6), 0 0 4px rgba(194,59,59,0.3);
+  opacity: 0;
+  z-index: 1;
+}
+
+/* ✏️ 개별 프로세스 스텝 */
+.process-step {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 8px;
+}
+
+/* ✏️ 스텝 넘버 원형 — gradient 배경 + glow */
+.process-step__num {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-soft));
+  font-family: var(--font-accent);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 20px;
+  position: relative;
+  flex-shrink: 0;
+}
+/* ✏️ 넘버 글로우 효과 */
+.process-step__num::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: linear-gradient(135deg, rgba(194,59,59,0.3), rgba(232,115,74,0.15));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--dur-fast);
+}
+.process-step:hover .process-step__num::after {
+  opacity: 1;
+}
+
+/* ✏️ 스텝 아이콘 */
+.process-step__icon {
+  width: 24px;
+  height: 24px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 8px;
+}
+
+/* ✏️ 스텝 타이틀 */
+.process-step__title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-on-dark);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+/* ✏️ 스텝 설명 */
+.process-step__desc {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text-on-dark-muted);
+}
+
+/* ✏️ 글래스 카드 배경 (각 스텝에 적용, 높이 통일) */
+.process-step__card {
+  background: var(--color-surface-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  padding: 24px 16px;
+  width: 100%;
+  flex: 1;
+  transition: border-color var(--dur-fast);
+}
+.process-step__card:hover {
+  border-color: var(--color-border-dark-hover);
+}
+
+/* ✏️ gradient accent bar — 카드 상단 3px 바 */
+.process-step__card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-soft));
+  opacity: 0;
+  transition: opacity var(--dur-fast);
+}
+.process-step:hover .process-step__card::before {
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .process-flow { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .process-flow__line { display: none; }
+}
+@media (max-width: 768px) {
+  .partner-process { padding: var(--section-py-m) 0; }
+  .partner-process__label { font-size: 13px; margin-bottom: 8px; }
+  .partner-process__title { font-size: 28px; }
+  .partner-process__header { margin-bottom: 40px; }
+  /* ✏️ 모바일: 수직 스텝 — 좌측 라인 */
+  .process-flow {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-left: 40px;
+    position: relative;
+  }
+  /* ✏️ 좌측 세로 연결선 */
+  .process-flow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 18px;
+    width: 2px;
+    background: rgba(255,255,255,0.1);
+  }
+  .process-step {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+    padding: 0 0 32px 0;
+    gap: 16px;
+  }
+  .process-step__num {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    margin-bottom: 0;
+    position: absolute;
+    left: -40px;
+  }
+  .process-step__card {
+    padding: 20px;
+  }
+  .process-step__icon { display: none; }
+}
+
+/* ======================================================================
+   PARTNER FORM — NAVY 배경, 문의 폼
+   ====================================================================== */
+/* ✏️ 문의 폼 섹션 — 배경 LIGHT (#F9F7F4) */
+.partner-form {
+  padding: var(--section-py) 0;
+  background: var(--color-bg-light);
+}
+
+/* ✏️ 폼 컨테이너 — max-width 720px */
+.partner-form__inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ✏️ 폼 헤더 */
+.partner-form__title {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-light);
+  margin: 0 0 16px;
+  text-align: center;
+}
+.partner-form__intro {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text-on-light-sub);
+  text-align: center;
+  margin: 0 0 48px;
+}
+
+/* ✏️ 폼 필드 공통 */
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group__label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-on-light);
+  margin-bottom: 8px;
+}
+.form-group__input,
+.form-group__select {
+  width: 100%;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid #D1D5DB;
+  border-radius: var(--radius);
+  color: var(--color-text-on-light);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  transition: border-color var(--dur-fast);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.form-group__input::placeholder {
+  color: #9CA3AF;
+}
+.form-group__input:focus,
+.form-group__select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+/* ✏️ 셀렉트 드롭다운 화살표 */
+.form-group__select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+}
+.form-group__select option {
+  background: #fff;
+  color: var(--color-text-on-light);
+}
+
+/* ✏️ 체크박스 그룹 — 관심 서비스 다중 선택 */
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #fff;
+  border: 1px solid #D1D5DB;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text-on-light-sub);
+  transition: border-color var(--dur-fast), background var(--dur-fast), color var(--dur-fast);
+}
+.checkbox-label:hover {
+  border-color: #9CA3AF;
+}
+.checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-accent);
+}
+.checkbox-label:has(input:checked) {
+  border-color: var(--color-accent);
+  background: rgba(194, 59, 59, 0.06);
+  color: var(--color-text-on-light);
+}
+
+/* ✏️ 2열 레이아웃 — 담당자명 + 연락처 */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ✏️ 제출 버튼 — 코랄 Primary CTA */
+.btn-submit {
+  display: block;
+  width: 100%;
+  padding: 16px 32px;
+  margin-top: 32px;
+  background: var(--color-accent);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: transform var(--dur-fast), box-shadow var(--dur-fast), filter var(--dur-fast);
+}
+.btn-submit:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(194, 59, 59, 0.35);
+}
+
+/* ✏️ 확인 메시지 — 제출 후 표시 */
+.form-confirmation {
+  display: none;
+  text-align: center;
+  padding: 48px 24px;
+}
+.form-confirmation.is-visible {
+  display: block;
+}
+.form-confirmation__icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 20px;
+  color: #10B981;
+}
+.form-confirmation__text {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--color-text-on-light);
+}
+
+@media (max-width: 768px) {
+  .partner-form { padding: var(--section-py-m) 0; }
+  .partner-form__title { font-size: 28px; }
+  .partner-form__intro { font-size: 16px; margin-bottom: 32px; }
+  .form-row { grid-template-columns: 1fr; }
+  .checkbox-group { flex-direction: column; }
+  .btn-submit { font-size: 16px; }
+}
+
+/* ======================================================================
+   FOOTER (about.html과 동일)
+   ====================================================================== */
+/* ✏️ 푸터 — 배경 DARKER (#080D18) */
+.footer {
+  background: var(--color-bg-deeper);
+  padding: 0;
+  color: rgba(255,255,255,0.45);
+  font-size: 13px; line-height: 1.8;
+}
+.footer__inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
+  padding: 40px 0 48px;
+}
+.footer__logo-area {
+  display: flex; align-items: flex-start; padding-top: 4px;
+}
+.footer__logo {
+  font-family: var(--font-accent); font-size: 22px; font-weight: 800;
+  color: rgba(255,255,255,0.85); letter-spacing: -0.01em;
+}
+.footer__legal-links {
+  display: flex; align-items: center; gap: 0;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.footer__legal-links a {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  padding: 0 18px;
+  border-right: 1px solid rgba(255,255,255,0.15);
+  transition: color var(--dur-fast);
+}
+.footer__legal-links a:first-child { padding-left: 0; }
+.footer__legal-links a:last-child { border-right: none; padding-right: 0; }
+.footer__legal-links a:hover { color: #fff; }
+.footer__legal-links a.--bold { font-weight: 700; color: rgba(255,255,255,0.7); }
+.footer__info-area { padding-top: 24px; }
+.footer__info {
+  font-style: normal; font-size: 13px; line-height: 1.9;
+  color: rgba(255,255,255,0.35);
+}
+.footer__info span { margin: 0 8px; color: rgba(255,255,255,0.15); }
+.footer__info a { color: rgba(255,255,255,0.35); transition: color var(--dur-fast); }
+.footer__info a:hover { color: rgba(255,255,255,0.6); }
+.footer__copy {
+  font-size: 12px; color: rgba(255,255,255,0.2);
+  margin-top: 16px;
+}
+
+/* ⚠️ TOP 버튼 (수정 금지) */
+.btn-top {
+  position: fixed; bottom: 32px; right: 32px; z-index: 90;
+  width: 52px; height: 52px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  background: var(--color-accent); color: #fff;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  border: none; cursor: pointer;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateY(12px);
+}
+.btn-top.--visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.btn-top:hover { background: #a83232; }
+.btn-top svg { width: 16px; height: 16px; }
+
+@media (max-width: 768px) {
+  .footer__inner { grid-template-columns: 1fr; gap: 32px; }
+  .footer__legal-links a { padding: 0 12px; font-size: 12px; }
+  .footer__info br { display: none; }
+  .btn-top { bottom: 20px; right: 20px; width: 44px; height: 44px; }
+}
+
+/* ======================================================================
+   prefers-reduced-motion — 접근성
+   ====================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER (about.html 동일 — 파트너십 nav-link에 is-active)
+     ============================================================ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><img src="assets/images/koreamcn-logo-white.png" alt="KoreaMCN" style="height:44px;width:auto;"></a>
+    <nav class="site-nav">
+      <ul>
+        <li class="has-sub">
+          <a href="about.html" class="nav-link">회사 소개</a>
+          <ul class="sub-menu">
+            <li><a href="about.html">개요</a></li>
+            <li><a href="ceo.html">CEO 인사말</a></li>
+            <li><a href="history.html">연혁</a></li>
+            <li><a href="network.html">글로벌 네트워크</a></li>
+          </ul>
+        </li>
+        <li class="has-sub">
+          <a href="logistics.html" class="nav-link">사업 소개</a>
+          <ul class="sub-menu">
+            <li><a href="logistics.html">국제 물류 서비스</a></li>
+            <li><a href="crossborder.html">크로스보더 서비스</a></li>
+            <li><a href="live-commerce.html">라이브커머스 · MCN</a></li>
+          </ul>
+        </li>
+        <!-- ✏️ 파트너십 — 현재 페이지 활성 상태 -->
+        <li><a href="partner.html" class="nav-link is-active">파트너십</a></li>
+        <li><a href="seller.html" class="nav-link">셀러 모집</a></li>
+        <li><a href="news.html" class="nav-link">보도자료</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href="contact.html" class="btn-nav-cta">문의하기</a>
+      <button class="mobile-toggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     SUB-HERO — DARK-1 + 이미지 오버레이 (60vh)
+     ============================================================ -->
+<section id="sub-hero" class="sub-hero">
+  <div class="sub-hero__bg"><div class="sub-hero__img"></div></div>
+  <div class="sub-hero__inner container">
+    <!-- ✏️ 메인 타이틀 — copy.json partner.sub-hero.title -->
+    <h2 class="sub-hero__title">파트너십</h2>
+    <!-- ✏️ 서브카피 — copy.json partner.sub-hero.subline -->
+    <p class="sub-hero__text">한중 비즈니스의 전략적 파트너로 함께합니다</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     PARTNER VALUE — DARK-2, 2x2 카드 그리드
+     ============================================================ -->
+<section id="partner-value" class="partner-value">
+  <div class="container">
+    <!-- ✏️ 섹션 헤더 -->
+    <header class="partner-value__header">
+      <p class="partner-value__label">PARTNERSHIP</p>
+      <h2 class="partner-value__title">한중 비즈니스의 전략적 파트너</h2>
+      <p style="font-size:18px;color:var(--color-text-sub);line-height:1.6;margin:16px auto 0;max-width:540px;">물류·유통·라이브커머스 전 영역에서 50개 이상의 기업과 협력하고 있습니다.</p>
+    </header>
+
+    <!-- ✏️ 가치 카드 4개 — consulting-card 패턴 (테두리 + hover accent fill + 넘버) -->
+    <div class="value-grid">
+      <!-- 카드 1: 전 과정 원스톱 -->
+      <div class="value-card">
+        <div class="value-card__num">01</div>
+        <svg class="value-card__icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="22" cy="14" r="6"/>
+          <circle cx="10" cy="34" r="4"/>
+          <circle cx="22" cy="34" r="4"/>
+          <circle cx="34" cy="34" r="4"/>
+          <path d="M22 20v10M16 28l-4 4M28 28l4 4"/>
+        </svg>
+        <h3 class="value-card__title">전 과정 원스톱</h3>
+        <p class="value-card__desc">인증, 법인, 물류, 마케팅, 유통 — 5개 영역 자체 팀 운영</p>
+      </div>
+
+      <!-- 카드 2: 병렬 실행, 시간 단축 -->
+      <div class="value-card">
+        <div class="value-card__num">02</div>
+        <svg class="value-card__icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="22" cy="22" r="14"/>
+          <path d="M22 12v10l6 4"/>
+          <path d="M14 8l-2-2M30 8l2-2"/>
+        </svg>
+        <h3 class="value-card__title">병렬 실행, 시간 단축</h3>
+        <p class="value-card__desc">직렬 8개월 → 병렬 3~4개월. 첫 매출까지의 시간을 절반으로 단축</p>
+      </div>
+
+      <!-- 카드 3: MCN 판매 채널 -->
+      <div class="value-card">
+        <div class="value-card__num">03</div>
+        <svg class="value-card__icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="8" y="8" width="28" height="22" rx="0"/>
+          <path d="M18 30v6M26 30v6M14 36h16"/>
+          <path d="M20 16l4 3-4 3"/>
+        </svg>
+        <h3 class="value-card__title">MCN 판매 채널</h3>
+        <p class="value-card__desc">TikTok Korea Top MCN. 상품 도착 즉시 판매 채널 가동</p>
+      </div>
+
+      <!-- 카드 4: 8년 전문 경험 -->
+      <div class="value-card">
+        <div class="value-card__num">04</div>
+        <svg class="value-card__icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 6l4 8h8l-6 5 2 9-8-5-8 5 2-9-6-5h8z"/>
+        </svg>
+        <h3 class="value-card__title">8년 전문 경험</h3>
+        <p class="value-card__desc">50개+ 기업 한국 시장 진출 지원. 카테고리별 시장 이해 축적</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PARTNER PROCESS — DARK-1, 수평 6단계 프로세스 플로우
+     ============================================================ -->
+<section id="partner-process" class="partner-process">
+  <div class="container">
+    <!-- ✏️ 섹션 헤더 — 좌측 정렬 -->
+    <header class="partner-process__header">
+      <p class="partner-process__label">Process</p>
+      <h2 class="partner-process__title">협력 진행 과정</h2>
+    </header>
+
+    <!-- ✏️ 6단계 프로세스 플로우 — copy.json partner.partner-process.steps -->
+    <div class="process-flow">
+      <!-- ✏️ 연결선 + 이동 노드 + 채움 바 -->
+      <div class="process-flow__line">
+        <div class="process-flow__line-fill"></div>
+        <div class="process-flow__node"></div>
+      </div>
+
+      <!-- 스텝 1: 초기 상담 -->
+      <div class="process-step">
+        <div class="process-step__num">01</div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+          </svg>
+          <h3 class="process-step__title">초기 상담</h3>
+          <p class="process-step__desc">사업 현황, 진출 목표 파악</p>
+        </div>
+      </div>
+
+      <!-- 스텝 2: 시장 분석 -->
+      <div class="process-step">
+        <div class="process-step__num">02</div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="M21 21l-4.35-4.35"/>
+          </svg>
+          <h3 class="process-step__title">시장 분석</h3>
+          <p class="process-step__desc">카테고리별 한국 시장 분석</p>
+        </div>
+      </div>
+
+      <!-- 스텝 3: 서비스 설계 -->
+      <div class="process-step">
+        <div class="process-step__num">03</div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="0"/>
+            <path d="M3 9h18M9 3v18"/>
+          </svg>
+          <h3 class="process-step__title">서비스 설계</h3>
+          <p class="process-step__desc">필요 서비스 범위·일정 설계</p>
+        </div>
+      </div>
+
+      <!-- 스텝 4: 계약 -->
+      <div class="process-step">
+        <div class="process-step__num">04</div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <path d="M14 2v6h6M9 15l2 2 4-4"/>
+          </svg>
+          <h3 class="process-step__title">계약</h3>
+          <p class="process-step__desc">서비스 범위·기간·비용 확정</p>
+        </div>
+      </div>
+
+      <!-- 스텝 5: 실행 -->
+      <div class="process-step">
+        <div class="process-step__num">05</div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+          <h3 class="process-step__title">실행</h3>
+          <p class="process-step__desc">인증·물류·마케팅 병렬 진행</p>
+        </div>
+      </div>
+
+      <!-- 스텝 6: 성과 관리 -->
+      <div class="process-step">
+        <div class="process-step__num">06</div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 20V10M12 20V4M6 20v-6"/>
+          </svg>
+          <h3 class="process-step__title">성과 관리</h3>
+          <p class="process-step__desc">월간 리포트, 성과 분석, 개선</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PARTNER FORM — NAVY 배경, 문의 폼
+     ============================================================ -->
+<section id="partner-form" class="partner-form">
+  <div class="container">
+    <div class="partner-form__inner">
+      <!-- ✏️ 폼 헤더 — copy.json partner.partner-form -->
+      <h2 class="partner-form__title">파트너십 문의</h2>
+      <p class="partner-form__intro">한국 시장 진출을 검토하고 계시다면, 먼저 방향을 함께 정리합니다.</p>
+
+      <!-- ✏️ 문의 폼 — 6개 필드 -->
+      <form id="partnerForm" novalidate>
+        <!-- 회사명 -->
+        <div class="form-group">
+          <label class="form-group__label" for="company">회사명</label>
+          <input class="form-group__input" type="text" id="company" name="company" placeholder="회사명을 입력하세요" required>
+        </div>
+
+        <!-- 업종/카테고리 -->
+        <div class="form-group">
+          <label class="form-group__label" for="category">업종 / 카테고리</label>
+          <input class="form-group__input" type="text" id="category" name="category" placeholder="예: 뷰티, 식품, 생활용품 등">
+        </div>
+
+        <!-- 진출 희망 시기 -->
+        <div class="form-group">
+          <label class="form-group__label" for="timeline">진출 희망 시기</label>
+          <select class="form-group__select" id="timeline" name="timeline">
+            <option value="" disabled selected>시기를 선택하세요</option>
+            <option value="1개월 이내">1개월 이내</option>
+            <option value="3개월 이내">3개월 이내</option>
+            <option value="6개월 이내">6개월 이내</option>
+            <option value="1년 이내">1년 이내</option>
+            <option value="미정">미정</option>
+          </select>
+        </div>
+
+        <!-- 관심 서비스 (체크박스) -->
+        <div class="form-group">
+          <label class="form-group__label">관심 서비스</label>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" name="services" value="인증·법인 설립">
+              인증·법인 설립
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="services" value="물류·창고">
+              물류·창고
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="services" value="유통·마케팅">
+              유통·마케팅
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="services" value="라이브커머스·MCN">
+              라이브커머스·MCN
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="services" value="전략 컨설팅">
+              전략 컨설팅
+            </label>
+          </div>
+        </div>
+
+        <!-- 담당자명 + 연락처 (2열) -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-group__label" for="contactName">담당자명</label>
+            <input class="form-group__input" type="text" id="contactName" name="contactName" placeholder="담당자 이름" required>
+          </div>
+          <div class="form-group">
+            <label class="form-group__label" for="contactInfo">연락처 (이메일 또는 위챗)</label>
+            <input class="form-group__input" type="text" id="contactInfo" name="contactInfo" placeholder="이메일 또는 위챗 ID" required>
+          </div>
+        </div>
+
+        <!-- ✏️ 제출 버튼 — copy.json partner.partner-form.submit_label -->
+        <button type="submit" class="btn-submit">파트너십 문의 보내기</button>
+      </form>
+
+      <!-- ✏️ 확인 메시지 — 제출 후 표시 -->
+      <div class="form-confirmation" id="formConfirmation">
+        <svg class="form-confirmation__icon" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="28" cy="28" r="24"/>
+          <path d="M18 28l6 6 14-14"/>
+        </svg>
+        <p class="form-confirmation__text">문의가 접수되었습니다.<br>영업일 기준 2일 내 담당자가 연락드립니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER (about.html과 동일)
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div class="footer__logo-area">
+        <a href="index.html" class="footer__logo"><img src="assets/images/koreamcn-logo-white.png" alt="KoreaMCN" style="height:36px;width:auto;"></a>
+      </div>
+      <div class="footer__content">
+        <div class="footer__legal-links">
+          <a href="#">이용약관</a>
+          <a href="#" class="--bold">개인정보처리방침</a>
+          <a href="#">이메일무단수집거부</a>
+        </div>
+        <div class="footer__info-area">
+          <address class="footer__info">
+            (주)케이엠 홀딩스<span>|</span>대표 : 장만익<span>|</span>사업자등록번호 : 191-86-03802<br>
+            경기도 군포시 번영로 82-23<span>|</span>TEL : <a href="tel:010-5650-1965">010-5650-1965</a><span>|</span>E-MAIL : <a href="mailto:woohyunkim@kmhldgs.com">woohyunkim@kmhldgs.com</a>
+          </address>
+          <p class="footer__copy">Copyright &copy; 2024 KM Holdings Co., Ltd. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- TOP 버튼 -->
+<button class="btn-top" id="btnTop" aria-label="맨 위로 이동">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12V4M4 7l4-4 4 4"/></svg>
+  TOP
+</button>
+
+<!-- ======================================================================
+     MOTION (GSAP 3 + ScrollTrigger + Lenis)
+     ====================================================================== -->
+<script>
+/* ⚠️ Lenis Smooth Scroll — 수정 금지 */
+const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+
+/* ⚠️ Register ScrollTrigger — 수정 금지 */
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── Sticky Header ── */
+const header = document.querySelector('.site-header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('is-scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ── SUB-HERO: 텍스트 stagger fadeSlideUp ── */
+(function() {
+  const heroEls = document.querySelectorAll('.sub-hero__title, .sub-hero__text');
+  /* ✏️ gsap.set으로 초기 상태 설정 → gsap.to로 등장 */
+  gsap.set(heroEls, { opacity: 0, y: 30 });
+  gsap.to(heroEls, {
+    opacity: 1, y: 0,
+    duration: 0.7,
+    stagger: 0.15,
+    ease: 'power3.out',
+    delay: 0.3,
+  });
+})();
+
+/* ── PARTNER VALUE: 헤더 + 카드 stagger ── */
+ScrollTrigger.create({
+  trigger: '#partner-value',
+  start: 'top 75%',
+  onEnter: function() {
+    var valueHeader = document.querySelector('.partner-value__header');
+    var valueCards = document.querySelectorAll('.value-card');
+    gsap.set(valueHeader, { opacity: 0, y: 30 });
+    gsap.to(valueHeader, {
+      opacity: 1, y: 0,
+      duration: 0.7, ease: 'power3.out',
+    });
+    gsap.set(valueCards, { opacity: 0, y: 40 });
+    gsap.to(valueCards, {
+      opacity: 1, y: 0,
+      duration: 0.7, stagger: 0.12, ease: 'power3.out',
+      delay: 0.2,
+    });
+  },
+  once: true,
+});
+
+/* ── PARTNER PROCESS: 헤더 + 연결선 + 노드 이동 + 스텝 stagger + 넘버 bounce ── */
+ScrollTrigger.create({
+  trigger: '#partner-process',
+  start: 'top 75%',
+  onEnter: function() {
+    var processHeader = document.querySelector('.partner-process__header');
+    var processSteps = document.querySelectorAll('#partner-process .process-step');
+    var processLine = document.querySelector('#partner-process .process-flow__line');
+
+    /* 헤더 등장 */
+    gsap.set(processHeader, { opacity: 0, y: 30 });
+    gsap.to(processHeader, {
+      opacity: 1, y: 0,
+      duration: 0.7, ease: 'power3.out',
+    });
+
+    /* 연결선 + 노드 이동 + 채움 애니메이션 */
+    if (processLine) {
+      var lineFill = document.querySelector('#partner-process .process-flow__line-fill');
+      var lineNode = document.querySelector('#partner-process .process-flow__node');
+
+      gsap.set(processLine, { scaleX: 0, transformOrigin: 'left center' });
+      gsap.to(processLine, {
+        scaleX: 1,
+        duration: 0.8, ease: 'power2.out',
+        delay: 0.3,
+        onComplete: function() {
+          gsap.set(lineNode, { left: 0, opacity: 1 });
+          gsap.to(lineNode, {
+            left: 'calc(100% - 10px)',
+            duration: 2, ease: 'power1.inOut',
+          });
+          gsap.to(lineFill, {
+            width: '100%',
+            duration: 2, ease: 'power1.inOut',
+            onComplete: function() {
+              gsap.to(lineNode, { opacity: 0, duration: 0.4 });
+            }
+          });
+        }
+      });
+    }
+
+    /* 스텝 순차 등장 */
+    gsap.set(processSteps, { opacity: 0, y: 30 });
+    gsap.to(processSteps, {
+      opacity: 1, y: 0,
+      duration: 0.6, stagger: 0.1, ease: 'power3.out',
+      delay: 0.4,
+    });
+
+    /* 넘버 bounce 효과 */
+    var nums = document.querySelectorAll('#partner-process .process-step__num');
+    gsap.set(nums, { scale: 0.5 });
+    gsap.to(nums, {
+      scale: 1,
+      duration: 0.5,
+      stagger: 0.1,
+      ease: 'back.out(1.7)',
+      delay: 0.5,
+    });
+  },
+  once: true,
+});
+
+/* ── PARTNER FORM: 폼 영역 등장 ── */
+ScrollTrigger.create({
+  trigger: '#partner-form',
+  start: 'top 80%',
+  onEnter: function() {
+    var formInner = document.querySelector('.partner-form__inner');
+    gsap.set(formInner, { opacity: 0, y: 40 });
+    gsap.to(formInner, {
+      opacity: 1, y: 0,
+      duration: 0.8, ease: 'power3.out',
+    });
+  },
+  once: true,
+});
+
+/* ── 폼 제출 핸들러 ── */
+(function() {
+  var form = document.getElementById('partnerForm');
+  var confirmation = document.getElementById('formConfirmation');
+  if (!form || !confirmation) return;
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    /* ✏️ 실제 서비스 연동 시 여기에 API 호출 추가 */
+    form.style.display = 'none';
+    confirmation.classList.add('is-visible');
+  });
+})();
+
+/* ── TOP 버튼 ── */
+(function() {
+  var btn = document.getElementById('btnTop');
+  if (!btn) return;
+  ScrollTrigger.create({
+    trigger: document.body,
+    start: '300px top',
+    onToggle: function(self) {
+      btn.classList.toggle('--visible', self.isActive);
+    }
+  });
+  btn.addEventListener('click', function() {
+    lenis.scrollTo(0, { duration: 1.2 });
+  });
+})();
+</script>
+
+</body>
+</html>

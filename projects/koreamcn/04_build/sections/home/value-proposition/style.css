@@ -1,0 +1,175 @@
+/* 2. VALUE-PROPOSITION 섹션 */
+.value-proposition-section {
+  background-color: var(--color-bg); /* DARK-1 배경 */
+  padding-top: var(--section-padding-desktop);
+  padding-bottom: var(--section-padding-desktop);
+  overflow: hidden; /* 방향별 리빌 애니메이션이 잘리지 않도록 */
+}
+
+.value-proposition-section .container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding-desktop);
+}
+
+.value-proposition-grid {
+  display: grid;
+  grid-template-columns: 5fr 6fr; /* 이미지와 텍스트 콘텐츠 비율 */
+  align-items: center;
+  gap: var(--card-gap);
+}
+
+.value-proposition-image-wrapper {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  position: relative;
+}
+
+.value-proposition-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--radius); /* 0px */
+}
+
+/* 텍스트 가독성을 위한 이미지 위 어두운 오버레이 */
+.value-proposition-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(10, 15, 28, 0.4), rgba(10, 15, 28, 0.1));
+  pointer-events: none;
+}
+
+.value-proposition-content {
+  padding: var(--card-padding);
+}
+
+/* 글래스모피즘 카드 스타일 */
+.glass-card {
+  background: var(--color-surface-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: var(--radius);
+  transition: border-color var(--duration-fast) var(--ease-default), background-color var(--duration-fast) var(--ease-default);
+}
+
+/* 타이포그래피 및 수직 리듬 */
+.value-proposition-content .section-label {
+  color: var(--color-accent);
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.value-proposition-content .section-title {
+  color: var(--color-text-on-dark);
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.value-proposition-content .section-body {
+  color: var(--color-text-on-dark-sub);
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.7;
+  margin-bottom: 48px;
+}
+
+/* 아웃라인 버튼 (다크) */
+.btn.btn-outline-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 30px;
+  background-color: transparent;
+  color: var(--color-text-on-dark);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.btn.btn-outline-dark:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--color-text-on-dark);
+}
+
+.btn .arrow-icon {
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.btn:hover .arrow-icon {
+  transform: translateX(4px);
+}
+
+/* 반응형: 768px 이하 */
+@media (max-width: 768px) {
+  .value-proposition-section {
+    padding-top: var(--section-padding-mobile);
+    padding-bottom: var(--section-padding-mobile);
+  }
+
+  .value-proposition-section .container {
+    padding: 0 var(--container-padding-mobile);
+  }
+
+  .value-proposition-grid {
+    grid-template-columns: 1fr; /* 1열로 스택 */
+    gap: var(--card-gap-mobile);
+  }
+
+  .value-proposition-image-wrapper {
+    min-height: 300px; /* 모바일 이미지 높이 조정 */
+    margin-bottom: 16px; /* 이미지와 텍스트 카드 사이 간격 */
+  }
+
+  .value-proposition-content {
+    padding: var(--card-padding-mobile);
+  }
+
+  .value-proposition-content .section-label {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .value-proposition-content .section-title {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .value-proposition-content .section-body {
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+
+  .btn.btn-outline-dark {
+    font-size: 16px;
+    padding: 14px 24px;
+    width: 100%;
+    justify-content: center;
+  }
+}

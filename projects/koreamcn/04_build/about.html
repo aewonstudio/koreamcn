@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company — KM Holdings | 한중 크로스보더 서비스 비즈니스 파트너</title>
+
+    <!-- ✏️ Pretendard (한글) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <!-- ✏️ Inter (영문 숫자·라벨) + Noto Sans SC (중국어) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- ⚠️ GSAP 3 + ScrollTrigger + Lenis (수정 금지) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1/dist/lenis.min.js"></script>
+
+    <style>
+/* ======================================================================
+   DESIGN TOKENS (design-system.md)
+   ====================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* --- Brand --- */
+  --color-primary: #1E3A6E;
+  --color-accent: #E8603C;
+  --color-accent-soft: #E8603C;
+
+  /* --- Backgrounds --- */
+  --color-bg: #0A0F1C;
+  --color-bg-alt: #111827;
+  --color-bg-deeper: #080D18;
+  --color-bg-navy: #1E3A6E;
+  --color-bg-light: #F9F7F4;
+
+  /* --- Surfaces --- */
+  --color-surface: #111827;
+  --color-surface-glass: rgba(255, 255, 255, 0.05);
+  --glass-blur: blur(16px);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* --- Text --- */
+  --color-text-on-dark: #FFFFFF;
+  --color-text-on-dark-sub: rgba(255, 255, 255, 0.7);
+  --color-text-on-dark-muted: rgba(255, 255, 255, 0.4);
+  --color-text-on-light: #1A1D2B;
+  --color-text-on-light-sub: #6B7280;
+
+  /* --- Borders --- */
+  --color-border-dark: rgba(255, 255, 255, 0.1);
+  --color-border-dark-hover: rgba(255, 255, 255, 0.2);
+  --color-divider: rgba(255, 255, 255, 0.08);
+
+  /* --- Typography --- */
+  --font-display: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-accent: 'Inter', sans-serif;
+
+  /* --- Spacing --- */
+  --section-py: 120px;
+  --section-py-m: 80px;
+  --container-max: 1280px;
+  --container-px: 40px;
+  --container-px-m: 20px;
+  --card-gap: 24px;
+  --card-gap-m: 16px;
+  --card-pad: 32px;
+  --card-pad-m: 24px;
+
+  /* --- Components --- */
+  --radius: 0;
+
+  /* --- Motion --- */
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1.0);
+  --dur-fast: 0.3s;
+  --dur-base: 0.6s;
+}
+
+html { scroll-behavior: auto; }
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-on-dark);
+  background: var(--color-bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* ======================================================================
+   UTILITY
+   ====================================================================== */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+@media (max-width: 768px) {
+  .container { padding: 0 var(--container-px-m); }
+}
+
+/* ======================================================================
+   BUTTONS (공통)
+   ====================================================================== */
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: #fff;
+  padding: 14px 30px; font-size: 17px; font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.3); border-radius: var(--radius);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.btn-outline:hover {
+  border-color: #fff;
+  background: #fff;
+  color: #0a0f1c;
+}
+
+/* ======================================================================
+   HEADER (홈과 동일 — Company 링크 활성 상태)
+   ====================================================================== */
+.site-header {
+  position: fixed; top: 0; left: 0; width: 100%; height: 64px;
+  z-index: 1000;
+  background: transparent;
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  border-bottom: 1px solid transparent;
+}
+.site-header.is-scrolled {
+  background: rgba(10, 15, 28, 0.92);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--color-divider);
+}
+.header-inner {
+  max-width: var(--container-max); height: 100%; margin: 0 auto;
+  padding: 0 var(--container-px);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.site-logo {
+  font-family: var(--font-accent); font-size: 20px; font-weight: 800;
+  color: var(--color-text-on-dark); letter-spacing: -0.02em;
+}
+.site-nav > ul {
+  display: flex; gap: 0; list-style: none;
+  height: 64px;
+}
+.nav-link {
+  display: flex; align-items: center;
+  height: 64px; padding: 0 20px;
+  font-size: 15px; font-weight: 500;
+  color: var(--color-text-on-dark-sub);
+  transition: color var(--dur-fast), background var(--dur-fast);
+  position: relative;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.nav-link:hover {
+  color: var(--color-text-on-dark);
+  background: rgba(255, 255, 255, 0.04);
+}
+.nav-link:hover::after { transform: scaleX(1); }
+/* 현재 페이지 (Company) 활성 상태 */
+.nav-link.is-active {
+  color: var(--color-text-on-dark);
+}
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+.header-actions { display: flex; align-items: center; gap: 16px; }
+.btn-nav-cta {
+  background: var(--color-accent); color: #fff;
+  padding: 9px 22px; font-size: 14px; font-weight: 700;
+  border-radius: var(--radius);
+  transition: transform var(--dur-fast), box-shadow var(--dur-fast);
+}
+.btn-nav-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(194, 59, 59, 0.3);
+}
+.mobile-toggle {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 40px; height: 40px; padding: 8px;
+}
+.mobile-toggle span {
+  display: block; width: 24px; height: 2px;
+  background: var(--color-text-on-dark);
+  margin: 5px 0; transition: all 0.3s;
+}
+/* 2depth 드롭다운 서브메뉴 */
+.has-sub { position: relative; }
+.sub-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  background: var(--color-bg-alt);
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  padding: 8px 0;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out), visibility 0.2s;
+  z-index: 1001;
+}
+.has-sub:hover .sub-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.sub-menu li a {
+  display: block;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.sub-menu li a:hover {
+  color: var(--color-accent);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 768px) {
+  .header-inner { padding: 0 var(--container-px-m); }
+  .site-nav, .btn-nav-cta { display: none; }
+  .mobile-toggle { display: block; }
+}
+
+/* ======================================================================
+   SUB-HERO + SUB-TAB NAV
+   ====================================================================== */
+/* Sub-Hero 배너 — 한솔 sub-visual 패턴 */
+.sub-hero {
+  position: relative;
+  height: 480px;
+  background-color: var(--color-bg);
+  color: var(--color-text-on-dark);
+  overflow: hidden;
+}
+
+/* 배경 레이어 (이미지 + 오버레이) */
+.sub-hero__bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+.sub-hero__img {
+  width: 100%; height: 100%;
+  background-image: url('assets/images/subhero-company.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.sub-hero__bg::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(10, 15, 28, 0.7);
+}
+
+/* 텍스트 콘텐츠 — 수직·수평 중앙 */
+.sub-hero__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding-top: 64px;
+  padding-bottom: 60px;
+}
+
+/* 메인 타이틀 */
+.sub-hero__title {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+}
+
+/* 서브타이틀 */
+.sub-hero__text {
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text-on-dark-sub);
+  margin: 0;
+}
+
+/* 앵커 네비게이션 — sub-hero 하단 glassmorphism 바 */
+.sub-anchor-nav {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--container-max);
+  padding: 0 var(--container-px);
+  z-index: 4;
+}
+.sub-anchor-nav .container {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  max-width: 100%;
+  padding: 0 24px;
+  background: rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+/* 홈 아이콘 */
+.sub-anchor-nav__home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color var(--dur-fast);
+}
+.sub-anchor-nav__home:hover { color: #fff; }
+/* 구분선 */
+.sub-anchor-nav__sep {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 12px;
+  flex-shrink: 0;
+}
+/* 앵커 링크들 */
+.sub-anchor-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 100%;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.sub-anchor-nav__links::-webkit-scrollbar { display: none; }
+.sub-anchor-nav__link {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+.sub-anchor-nav__link:hover {
+  color: #fff;
+}
+.sub-anchor-nav__link.active {
+  color: var(--color-accent);
+  font-weight: 600;
+  border-bottom-color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+  .sub-hero { height: 360px; }
+  .sub-hero__title { font-size: 36px; }
+  .sub-hero__text { font-size: 18px; }
+  .sub-anchor-nav { padding: 0 var(--container-px-m); }
+  .sub-anchor-nav .container { height: 50px; padding: 0 16px; }
+  .sub-anchor-nav__home { width: 32px; height: 32px; }
+  .sub-anchor-nav__home svg { width: 16px; height: 16px; }
+  .sub-anchor-nav__link { padding: 0 14px; font-size: 14px; }
+}
+
+/* ======================================================================
+   COMPANY OVERVIEW
+   ====================================================================== */
+.overview-section {
+  position: relative;
+  padding: 120px 0;
+  color: var(--color-text-on-dark);
+  background: var(--color-bg-alt);
+  background-image: radial-gradient(ellipse at 30% 50%, rgba(30, 58, 110, 0.15) 0%, transparent 70%);
+}
+.overview-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+.overview-grid {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+.overview-text-column {
+  display: flex;
+  flex-direction: column;
+}
+/* 섹션 레이블 */
+.overview-section .section-label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+}
+/* 섹션 타이틀 */
+.overview-section .section-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-dark);
+  margin: 0 0 16px;
+}
+/* 본문 */
+.body-text {
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-text-on-dark-sub);
+  margin: 0 0 48px;
+}
+/* 핵심 수치 스탯 바 */
+.overview-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+}
+.overview-stat__number {
+  font-family: var(--font-accent);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1.2;
+}
+.overview-stat__label {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-text-on-dark-sub);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .overview-section { padding: 80px 0; }
+  .overview-container { padding: 0 20px; }
+  .overview-section .section-label { font-size: 13px; margin-bottom: 8px; }
+  .overview-section .section-title { font-size: 28px; margin-bottom: 12px; }
+  .body-text { font-size: 16px; }
+  .overview-stats { grid-template-columns: repeat(2, 1fr); gap: 16px; padding-top: 24px; }
+  .overview-stat__number { font-size: 24px; }
+  .overview-stat__label { font-size: 12px; }
+}
+
+/* ======================================================================
+   4대 핵심 역량 (FOUR PILLARS)
+   ====================================================================== */
+.pillars-section {
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+}
+.pillars-section__bg {
+  position: absolute;
+  inset: -20% 0;
+  background: url('assets/images/156.jpg') center/cover no-repeat;
+  will-change: transform;
+  z-index: 0;
+}
+.pillars-section__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 15, 28, 0.92);
+  z-index: 1;
+}
+.pillars-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+.pillars-header {
+  margin-bottom: 48px;
+}
+.pillars-label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+}
+.pillars-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-dark);
+  margin: 0;
+}
+/* 4열 그리드 */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.pillar-card {
+  padding: 40px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-right: none;
+  background: transparent;
+  position: relative;
+  transition: background var(--dur-fast), border-color var(--dur-fast), box-shadow var(--dur-fast), transform var(--dur-fast);
+}
+.pillar-card:last-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+.pillar-card:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+/* 카드 상단 넘버링 */
+/* 카드 아이콘 */
+.pillar-card__icon {
+  width: 44px;
+  height: 44px;
+  color: var(--color-accent);
+  margin-bottom: 20px;
+  opacity: 0.7;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.pillar-card:hover .pillar-card__icon {
+  opacity: 1;
+  transform: translateY(-2px);
+  color: #fff;
+}
+.pillar-card__num {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-accent);
+  opacity: 0.6;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  margin-bottom: 20px;
+  transition: opacity 0.3s;
+}
+.pillar-card:hover .pillar-card__num {
+  opacity: 1;
+  color: rgba(255,255,255,0.8);
+}
+.pillar-card__title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-on-dark);
+  margin-bottom: 16px;
+  line-height: 1.4;
+  transition: color 0.3s;
+}
+.pillar-card:hover .pillar-card__title {
+  color: #fff;
+}
+.pillar-card:hover .pillar-card__desc {
+  color: rgba(255,255,255,0.85);
+}
+.pillar-card__desc {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--color-text-on-dark-sub);
+}
+
+@media (max-width: 1024px) {
+  .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+  .pillar-card:nth-child(2) { border-right: 1px solid rgba(255,255,255,0.25); }
+  .pillar-card:nth-child(3),
+  .pillar-card:nth-child(4) { border-top: none; }
+}
+@media (max-width: 768px) {
+  .pillars-section { padding: 80px 0; }
+  .pillars-container { padding: 0 20px; }
+  .pillars-label { font-size: 13px; margin-bottom: 8px; }
+  .pillars-title { font-size: 28px; }
+  .pillars-header { margin-bottom: 32px; }
+  .pillars-grid { grid-template-columns: 1fr; }
+  .pillar-card {
+    border-right: 1px solid rgba(255,255,255,0.25);
+    border-bottom: none;
+  }
+  .pillar-card:last-child { border-bottom: 1px solid rgba(255,255,255,0.25); }
+  .pillar-card__num { font-size: 12px; margin-bottom: 16px; }
+  .pillar-card__title { font-size: 18px; }
+}
+
+/* ======================================================================
+   파트너사 (PARTNERS) — 홈과 동일 마키 구조
+   ====================================================================== */
+.partners {
+  background: #FFFFFF;
+  padding: var(--section-py) 0;
+  overflow: hidden;
+}
+.partners__header { text-align: center; margin-bottom: 48px; }
+.partners__title {
+  font-family: var(--font-display);
+  font-size: 44px; font-weight: 700; line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-light);
+  margin: 0;
+}
+.marquee-wrap { display: flex; flex-direction: column; gap: 20px; }
+
+/* 무한 루프 마키 */
+@keyframes marquee-ltr { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes marquee-rtl { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+.marquee-track {
+  display: flex; gap: 0; flex-shrink: 0;
+  width: max-content;
+  animation: marquee-ltr 30s linear infinite;
+}
+.marquee-track--rev {
+  animation-name: marquee-rtl;
+  animation-duration: 35s;
+}
+.marquee-track--slow {
+  animation-duration: 38s;
+}
+.marquee-item {
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  width: 220px; height: 90px;
+  padding: 16px 24px;
+  background: #FFFFFF;
+}
+.marquee-item img {
+  max-width: 100%; max-height: 100%; object-fit: contain;
+  filter: grayscale(100%); opacity: 0.55;
+  transition: filter var(--dur-fast), opacity var(--dur-fast), transform var(--dur-fast);
+}
+.marquee-item:hover img {
+  filter: grayscale(0); opacity: 1; transform: scale(1.08);
+}
+/* section-label for partners */
+.partners .section-label {
+  font-family: var(--font-accent);
+  font-size: 14px; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+  .partners { padding: var(--section-py-m) 0; }
+  .partners .section-label { font-size: 13px; margin-bottom: 8px; }
+  .partners__title { font-size: 28px; }
+  .marquee-wrap { gap: 12px; }
+  .marquee-track { animation-duration: 20s; }
+  .marquee-track--rev { animation-duration: 24s; }
+  .marquee-track--slow { animation-duration: 28s; }
+  .marquee-item { width: 160px; height: 64px; padding: 10px 16px; }
+}
+
+/* ======================================================================
+   FOOTER (홈과 동일)
+   ====================================================================== */
+.footer {
+  background: var(--color-bg-deeper);
+  padding: 0;
+  color: rgba(255,255,255,0.45);
+  font-size: 13px; line-height: 1.8;
+}
+.footer__inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
+  padding: 40px 0 48px;
+}
+.footer__logo-area {
+  display: flex; align-items: flex-start; padding-top: 4px;
+}
+.footer__logo {
+  font-family: var(--font-accent); font-size: 22px; font-weight: 800;
+  color: rgba(255,255,255,0.85); letter-spacing: -0.01em;
+}
+.footer__legal-links {
+  display: flex; align-items: center; gap: 0;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.footer__legal-links a {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  padding: 0 18px;
+  border-right: 1px solid rgba(255,255,255,0.15);
+  transition: color var(--dur-fast);
+}
+.footer__legal-links a:first-child { padding-left: 0; }
+.footer__legal-links a:last-child { border-right: none; padding-right: 0; }
+.footer__legal-links a:hover { color: #fff; }
+.footer__legal-links a.--bold { font-weight: 700; color: rgba(255,255,255,0.7); }
+.footer__info-area { padding-top: 24px; }
+.footer__info {
+  font-style: normal; font-size: 13px; line-height: 1.9;
+  color: rgba(255,255,255,0.35);
+}
+.footer__info span { margin: 0 8px; color: rgba(255,255,255,0.15); }
+.footer__info a { color: rgba(255,255,255,0.35); transition: color var(--dur-fast); }
+.footer__info a:hover { color: rgba(255,255,255,0.6); }
+.footer__copy {
+  font-size: 12px; color: rgba(255,255,255,0.2);
+  margin-top: 16px;
+}
+/* TOP 버튼 */
+.btn-top {
+  position: fixed; bottom: 32px; right: 32px; z-index: 90;
+  width: 52px; height: 52px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  background: var(--color-accent); color: #fff;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  border: none; cursor: pointer;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateY(12px);
+}
+.btn-top.--visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.btn-top:hover { background: #a83232; }
+.btn-top svg { width: 16px; height: 16px; }
+
+@media (max-width: 768px) {
+  .footer__inner { grid-template-columns: 1fr; gap: 32px; }
+  .footer__legal-links a { padding: 0 12px; font-size: 12px; }
+  .footer__info br { display: none; }
+  .btn-top { bottom: 20px; right: 20px; width: 44px; height: 44px; }
+}
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><img src="assets/images/koreamcn-logo-white.png" alt="KoreaMCN" style="height:44px;width:auto;"></a>
+    <nav class="site-nav">
+      <ul>
+        <li class="has-sub">
+          <a href="about.html" class="nav-link is-active">회사 소개</a>
+          <ul class="sub-menu">
+            <li><a href="about.html">개요</a></li>
+            <li><a href="ceo.html">CEO 인사말</a></li>
+            <li><a href="history.html">연혁</a></li>
+            <li><a href="network.html">글로벌 네트워크</a></li>
+          </ul>
+        </li>
+        <li class="has-sub">
+          <a href="logistics.html" class="nav-link">사업 소개</a>
+          <ul class="sub-menu">
+            <li><a href="logistics.html">국제 물류 서비스</a></li>
+            <li><a href="crossborder.html">크로스보더 서비스</a></li>
+            <li><a href="live-commerce.html">라이브커머스 · MCN</a></li>
+          </ul>
+        </li>
+        <li><a href="partner.html" class="nav-link">파트너십</a></li>
+        <li><a href="seller.html" class="nav-link">셀러 모집</a></li>
+        <li><a href="news.html" class="nav-link">보도자료</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href="contact.html" class="btn-nav-cta">문의하기</a>
+      <button class="mobile-toggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     SUB-HERO + SUB-TAB NAV
+     ============================================================ -->
+<section class="sub-hero">
+  <div class="sub-hero__bg"><div class="sub-hero__img"></div></div>
+  <div class="sub-hero__inner container">
+    <h2 class="sub-hero__title">회사 소개</h2>
+    <p class="sub-hero__text">한중을 잇고, 브랜드의 성장을 세계 무대로 확장합니다</p>
+  </div>
+
+  <!-- 앵커 네비게이션 (sub-hero 하단 glassmorphism 바) -->
+  <nav class="sub-anchor-nav">
+    <div class="container">
+      <a href="index.html" class="sub-anchor-nav__home" aria-label="Home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 2L21 9.5V21C21 21.2652 20.8946 21.5196 20.7071 21.7071C20.5196 21.8946 20.2652 22 20 22H4C3.73478 22 3.48043 21.8946 3.29289 21.7071C3.10536 21.5196 3 21.2652 3 21V9.5Z"/>
+          <path d="M9 22V12H15V22"/>
+        </svg>
+      </a>
+      <span class="sub-anchor-nav__sep"></span>
+      <div class="sub-anchor-nav__links">
+        <a href="about.html" class="sub-anchor-nav__link active">개요</a>
+        <span class="sub-anchor-nav__sep"></span>
+        <a href="ceo.html" class="sub-anchor-nav__link">CEO 인사말</a>
+        <span class="sub-anchor-nav__sep"></span>
+        <a href="history.html" class="sub-anchor-nav__link">연혁</a>
+        <span class="sub-anchor-nav__sep"></span>
+        <a href="network.html" class="sub-anchor-nav__link">글로벌 네트워크</a>
+      </div>
+    </div>
+  </nav>
+</section>
+
+<!-- ============================================================
+     COMPANY OVERVIEW
+     ============================================================ -->
+<section id="company-overview" class="overview-section">
+  <div class="overview-container">
+    <div class="overview-grid">
+      <div class="overview-text-column reveal-left">
+        <span class="section-label">ABOUT US</span>
+        <h2 class="section-title">한중 크로스보더 종합 비즈니스 서비스 기업</h2>
+        <p class="body-text">
+          한국 기업 및 브랜드의 중국 시장 진출에 필요한 전 과정을 지원합니다. 크로스보더 전자상거래 운영, 공급망 및 상품 유통, 보세창고 및 물류 관리, 라이브커머스 · MCN 연계, 현지 운영까지 — 시장 진입부터 운영 안정화까지 체계적으로 동행합니다.
+        </p>
+        <!-- 핵심 수치 -->
+        <div class="overview-stats stagger-children">
+          <div class="overview-stat reveal">
+            <div class="overview-stat__number">8년+</div>
+            <div class="overview-stat__label">업력</div>
+          </div>
+          <div class="overview-stat reveal">
+            <div class="overview-stat__number">50+</div>
+            <div class="overview-stat__label">파트너사</div>
+          </div>
+          <div class="overview-stat reveal">
+            <div class="overview-stat__number">200만+</div>
+            <div class="overview-stat__label">월간 물류 처리 (건)</div>
+          </div>
+          <div class="overview-stat reveal">
+            <div class="overview-stat__number">13개</div>
+            <div class="overview-stat__label">해외 직영 창고</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     4대 핵심 역량
+     ============================================================ -->
+<section id="four-pillars" class="pillars-section">
+  <div class="pillars-section__bg"></div>
+  <div class="pillars-section__overlay"></div>
+  <div class="pillars-container">
+    <header class="pillars-header reveal">
+      <span class="pillars-label">CORE COMPETENCIES</span>
+      <h2 class="pillars-title">4대 핵심 역량</h2>
+    </header>
+
+    <div class="pillars-grid stagger-children">
+      <!-- 1. 생산자 서비스 — 인증서/문서 아이콘 -->
+      <div class="pillar-card reveal">
+        <div class="pillar-card__num">01</div>
+        <svg class="pillar-card__icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="8" y="4" width="28" height="36" rx="2"/>
+          <path d="M16 14h12M16 20h12M16 26h8"/>
+          <circle cx="30" cy="32" r="6" fill="var(--color-bg)" stroke="currentColor"/>
+          <path d="M28 32l1.5 1.5 3-3"/>
+        </svg>
+        <h3 class="pillar-card__title">생산자 서비스</h3>
+        <p class="pillar-card__desc">KC인증, KFDA인증, 상표등록, 특허출원부터 한국 법인 설립(20~25영업일), 세무신고까지 원스톱으로 지원합니다.</p>
+      </div>
+      <!-- 2. 플랫폼 유통 — 유통 채널 아이콘 -->
+      <div class="pillar-card reveal">
+        <div class="pillar-card__num">02</div>
+        <svg class="pillar-card__icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="22" cy="12" r="4"/>
+          <circle cx="10" cy="32" r="4"/>
+          <circle cx="22" cy="32" r="4"/>
+          <circle cx="34" cy="32" r="4"/>
+          <path d="M22 16v12M22 20l-10 8M22 20l10 8"/>
+        </svg>
+        <h3 class="pillar-card__title">원클릭 4차원 유통</h3>
+        <p class="pillar-card__desc">라이브 전자상거래, 오프라인 체인(GS25·CU·올리브영), 온라인 플랫폼(Coupang·Gmarket), 국가·지역 총판까지 통합 유통망을 제공합니다.</p>
+      </div>
+      <!-- 3. 해외창고 — 창고/박스 아이콘 -->
+      <div class="pillar-card reveal">
+        <div class="pillar-card__num">03</div>
+        <svg class="pillar-card__icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 16l16-8 16 8v20L22 44 6 36V16z"/>
+          <path d="M6 16l16 8 16-8"/>
+          <path d="M22 24v20"/>
+          <path d="M14 12l16 8"/>
+        </svg>
+        <h3 class="pillar-card__title">4PL 해외창고</h3>
+        <p class="pillar-card__desc">13개 해외 직접운영 창고 기반, 온라인 ERP 통합 관리와 B2C·B2B 재고 관리를 제공합니다.</p>
+      </div>
+      <!-- 4. 국제물류 — 글로벌 물류 아이콘 -->
+      <div class="pillar-card reveal">
+        <div class="pillar-card__num">04</div>
+        <svg class="pillar-card__icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="22" cy="22" r="16"/>
+          <ellipse cx="22" cy="22" rx="8" ry="16"/>
+          <path d="M6 22h32"/>
+          <path d="M9 12h26M9 32h26"/>
+        </svg>
+        <h3 class="pillar-card__title">한중 국제물류</h3>
+        <p class="pillar-card__desc">월 평균 200만 건의 물류를 처리하며, 13개국 물류·통관 네트워크를 운영합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     파트너사 (홈과 동일 마키 구조)
+     ============================================================ -->
+<section class="partners" id="partners">
+  <div class="container">
+    <div class="partners__header">
+      <p class="section-label" style="color: var(--color-accent);">Partners</p>
+      <h2 class="partners__title">물류, 유통, 뷰티, 미디어 분야의<br>파트너와 함께합니다.</h2>
+    </div>
+  </div>
+  <div class="marquee-wrap" aria-hidden="true">
+    <!-- Track 1: 좌→우 (7개 + 복제) -->
+    <div class="marquee-track">
+      <div class="marquee-item"><img src="assets/logos/CJ%EB%8C%80%ED%95%9C%ED%86%B5%EC%9A%B4.png" alt="CJ대한통운"></div>
+      <div class="marquee-item"><img src="assets/logos/%EC%BF%A0%ED%8C%A1.jpg" alt="쿠팡"></div>
+      <div class="marquee-item"><img src="assets/logos/COSMAX%20-%20%ED%99%94%EC%9E%A5%ED%92%88%20ODM-OEM%20%ED%9A%8C%EC%82%AC.jpg" alt="COSMAX"></div>
+      <div class="marquee-item"><img src="assets/logos/ALBEA-%ED%99%94%EC%9E%A5%ED%92%88%20%EC%9A%A9%EA%B8%B0%20%ED%8A%9C%EB%B8%8C%20%EC%A0%9C%EC%9E%91.jpg" alt="ALBEA"></div>
+      <div class="marquee-item"><img src="assets/logos/DSM%20-%20%EC%98%81%EC%96%91%20%ED%97%AC%EC%8A%A4%20%EB%B7%B0%ED%8B%B0%20%ED%96%A5%EB%A3%8C%20%EC%9B%90%EB%A3%8C%20%EB%B6%84%EC%95%BC%20%ED%9A%8C%EC%82%AC.png" alt="DSM"></div>
+      <div class="marquee-item"><img src="assets/logos/INOAC%20%ED%8F%B4%EB%A6%AC%EC%9A%B0%EB%A0%88%ED%83%84%20%EA%B3%A0%EB%AC%B4%20%ED%94%8C%EB%9D%BC%EC%8A%A4%ED%8B%B1%20%ED%8F%AC%EC%9E%A5%20%EA%B4%80%EB%A0%A8%20%ED%9A%8C%EC%82%AC.jpg" alt="INOAC"></div>
+      <div class="marquee-item"><img src="assets/logos/INTCO.jpg" alt="INTCO"></div>
+      <div class="marquee-item"><img src="assets/logos/CJ%EB%8C%80%ED%95%9C%ED%86%B5%EC%9A%B4.png" alt="CJ대한통운"></div>
+      <div class="marquee-item"><img src="assets/logos/%EC%BF%A0%ED%8C%A1.jpg" alt="쿠팡"></div>
+      <div class="marquee-item"><img src="assets/logos/COSMAX%20-%20%ED%99%94%EC%9E%A5%ED%92%88%20ODM-OEM%20%ED%9A%8C%EC%82%AC.jpg" alt="COSMAX"></div>
+      <div class="marquee-item"><img src="assets/logos/ALBEA-%ED%99%94%EC%9E%A5%ED%92%88%20%EC%9A%A9%EA%B8%B0%20%ED%8A%9C%EB%B8%8C%20%EC%A0%9C%EC%9E%91.jpg" alt="ALBEA"></div>
+      <div class="marquee-item"><img src="assets/logos/DSM%20-%20%EC%98%81%EC%96%91%20%ED%97%AC%EC%8A%A4%20%EB%B7%B0%ED%8B%B0%20%ED%96%A5%EB%A3%8C%20%EC%9B%90%EB%A3%8C%20%EB%B6%84%EC%95%BC%20%ED%9A%8C%EC%82%AC.png" alt="DSM"></div>
+      <div class="marquee-item"><img src="assets/logos/INOAC%20%ED%8F%B4%EB%A6%AC%EC%9A%B0%EB%A0%88%ED%83%84%20%EA%B3%A0%EB%AC%B4%20%ED%94%8C%EB%9D%BC%EC%8A%A4%ED%8B%B1%20%ED%8F%AC%EC%9E%A5%20%EA%B4%80%EB%A0%A8%20%ED%9A%8C%EC%82%AC.jpg" alt="INOAC"></div>
+      <div class="marquee-item"><img src="assets/logos/INTCO.jpg" alt="INTCO"></div>
+    </div>
+    <!-- Track 2: 우→좌 (6개 + 복제) -->
+    <div class="marquee-track marquee-track--rev">
+      <div class="marquee-item"><img src="assets/logos/ISISPHARMA%20%ED%94%BC%EB%B6%80%20%EC%8A%A4%ED%82%A8%EC%BC%80%EC%96%B4.webp" alt="ISISPHARMA"></div>
+      <div class="marquee-item"><img src="assets/logos/JAHWA%20%EC%A4%91%EA%B5%AD%20%ED%99%94%EC%9E%A5%ED%92%88%20%EB%B8%8C%EB%9E%9C%EB%93%9C.jpg" alt="JAHWA"></div>
+      <div class="marquee-item"><img src="assets/logos/KAIKENDO%20%EC%8B%9D%ED%92%88%EC%9B%90%EB%A3%8C%20%EB%B0%94%EC%9D%B4%EC%98%A4%20%EC%A0%9C%ED%92%88%20%EA%B4%80%EB%A0%A8%ED%9A%8C%EC%82%AC.webp" alt="KAIKENDO"></div>
+      <div class="marquee-item"><img src="assets/logos/NU%20SKIN.png" alt="NU SKIN"></div>
+      <div class="marquee-item"><img src="assets/logos/OMEIZI%20%EB%B3%B4%EC%8A%B5%20%EB%AF%B8%EB%B0%B1%EB%93%B1%20%ED%99%94%EC%9E%A5%ED%92%88%20%EB%B8%8C%EB%9E%9C%EB%93%9C.jpg" alt="OMEIZI"></div>
+      <div class="marquee-item"><img src="assets/logos/Choya.png" alt="Choya"></div>
+      <div class="marquee-item"><img src="assets/logos/ISISPHARMA%20%ED%94%BC%EB%B6%80%20%EC%8A%A4%ED%82%A8%EC%BC%80%EC%96%B4.webp" alt="ISISPHARMA"></div>
+      <div class="marquee-item"><img src="assets/logos/JAHWA%20%EC%A4%91%EA%B5%AD%20%ED%99%94%EC%9E%A5%ED%92%88%20%EB%B8%8C%EB%9E%9C%EB%93%9C.jpg" alt="JAHWA"></div>
+      <div class="marquee-item"><img src="assets/logos/KAIKENDO%20%EC%8B%9D%ED%92%88%EC%9B%90%EB%A3%8C%20%EB%B0%94%EC%9D%B4%EC%98%A4%20%EC%A0%9C%ED%92%88%20%EA%B4%80%EB%A0%A8%ED%9A%8C%EC%82%AC.webp" alt="KAIKENDO"></div>
+      <div class="marquee-item"><img src="assets/logos/NU%20SKIN.png" alt="NU SKIN"></div>
+      <div class="marquee-item"><img src="assets/logos/OMEIZI%20%EB%B3%B4%EC%8A%B5%20%EB%AF%B8%EB%B0%B1%EB%93%B1%20%ED%99%94%EC%9E%A5%ED%92%88%20%EB%B8%8C%EB%9E%9C%EB%93%9C.jpg" alt="OMEIZI"></div>
+      <div class="marquee-item"><img src="assets/logos/Choya.png" alt="Choya"></div>
+    </div>
+    <!-- Track 3: 좌→우 느리게 (6개 + 복제) -->
+    <div class="marquee-track marquee-track--slow">
+      <div class="marquee-item"><img src="assets/logos/JOY%20MEDIA.webp" alt="JOY MEDIA"></div>
+      <div class="marquee-item"><img src="assets/logos/KOLPlanet.webp" alt="KOLPlanet"></div>
+      <div class="marquee-item"><img src="assets/logos/%E4%BA%A4%E4%B8%AA%E6%9C%8B%E5%8F%8B%E6%8E%A7%E8%82%A1.png" alt="交个朋友控股"></div>
+      <div class="marquee-item"><img src="assets/logos/%E4%B8%9C%E6%96%B9%E7%94%84%E9%80%89.webp" alt="东方甄选"></div>
+      <div class="marquee-item"><img src="assets/logos/%E5%B3%B0%E7%81%AB%E6%96%87%E5%8C%96.jpg" alt="峰火文化"></div>
+      <div class="marquee-item"><img src="assets/logos/%E5%A8%81%E6%B5%B7%E7%94%B5%E5%B9%BF%E4%BC%A0%E5%AA%92.png" alt="威海电广传媒"></div>
+      <div class="marquee-item"><img src="assets/logos/JOY%20MEDIA.webp" alt="JOY MEDIA"></div>
+      <div class="marquee-item"><img src="assets/logos/KOLPlanet.webp" alt="KOLPlanet"></div>
+      <div class="marquee-item"><img src="assets/logos/%E4%BA%A4%E4%B8%AA%E6%9C%8B%E5%8F%8B%E6%8E%A7%E8%82%A1.png" alt="交个朋友控股"></div>
+      <div class="marquee-item"><img src="assets/logos/%E4%B8%9C%E6%96%B9%E7%94%84%E9%80%89.webp" alt="东方甄选"></div>
+      <div class="marquee-item"><img src="assets/logos/%E5%B3%B0%E7%81%AB%E6%96%87%E5%8C%96.jpg" alt="峰火文化"></div>
+      <div class="marquee-item"><img src="assets/logos/%E5%A8%81%E6%B5%B7%E7%94%B5%E5%B9%BF%E4%BC%A0%E5%AA%92.png" alt="威海电广传媒"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div class="footer__logo-area">
+        <a href="index.html" class="footer__logo"><img src="assets/images/koreamcn-logo-white.png" alt="KoreaMCN" style="height:36px;width:auto;"></a>
+      </div>
+      <div class="footer__content">
+        <div class="footer__legal-links">
+          <a href="#">이용약관</a>
+          <a href="#" class="--bold">개인정보처리방침</a>
+          <a href="#">이메일무단수집거부</a>
+        </div>
+        <div class="footer__info-area">
+          <address class="footer__info">
+            (주)케이엠 홀딩스<span>|</span>대표 : 장만익<span>|</span>사업자등록번호 : 191-86-03802<br>
+            경기도 군포시 번영로 82-23<span>|</span>TEL : <a href="tel:010-5650-1965">010-5650-1965</a><span>|</span>E-MAIL : <a href="mailto:woohyunkim@kmhldgs.com">woohyunkim@kmhldgs.com</a>
+          </address>
+          <p class="footer__copy">Copyright &copy; 2024 KM Holdings Co., Ltd. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- TOP 버튼 -->
+<button class="btn-top" id="btnTop" aria-label="맨 위로 이동">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12V4M4 7l4-4 4 4"/></svg>
+  TOP
+</button>
+
+<!-- ======================================================================
+     MOTION (GSAP 3 + ScrollTrigger + Lenis)
+     ====================================================================== -->
+<script>
+/* ── Lenis Smooth Scroll ── */
+const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+
+/* ── Register ScrollTrigger ── */
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── Sticky Header ── */
+const header = document.querySelector('.site-header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('is-scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ── SUB-HERO: Fade In ── */
+gsap.from('.sub-hero__inner', {
+  opacity: 0, y: 30,
+  duration: 0.6, ease: 'power3.out',
+  delay: 0.2,
+});
+
+/* ── COMPANY OVERVIEW: 텍스트 리빌 ── */
+ScrollTrigger.create({
+  trigger: '.overview-section',
+  start: 'top 75%',
+  onEnter: function() {
+    gsap.from('.reveal-left', {
+      y: 40, opacity: 0,
+      duration: 0.9, ease: 'power3.out',
+    });
+  },
+  once: true,
+});
+
+/* ── FOUR PILLARS: 패럴랙스 배경 ── */
+gsap.to('.pillars-section__bg', {
+  yPercent: 30,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.pillars-section',
+    start: 'top bottom',
+    end: 'bottom top',
+    scrub: 0.5,
+  },
+});
+
+/* ── FOUR PILLARS: 헤더 + 카드 순차 등장 ── */
+gsap.set('.pillars-header', { opacity: 0, y: 40 });
+gsap.set('.pillar-card', { opacity: 0, y: 40 });
+
+ScrollTrigger.create({
+  trigger: '.pillars-section',
+  start: 'top 75%',
+  onEnter: function() {
+    gsap.to('.pillars-header', {
+      opacity: 1, y: 0,
+      duration: 0.8, ease: 'power3.out',
+    });
+    gsap.to('.pillar-card', {
+      opacity: 1, y: 0,
+      duration: 0.6, stagger: 0.1, ease: 'power3.out',
+      delay: 0.3,
+    });
+  },
+  once: true,
+});
+
+/* ── PARTNERS: 헤더 페이드인 ── */
+gsap.from('.partners__header', {
+  y: 30, opacity: 0, duration: 0.6, ease: 'power3.out',
+  scrollTrigger: { trigger: '.partners', start: 'top 80%', once: true },
+});
+
+/* ── TOP 버튼 ── */
+(function() {
+  const btn = document.getElementById('btnTop');
+  if (!btn) return;
+  ScrollTrigger.create({
+    trigger: document.body,
+    start: '300px top',
+    onToggle: function(self) {
+      btn.classList.toggle('--visible', self.isActive);
+    }
+  });
+  btn.addEventListener('click', function() {
+    lenis.scrollTo(0, { duration: 1.2 });
+  });
+})();
+</script>
+
+</body>
+</html>

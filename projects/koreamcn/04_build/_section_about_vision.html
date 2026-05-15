@@ -1,0 +1,249 @@
+<!-- TEMPLATE -->
+<section id="vision" class="vision-section reveal">
+  <div class="vision-container">
+    <div class="vision-header">
+      <p class="section-label">VISION & MISSION</p>
+      <h2 class="section-title">Vision & Mission</h2>
+      <p class="vision-subheadline">Next KM 2036 — 중국 브랜드의 글로벌 진출, 전 과정을 동행하는 파트너</p>
+    </div>
+
+    <div class="vision-roadmap stagger-children">
+      <div class="roadmap-item">
+        <div class="roadmap-card">
+          <span class="roadmap-number">01</span>
+          <h3 class="roadmap-title">슈저우 중심 모범 사례 구축</h3>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-card">
+          <span class="roadmap-number">02</span>
+          <h3 class="roadmap-title">장강삼각주 전역 서비스 네트워크 확대</h3>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-card">
+          <span class="roadmap-number">03</span>
+          <h3 class="roadmap-title">한국 본사를 아시아·태평양 총괄 플랫폼으로 도약</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ==========================================================================
+   Vision & Mission Section
+   ========================================================================== */
+
+.vision-section {
+  background-color: var(--color-bg);
+  padding: 120px 0;
+  color: var(--color-text-on-dark);
+}
+
+.vision-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.vision-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+/* 섹션 공통 타이포그래피 */
+.vision-section .section-label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 16px;
+}
+
+.vision-section .section-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 24px;
+}
+
+.vision-section .vision-subheadline {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-text-on-dark);
+  margin: 0;
+}
+
+/* 로드맵 (데스크탑 - 수평 타임라인) */
+.vision-roadmap {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.roadmap-item {
+  flex: 1 1 33.333%;
+  position: relative;
+  padding: 56px 20px 0; /* 타임라인 시각화를 위한 상단 여백 */
+}
+
+/* 타임라인 연결선 */
+.roadmap-item::before {
+  content: '';
+  position: absolute;
+  top: 28px; /* (56px padding-top / 2) - (1px height / 2) + dot 보정 */
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.15);
+  z-index: 1;
+}
+
+/* 첫번째 아이템의 연결선은 중앙에서 시작 */
+.roadmap-item:first-child::before {
+  left: 50%;
+  width: 50%;
+}
+
+/* 마지막 아이템의 연결선은 중앙에서 끝남 */
+.roadmap-item:last-child::before {
+  width: 50%;
+}
+
+/* 타임라인 도트 */
+.roadmap-item::after {
+  content: '';
+  position: absolute;
+  top: 24px; /* 28px - (8px height / 2) */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--color-accent);
+  background-color: var(--color-bg); /* 선이 도트를 통과하지 않도록 배경색 적용 */
+  z-index: 2;
+}
+
+/* 마지막 아이템의 도트는 채움 */
+.roadmap-item:last-child::after {
+  background-color: var(--color-accent);
+}
+
+.roadmap-card {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius);
+  padding: 40px;
+  text-align: center;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  height: 100%;
+}
+
+.roadmap-number {
+  display: block;
+  font-family: var(--font-accent);
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-accent);
+  margin-bottom: 16px;
+}
+
+.roadmap-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--color-text-on-dark);
+  margin: 0;
+}
+
+/* ==========================================================================
+   Mobile (768px 이하)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .vision-section {
+    padding: 80px 0;
+  }
+
+  .vision-section .section-label {
+    font-size: 13px;
+  }
+
+  .vision-section .section-title {
+    font-size: 28px;
+  }
+
+  .vision-section .vision-subheadline {
+    font-size: 20px;
+  }
+  
+  /* 로드맵 (모바일 - 수직 타임라인) */
+  .vision-roadmap {
+    flex-direction: column;
+    gap: 24px;
+    padding-left: 20px; /* 좌측 타임라인 공간 확보 */
+  }
+
+  /* 데스크탑 수평 타임라인 비활성화 */
+  .roadmap-item::before {
+    display: none;
+  }
+  
+  /* 수직 타임라인 전체 라인 */
+  .vision-roadmap::before {
+    content: '';
+    position: absolute;
+    left: 4px; /* dot 너비(8px)의 중앙 */
+    top: 20px; /* 첫번째 dot의 위치 */
+    bottom: 20px; /* 마지막 dot의 위치 */
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .roadmap-item {
+    padding: 0;
+    flex: none;
+  }
+  
+  /* 모바일용 도트 재정의 */
+  .roadmap-item::after {
+    left: -20px; /* 부모의 padding-left 만큼 이동 */
+    top: 25px; /* 숫자 폰트 크기(40px)의 대략적인 중앙 */
+    transform: none;
+  }
+
+  .roadmap-card {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-align: left;
+  }
+
+  .roadmap-number {
+    font-size: 40px;
+    margin-bottom: 0;
+    flex-shrink: 0; /* 숫자가 줄어들지 않도록 설정 */
+  }
+
+  .roadmap-title {
+    font-size: 18px;
+  }
+}
+</style>
+
+<script>
+
+</script>

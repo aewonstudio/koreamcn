@@ -1,0 +1,192 @@
+<!-- ======================================================================
+     TEMPLATE: HD Marine Expand Cards (5열 한 줄, hover 시 가로 확장)
+
+     사용법:
+     1. CSS를 <style> 안에 복사
+     2. HTML을 원하는 섹션에 복사
+     3. GSAP 애니메이션을 <script> 안에 복사
+     4. 카드 수/내용/이미지 교체
+     5. 이미지는 portrait (9:16) 권장
+     ====================================================================== -->
+
+<!-- ===== CSS ===== -->
+<style>
+/* 비즈니스 카드 — 5열 한 줄, hover 시 확장 */
+.expand-grid {
+  display: flex;
+  gap: 4px;
+  height: 520px;
+}
+.expand-card {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
+  transition: flex 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.expand-card:hover {
+  flex: 2.5;
+}
+.expand-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.expand-card:hover .expand-card__img {
+  transform: scale(1.05);
+}
+/* 그라데이션 오버레이 */
+.expand-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.05) 50%, transparent 100%);
+  transition: background 0.4s ease;
+}
+.expand-card:hover .expand-card__overlay {
+  background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.1) 100%);
+}
+/* 콘텐츠 — 기본: 중앙, hover: 좌하단 슬라이드 */
+.expand-card__content {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 2;
+  text-align: center;
+  padding: 0 16px;
+  transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.expand-card:hover .expand-card__content {
+  top: calc(100% - 130px);
+  transform: translateY(0);
+  text-align: left;
+  padding: 0 28px;
+}
+/* 타이틀 */
+.expand-card__title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  word-break: keep-all;
+  transition: font-size 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.expand-card:hover .expand-card__title {
+  font-size: 28px;
+}
+/* 설명 — opacity 페이드만 */
+.expand-card__desc {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.9);
+  margin-top: 14px;
+  opacity: 0;
+  white-space: normal;
+  width: 280px;
+  max-width: 100%;
+  text-align: left;
+  transition: opacity 0.4s ease 0.15s;
+}
+.expand-card:hover .expand-card__desc {
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .expand-grid { height: 440px; }
+  .expand-card__title { font-size: 18px; }
+  .expand-card:hover .expand-card__title { font-size: 22px; }
+  .expand-card__desc { font-size: 14px; width: 240px; }
+  .expand-card__content { padding: 0 16px; }
+  .expand-card:hover .expand-card__content { padding: 0 20px; }
+}
+@media (max-width: 768px) {
+  .expand-grid {
+    flex-direction: column;
+    height: auto;
+    gap: 4px;
+  }
+  .expand-card {
+    flex: none;
+    height: 200px;
+  }
+  .expand-card:hover { flex: none; }
+  .expand-card__title { font-size: 18px; }
+  .expand-card:hover .expand-card__title { font-size: 20px; }
+  .expand-card__desc { font-size: 13px; width: 100%; }
+  .expand-card__content { bottom: 20px; }
+  .expand-card:hover .expand-card__content { left: 16px; }
+}
+</style>
+
+<!-- ===== HTML ===== -->
+<div class="expand-grid">
+
+  <div class="expand-card">
+    <img class="expand-card__img" src="images/placeholder.jpg" alt="항목 1">
+    <div class="expand-card__overlay"></div>
+    <div class="expand-card__content">
+      <h3 class="expand-card__title">항목 1</h3>
+      <p class="expand-card__desc">항목 1에 대한 설명 텍스트</p>
+    </div>
+  </div>
+
+  <div class="expand-card">
+    <img class="expand-card__img" src="images/placeholder.jpg" alt="항목 2">
+    <div class="expand-card__overlay"></div>
+    <div class="expand-card__content">
+      <h3 class="expand-card__title">항목 2</h3>
+      <p class="expand-card__desc">항목 2에 대한 설명 텍스트</p>
+    </div>
+  </div>
+
+  <div class="expand-card">
+    <img class="expand-card__img" src="images/placeholder.jpg" alt="항목 3">
+    <div class="expand-card__overlay"></div>
+    <div class="expand-card__content">
+      <h3 class="expand-card__title">항목 3</h3>
+      <p class="expand-card__desc">항목 3에 대한 설명 텍스트</p>
+    </div>
+  </div>
+
+  <div class="expand-card">
+    <img class="expand-card__img" src="images/placeholder.jpg" alt="항목 4">
+    <div class="expand-card__overlay"></div>
+    <div class="expand-card__content">
+      <h3 class="expand-card__title">항목 4</h3>
+      <p class="expand-card__desc">항목 4에 대한 설명 텍스트</p>
+    </div>
+  </div>
+
+  <div class="expand-card">
+    <img class="expand-card__img" src="images/placeholder.jpg" alt="항목 5">
+    <div class="expand-card__overlay"></div>
+    <div class="expand-card__content">
+      <h3 class="expand-card__title">항목 5</h3>
+      <p class="expand-card__desc">항목 5에 대한 설명 텍스트</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== GSAP (ScrollTrigger 등장) ===== -->
+<script>
+/* 그리드 전체에 opacity 적용 (개별 카드 X — hover CSS 충돌 방지) */
+gsap.set('.expand-grid', { opacity: 0, y: 30 });
+
+ScrollTrigger.create({
+  trigger: '.expand-grid',
+  start: 'top 75%',
+  onEnter: function() {
+    gsap.to('.expand-grid', {
+      opacity: 1, y: 0,
+      duration: 0.7, ease: 'power3.out',
+    });
+  },
+  once: true,
+});
+</script>

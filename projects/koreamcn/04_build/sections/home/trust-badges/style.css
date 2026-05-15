@@ -1,0 +1,97 @@
+.trust-badges-section {
+  background-color: var(--color-bg-alt);
+  padding-top: var(--section-padding-desktop);
+  padding-bottom: var(--section-padding-desktop);
+  overflow: hidden; /* 스크롤 애니메이션 요소가 잘리지 않도록 */
+}
+
+.trust-badges-section .container {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding-desktop);
+  padding-right: var(--container-padding-desktop);
+}
+
+.trust-badges-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--card-gap); /* 그리드 아이템 사이의 간격 */
+}
+
+.counter-item {
+  position: relative;
+  text-align: center;
+  padding: 0 16px; /* 좌우 여백으로 구분선과 겹치지 않게 함 */
+}
+
+/* 데스크탑: 마지막 요소를 제외하고 오른쪽에 수직 구분선 추가 */
+.counter-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: calc(var(--card-gap) / -2 - 1px); /* 간격의 중앙에 위치 */
+  transform: translateY(-50%);
+  width: 1px;
+  height: 50%;
+  background-color: var(--color-border-dark);
+}
+
+.counter-value {
+  font-family: var(--font-accent);
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-text-on-dark);
+  margin-bottom: 8px;
+}
+
+.counter-label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--color-text-on-dark-sub);
+}
+
+/* 반응형: 768px 이하 */
+@media (max-width: 768px) {
+  .trust-badges-section {
+    padding-top: var(--section-padding-mobile);
+    padding-bottom: var(--section-padding-mobile);
+  }
+
+  .trust-badges-section .container {
+    padding-left: var(--container-padding-mobile);
+    padding-right: var(--container-padding-mobile);
+  }
+
+  .trust-badges-grid {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: var(--card-gap-mobile);
+    row-gap: 48px; /* 모바일에서 행 간의 간격 추가 */
+  }
+  
+  .counter-item {
+    padding: 0 12px;
+  }
+
+  /* 모바일에서는 모든 구분선을 일단 숨김 */
+  .counter-item::after {
+    display: none;
+  }
+  
+  /* 모바일: 홀수 번째(왼쪽 열) 요소에만 구분선 표시 */
+  .counter-item:nth-child(odd)::after {
+    display: block;
+    right: calc(var(--card-gap-mobile) / -2 - 1px);
+  }
+
+  .counter-value {
+    font-size: 40px;
+  }
+
+  .counter-label {
+    font-size: 13px;
+  }
+}

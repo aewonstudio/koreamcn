@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOREAMCN — 한중 크로스보더 비즈니스 솔루션</title>
+    
+    <!-- Google Fonts & Pretendard CDN Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+    <!-- Fonts Stylesheet -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+    <style>
+        /* --- 한국어 주석: CSS 시작 --- */
+
+        /* === 0. CSS 변수 및 기본 설정 === */
+        :root {
+            /* === 색상 시스템 === */
+            --color-primary: #1E3A6E;
+            --color-secondary: #F9F7F4;
+            --color-accent: #E8603C;
+            --color-accent-soft: #E8603C;
+
+            /* 배경 */
+            --color-bg: #FFFFFF;
+            --color-bg-dark: #162D54;
+            --color-bg-darker: #0F1D36;
+            --color-bg-warm: #F2EDE7;
+            --color-bg-light: #F9F7F4;
+            --color-surface: #FFFFFF;
+
+            /* 텍스트 */
+            --color-text: #1A1D2B;
+            --color-text-secondary: #6B7280;
+            --color-text-on-dark: #FFFFFF;
+            --color-text-on-dark-sub: #E8E4DF;
+
+            /* 테두리 */
+            --color-border: #E5E7EB;
+
+            /* 상태 */
+            --color-success: #10B981;
+            --color-warning: #F59E0B;
+            --color-error: #EF4444;
+
+            /* === 타이포그래피 === */
+            --font-display: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-accent: 'Inter', sans-serif;
+
+            /* === 간격 === */
+            --section-gap-desktop: 120px;
+            --section-gap-mobile: 80px;
+            --container-max: 1200px;
+            --container-padding-desktop: 32px;
+            --container-padding-mobile: 20px;
+
+            /* === 컴포넌트 === */
+            --radius: 0; /* 모든 컴포넌트 날카로운 엣지 */
+            --shadow-card: none;
+            --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+            /* === 모션 === */
+            --ease-default: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --duration-base: 0.6s;
+            --delay-step: 0.15s;
+        }
+
+        /* === 1. CSS 리셋 및 기본 스타일 === */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--color-text);
+            background-color: var(--color-bg);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* === 2. 레이아웃 및 헬퍼 클래스 === */
+        .container {
+            width: 100%;
+            max-width: var(--container-max);
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: var(--container-padding-desktop);
+            padding-right: var(--container-padding-desktop);
+        }
+
+        section {
+            padding-top: var(--section-gap-desktop);
+            padding-bottom: var(--section-gap-desktop);
+        }
+        
+        .section-header {
+            max-width: 720px;
+            margin: 0 auto 48px auto;
+            text-align: center;
+        }
+
+        .section-label {
+            font-family: var(--font-accent);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 40px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--color-text-secondary);
+            margin-top: 16px;
+        }
+
+        /* === 3. 컴포넌트 스타일 === */
+        .btn {
+            display: inline-block;
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.2;
+            padding: 16px 32px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-default);
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent);
+            color: var(--color-text-on-dark);
+        }
+
+        .btn-primary:hover {
+            background-color: #a53232;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--color-text);
+            border-color: var(--color-border);
+        }
+        .btn-outline:hover {
+            background-color: var(--color-text);
+            color: var(--color-bg);
+            border-color: var(--color-text);
+        }
+
+        .btn-outline-dark {
+            background-color: transparent;
+            color: var(--color-text-on-dark);
+            border-color: var(--color-text-on-dark);
+        }
+        .btn-outline-dark:hover {
+            background-color: var(--color-text-on-dark);
+            color: var(--color-bg-dark);
+        }
+
+        /* === 4. 인터랙션: 스크롤 리빌 애니메이션 === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--duration-base) var(--ease-default), transform var(--duration-base) var(--ease-default);
+        }
+
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* === 5. 헤더 (Header) === */
+        #main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 24px 0;
+            z-index: 1000;
+            transition: background-color 300ms ease, box-shadow 300ms ease, padding 300ms ease;
+        }
+
+        #main-header.scrolled {
+            background-color: rgba(15, 29, 54, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            padding: 16px 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-accent);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-text-on-dark);
+        }
+
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .main-nav a {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-text-on-dark-sub);
+            transition: color 0.3s;
+        }
+
+        .main-nav a:hover {
+            color: var(--color-text-on-dark);
+        }
+        
+        .mobile-nav-toggle { display: none; }
+
+        /* === 6. 히어로 섹션 (Hero) === */
+        #hero {
+            height: 100vh;
+            min-height: 600px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            color: var(--color-text-on-dark);
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(15,29,54,0.65), rgba(15,29,54,0.8)), url(https://images.unsplash.com/photo-1579532582937-16c14129d3a6?q=80&w=2070&auto=format&fit=crop) no-repeat center center/cover;
+            z-index: -1;
+        }
+
+        /* 히어로 좌측 정렬 필수 규칙 적용 */
+        #hero .container {
+            max-width: none;
+            width: 100%;
+            padding-left: clamp(40px, 8vw, 160px);
+            padding-right: 40px;
+        }
+
+        .hero-content {
+            max-width: 700px;
+        }
+        
+        /* 히어로 텍스트 Stagger 애니메이션 */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-content > * {
+            opacity: 0;
+            animation: fadeSlideUp 0.8s var(--ease-default) forwards;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--color-text-on-dark-sub);
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: var(--font-accent);
+            margin-bottom: 24px;
+            animation-delay: 0.2s;
+        }
+
+        .hero-headline {
+            font-size: 56px;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            animation-delay: 0.4s;
+        }
+
+        .hero-subline {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--color-text-on-dark-sub);
+            max-width: 550px;
+            margin-bottom: 32px;
+            line-height: 1.7;
+            animation-delay: 0.6s;
+        }
+
+        .hero-cta {
+            animation-delay: 0.8s;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 52px;
+            border: 2px solid var(--color-text-on-dark-sub);
+            border-radius: 20px;
+            animation: fadeSlideUp 0.8s var(--ease-default) 1s forwards;
+            opacity: 0;
+        }
+
+        .scroll-indicator::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 8px;
+            background-color: var(--color-text-on-dark-sub);
+            border-radius: 2px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translate(-50%, 0);
+            }
+            40% {
+                transform: translate(-50%, 16px);
+            }
+            60% {
+                transform: translate(-50%, 8px);
+            }
+        }
+        
+        /* === 7. 가치 제안 섹션 (Value Proposition) === */
+        #value-proposition {
+            background-color: var(--color-bg-light);
+        }
+        .value-prop-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+        }
+        .value-prop-text .section-label,
+        .value-prop-text .section-title {
+            text-align: left;
+        }
+        .value-prop-text .section-title {
+            margin-bottom: 16px;
+        }
+        .value-prop-body {
+            font-size: 18px;
+            margin-bottom: 32px;
+        }
+        .value-prop-image-wrapper {
+            overflow: hidden;
+        }
+        .value-prop-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s var(--ease-default);
+        }
+        .value-prop-image-wrapper:hover .value-prop-image {
+            transform: scale(1.05);
+        }
+
+        /* === 8. 신뢰 지표 섹션 (Trust Badges) === */
+        #trust-badges {
+            background-color: var(--color-bg-darker);
+            color: var(--color-text-on-dark);
+            padding-top: 64px;
+            padding-bottom: 64px;
+        }
+
+        .trust-badges-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            text-align: center;
+        }
+
+        .trust-badge-item {
+            padding: 24px 0;
+            position: relative;
+        }
+
+        .trust-badge-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 60%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .counter {
+            font-family: var(--font-accent);
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--color-accent);
+            line-height: 1.1;
+        }
+
+        .counter-label {
+            font-family: var(--font-accent);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--color-text-on-dark-sub);
+            margin-top: 8px;
+        }
+
+        /* === 9. 서비스 섹션 (Services) === */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .service-card {
+            border: 1px solid var(--color-border);
+            transition: box-shadow 0.3s var(--ease-default);
+        }
+        .service-card:hover {
+            box-shadow: var(--shadow-card-hover);
+        }
+
+        .service-card-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            padding-top: 66.66%; /* 3:2 aspect ratio */
+        }
+        .service-card-image-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(22, 45, 84, 0.7) 0%, transparent 50%);
+            transition: opacity 0.5s var(--ease-default);
+            opacity: 1;
+        }
+        .service-card:hover .service-card-image-wrapper::after {
+            opacity: 0.8;
+        }
+
+        .service-card-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s var(--ease-default);
+        }
+        .service-card:hover .service-card-image {
+            transform: scale(1.05);
+        }
+
+        .service-card-content {
+            padding: 32px;
+        }
+
+        .service-card-title {
+            font-family: var(--font-accent);
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .service-card-description {
+            color: var(--color-text-secondary);
+            font-size: 16px;
+            margin-bottom: 24px;
+            min-height: 80px;
+        }
+
+        .service-card-link {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-accent);
+        }
+
+        /* === 10. 파트너 로고 섹션 (Partner Logos) === */
+        #partner-logos {
+            background-color: var(--color-bg-warm);
+        }
+        .partner-logos-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 48px;
+            align-items: center;
+        }
+        .partner-logo-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .partner-logo-item img {
+            max-width: 140px;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: filter 0.3s, opacity 0.3s;
+        }
+        .partner-logo-item:hover img {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+
+        /* === 11. 뉴스 하이라이트 섹션 (News Highlight) === */
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 48px;
+        }
+        .news-header .section-header {
+            margin: 0;
+            text-align: left;
+        }
+        .news-view-all {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-accent);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .news-card {
+            display: block;
+            border-bottom: 2px solid transparent;
+            transition: transform 300ms var(--ease-default), border-color 300ms var(--ease-default);
+        }
+        .news-card:hover {
+            transform: translateY(-4px);
+            border-bottom-color: var(--color-accent);
+        }
+        .news-card-image-wrapper {
+            margin-bottom: 16px;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+        }
+        .news-card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .news-card-date {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+        }
+        .news-card-title {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* === 12. CTA 섹션 === */
+        #cta {
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-on-dark);
+            background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2084&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        #cta::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: var(--color-bg-dark);
+            opacity: 0.9;
+        }
+        #cta .container {
+            position: relative;
+            z-index: 1;
+        }
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .cta-headline {
+            font-size: 40px;
+            margin-bottom: 32px;
+        }
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        /* === 13. 푸터 (Footer) === */
+        #main-footer {
+            background-color: var(--color-bg-darker);
+            color: var(--color-text-on-dark-sub);
+            padding-top: 80px;
+            padding-bottom: 40px;
+            font-size: 14px;
+        }
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 64px;
+        }
+        .footer-about .logo {
+            margin-bottom: 16px;
+            font-size: 28px;
+        }
+        .footer-col h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-text-on-dark);
+            margin-bottom: 16px;
+        }
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* === 14. 반응형 디자인 (Mobile Responsive) === */
+        @media (max-width: 768px) {
+            /* 기본 간격 및 폰트 크기 조정 */
+            section {
+                padding-top: var(--section-gap-mobile);
+                padding-bottom: var(--section-gap-mobile);
+            }
+            .container {
+                padding-left: var(--container-padding-mobile);
+                padding-right: var(--container-padding-mobile);
+            }
+            .section-title, .cta-headline { font-size: 28px; }
+
+            /* 모바일 헤더 */
+            .main-nav { display: none; }
+            .mobile-nav-toggle {
+                display: block;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+            }
+            
+            /* 히어로 섹션 */
+            .hero-headline { font-size: 36px; }
+            .hero-subline { font-size: 16px; }
+            .scroll-indicator { display: none; }
+
+            /* 가치 제안 섹션 */
+            .value-prop-content {
+                grid-template-columns: 1fr;
+            }
+            .value-prop-image-wrapper { order: -1; margin-bottom: 32px; }
+
+            /* 신뢰 지표 섹션 */
+            .trust-badges-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+            .trust-badge-item:not(:last-child)::after { display: none; }
+            .trust-badge-item:nth-child(odd)::after {
+                content: '';
+                position: absolute;
+                right: -8px; top: 50%;
+                transform: translateY(-50%);
+                width: 1px; height: 60%;
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+            .counter { font-size: 40px; }
+            
+            /* 서비스 섹션 */
+            .services-grid { grid-template-columns: 1fr; gap: 16px; }
+            .service-card-description { min-height: auto; }
+
+            /* 파트너 로고 섹션 */
+            .partner-logos-grid { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+
+            /* 뉴스 섹션 */
+            .news-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .news-grid { grid-template-columns: 1fr; }
+
+            /* CTA 섹션 */
+            .cta-buttons { flex-direction: column; }
+            .cta-buttons .btn { width: 100%; }
+
+            /* 푸터 */
+            .footer-top { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+        }
+        /* --- 한국어 주석: CSS 끝 --- */
+    </style>
+</head>
+<body>
+    <!-- 한국어 주석: HTML 시작 -->
+
+    <!-- === 헤더 (Header) === -->
+    <header id="main-header">
+        <div class="container header-container">
+            <a href="#" class="logo">KOREAMCN</a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#services">사업영역</a></li>
+                    <li><a href="#partner-logos">파트너</a></li>
+                    <li><a href="#news-highlight">소식</a></li>
+                    <li><a href="#cta">문의하기</a></li>
+                </ul>
+            </nav>
+             <button class="mobile-nav-toggle" aria-label="메뉴 열기">☰</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- === 1. 히어로 섹션 (Hero) === -->
+        <section id="hero">
+            <div class="hero-bg"></div> <!-- 패럴랙스 배경용 div -->
+            <div class="container">
+                <div class="hero-content">
+                    <span class="hero-badge reveal">TikTok Korea Top MCN</span>
+                    <h1 class="hero-headline reveal">한중을 잇고, 브랜드의 성장을 세계 무대로 확장합니다</h1>
+                    <p class="hero-subline reveal">크로스보더 전문 역량과 현지 운영 인프라를 기반으로 최적의 한국 시장 진출 솔루션을 제공합니다.</p>
+                    <a href="#cta" class="btn btn-primary hero-cta reveal">Contact Us</a>
+                </div>
+            </div>
+            <div class="scroll-indicator"></div>
+        </section>
+
+        <!-- === 2. 가치 제안 섹션 (Value Proposition) === -->
+        <section id="value-proposition">
+            <div class="container value-prop-content">
+                <div class="value-prop-text reveal">
+                    <span class="section-label">ABOUT KOREAMCN</span>
+                    <h2 class="section-title">한중 크로스보더 비즈니스의 전 과정을 운영합니다</h2>
+                    <p class="value-prop-body">
+                        한국 기업 및 브랜드의 중국 시장 진출에 필요한 전 과정을 지원합니다. 크로스보더 전자상거래 운영, 공급망 및 상품 유통, 보세창고 및 물류 관리, 라이브커머스 연계, 현지 운영까지 — 시장 진입부터 운영 안정화까지 체계적으로 운영합니다.
+                    </p>
+                    <a href="#" class="btn btn-outline">회사소개 바로가기</a>
+                </div>
+                <div class="value-prop-image-wrapper reveal" style="--delay-step: 1;">
+                    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1932&auto=format&fit=crop" alt="비즈니스 미팅" class="value-prop-image">
+                </div>
+            </div>
+        </section>
+
+        <!-- === 3. 신뢰 지표 섹션 (Trust Badges) === -->
+        <section id="trust-badges">
+            <div class="container">
+                <div class="trust-badges-grid">
+                    <div class="trust-badge-item reveal">
+                        <div class="counter" data-target="8">0</div>
+                        <div class="counter-label">Years of Experience</div>
+                    </div>
+                    <div class="trust-badge-item reveal" style="transition-delay: 0.15s">
+                        <div class="counter" data-target="50">0</div>
+                        <div class="counter-label">Partner Companies</div>
+                    </div>
+                    <div class="trust-badge-item reveal" style="transition-delay: 0.3s">
+                        <div class="counter" data-target="2000000">0</div>
+                        <div class="counter-label">Monthly Shipments</div>
+                    </div>
+                    <div class="trust-badge-item reveal" style="transition-delay: 0.45s">
+                        <div class="counter" data-target="13">0</div>
+                        <div class="counter-label">Global Warehouses</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- === 4. 서비스 섹션 (Services) === -->
+        <section id="services">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">BUSINESS AREA</span>
+                    <h2 class="section-title">사업영역</h2>
+                </div>
+                <div class="services-grid">
+                    <!-- 서비스 카드 1 -->
+                    <a href="#" class="service-card reveal">
+                        <div class="service-card-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1586528116311-08022d56c45a?q=80&w=2070&auto=format&fit=crop" alt="물류 창고" class="service-card-image">
+                        </div>
+                        <div class="service-card-content">
+                            <h3 class="service-card-title">Logistics & Warehouse</h3>
+                            <p class="service-card-description">13개 해외 직영 창고, 월 200만 건 처리. 한중 물류를 하나의 시스템으로 운영합니다.</p>
+                            <span class="service-card-link">자세히 보기 →</span>
+                        </div>
+                    </a>
+                    <!-- 서비스 카드 2 -->
+                    <a href="#" class="service-card reveal" style="transition-delay: 0.15s">
+                        <div class="service-card-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1556742517-8b94115b9b33?q=80&w=2070&auto=format&fit=crop" alt="서류 인증" class="service-card-image">
+                        </div>
+                        <div class="service-card-content">
+                            <h3 class="service-card-title">Certification & Incorporation</h3>
+                            <p class="service-card-description">KC인증, KFDA, 상표등록, 법인 설립, 세무까지. 한국 시장 진입에 필요한 행정 전 과정을 대행합니다.</p>
+                            <span class="service-card-link">자세히 보기 →</span>
+                        </div>
+                    </a>
+                    <!-- 서비스 카드 3 -->
+                    <a href="#" class="service-card reveal" style="transition-delay: 0.3s">
+                        <div class="service-card-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop" alt="마케팅 전략 회의" class="service-card-image">
+                        </div>
+                        <div class="service-card-content">
+                            <h3 class="service-card-title">Distribution & Marketing</h3>
+                            <p class="service-card-description">쿠팡, GS25, 올리브영 등 온·오프라인 동시 유통. 상품에 맞는 채널과 마케팅을 설계합니다.</p>
+                            <span class="service-card-link">자세히 보기 →</span>
+                        </div>
+                    </a>
+                    <!-- 서비스 카드 4 -->
+                    <a href="#" class="service-card reveal" style="transition-delay: 0.45s">
+                        <div class="service-card-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1616445511369-a1c6a8585e13?q=80&w=2070&auto=format&fit=crop" alt="라이브 커머스 방송" class="service-card-image">
+                        </div>
+                        <div class="service-card-content">
+                            <h3 class="service-card-title">Live Commerce & MCN</h3>
+                            <p class="service-card-description">TikTok Korea Top MCN 인증. 자체 스튜디오에서 기획부터 방송, 성과 분석까지 운영합니다.</p>
+                            <span class="service-card-link">자세히 보기 →</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- === 5. 파트너 로고 섹션 (Partner Logos) === -->
+        <section id="partner-logos">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2 class="section-title">Partners</h2>
+                    <p class="section-subtitle">물류, 유통, 뷰티, 미디어 분야의 파트너와 함께합니다.</p>
+                </div>
+                <div class="partner-logos-grid reveal">
+                    <!-- 로고 플레이스홀더 10개 -->
+                    <div class="partner-logo-item"><img src="https://placehold.co/150x60/f2ede7/cccccc?text=PARTNER" alt="파트너 로고 1"></div>
+                    <div class="partner-logo-item"><img src="https://placehold.co/150x60/f2ede7/cccccc?text=PARTNER" alt="파트너 로고 2"></div>
+                    <div class="partner-logo-item"><img src="https://placehold.co/150x60/f2ede7/cccccc?text=PARTNER" alt="파트너 로고 3"></div>
+                    <div class="partner-logo-item"><img src="https://placehold.co/150x60/f2ede7/cccccc?text=PARTNER" alt="파트너 로고 4"></div>
+                    <div class="partner-logo-item"><img src="https://placehold.co/150x60/f2ede7/cccccc?text=PARTNER" alt="파트너 로고 5"></div>
+                    <div class="partner-logo-item"><img src="https://placehold.co/150x60/f2ede7/cccccc?text=PARTNER" alt="파트너 로고 6"></div>
+                    <div class="partner-logo-item"><img src="https://placehold.co/150x60/f2ede7/cccccc?text=PARTNER" alt="파트너 로고 7"></div>
+                    <div class="partner-logo-item"><img src="https://placehold.co/150x60/f2ede7/cccccc?text=PARTNER" alt="파트너 로고 8"></div>
+                    <div class="partner-logo-item"><img src="https://placehold.co/150x60/f2ede7/cccccc?text=PARTNER" alt="파트너 로고 9"></div>
+                    <div class="partner-logo-item"><img src="https://placehold.co/150x60/f2ede7/cccccc?text=PARTNER" alt="파트너 로고 10"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- === 6. 뉴스 하이라이트 섹션 (News Highlight) === -->
+        <section id="news-highlight">
+            <div class="container">
+                <div class="news-header reveal">
+                    <div class="section-header">
+                        <h2 class="section-title">News & Press</h2>
+                        <p class="section-subtitle">KOREAMCN의 최신 소식</p>
+                    </div>
+                    <a href="#" class="news-view-all">전체 보기 →</a>
+                </div>
+                <div class="news-grid">
+                    <!-- 뉴스 카드 1 (플레이스홀더) -->
+                    <a href="#" class="news-card reveal">
+                        <div class="news-card-image-wrapper">
+                            <img src="https://placehold.co/400x300/e0e0e0/333333?text=News+Image" alt="뉴스 이미지 1" class="news-card-image">
+                        </div>
+                        <p class="news-card-date">2024. 07. 21</p>
+                        <h3 class="news-card-title">KOREAMCN, 2024년 상반기 우수 파트너사 선정</h3>
+                    </a>
+                    <!-- 뉴스 카드 2 (플레이스홀더) -->
+                    <a href="#" class="news-card reveal" style="transition-delay: 0.15s">
+                        <div class="news-card-image-wrapper">
+                            <img src="https://placehold.co/400x300/e0e0e0/333333?text=News+Image" alt="뉴스 이미지 2" class="news-card-image">
+                        </div>
+                        <p class="news-card-date">2024. 06. 15</p>
+                        <h3 class="news-card-title">중국 라이브커머스 시장 진출 전략 웨비나 개최</h3>
+                    </a>
+                    <!-- 뉴스 카드 3 (플레이스홀더) -->
+                    <a href="#" class="news-card reveal" style="transition-delay: 0.3s">
+                        <div class="news-card-image-wrapper">
+                            <img src="https://placehold.co/400x300/e0e0e0/333333?text=News+Image" alt="뉴스 이미지 3" class="news-card-image">
+                        </div>
+                        <p class="news-card-date">2024. 05. 02</p>
+                        <h3 class="news-card-title">군포 스마트 물류센터 확장 이전 완료, 처리 능력 2배 증가</h3>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- === 7. CTA 섹션 === -->
+        <section id="cta">
+            <div class="container">
+                <div class="cta-content reveal">
+                    <h2 class="cta-headline">비즈니스 문의</h2>
+                    <div class="cta-buttons">
+                        <a href="#" class="btn btn-primary">Contact Us</a>
+                        <a href="#" class="btn btn-outline-dark">파트너 모집 알아보기</a>
+                        <a href="#" class="btn btn-outline-dark">셀러 입점 알아보기</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- === 8. 푸터 (Footer) === -->
+    <footer id="main-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-about">
+                    <a href="#" class="logo">KOREAMCN</a>
+                    <p>경기도 군포시 번영로 82-23</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="mailto:woohyunkim@kmhldgs.com">woohyunkim@kmhldgs.com</a></li>
+                        <li><a href="tel:010-5650-1965">010-5650-1965</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Links</h4>
+                    <ul>
+                        <li><a href="#">회사소개</a></li>
+                        <li><a href="#">사업영역</a></li>
+                        <li><a href="#">채용</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">개인정보처리방침</a></li>
+                        <li><a href="#">이용약관</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 KOREAMCN. All rights reserved.</p>
+                <a href="#">개인정보처리방침</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 한국어 주석: HTML 끝 -->
+
+    <script>
+    // --- 한국어 주석: JavaScript 시작 ---
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // === 1. 스티키 헤더 기능 ===
+        // 스크롤 위치에 따라 헤더 스타일을 변경합니다.
+        const header = document.getElementById('main-header');
+        if (header) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // === 2. 히어로 패럴랙스 효과 ===
+        // 스크롤 시 히어로 배경 이미지를 느리게 움직여 깊이감을 줍니다.
+        const heroBg = document.querySelector('.hero-bg');
+        if (heroBg) {
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.pageYOffset;
+                heroBg.style.transform = `translateY(${scrollPosition * 0.4}px)`;
+            });
+        }
+
+        // === 3. 스크롤 리빌 애니메이션 (Intersection Observer) ===
+        // 화면에 요소가 나타날 때 'is-visible' 클래스를 추가하여 애니메이션을 실행합니다.
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    
+                    // 카운터 애니메이션 실행
+                    const counter = entry.target.querySelector('.counter');
+                    if (counter && !counter.classList.contains('animated')) {
+                        animateCounter(counter);
+                        counter.classList.add('animated'); // 중복 실행 방지
+                    }
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // === 4. 카운터 카운트업 애니메이션 ===
+        // 숫자를 0부터 목표 값까지 부드럽게 증가시킵니다.
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-target'), 10);
+            const duration = 2000; // 2초
+            let start = null;
+
+            const step = (timestamp) => {
+                if (!start) start = timestamp;
+                const progress = Math.min((timestamp - start) / duration, 1);
+                
+                // ease-out 효과 적용
+                const easedProgress = 1 - Math.pow(1 - progress, 3);
+                
+                let currentValue = Math.floor(easedProgress * target);
+
+                // 숫자에 콤마 추가
+                if (target >= 1000) {
+                    element.textContent = currentValue.toLocaleString('ko-KR');
+                } else if (target >= 8 && target <= 50) { // 8+, 50+ 같은 경우
+                    element.textContent = currentValue + "+";
+                } else {
+                    element.textContent = currentValue;
+                }
+                
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    // 최종값 설정
+                    if (target >= 1000) {
+                         // 200만 건+ 처리
+                        if(target === 2000000) {
+                            element.textContent = (target/10000).toLocaleString('ko-KR') + "만 건+";
+                        } else {
+                            element.textContent = target.toLocaleString('ko-KR') + "+";
+                        }
+                    } else if (target >= 8 && target <= 50) {
+                        element.textContent = target + "+";
+                    } else {
+                        element.textContent = target;
+                    }
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+    });
+    // --- 한국어 주석: JavaScript 끝 ---
+    </script>
+</body>
+</html>

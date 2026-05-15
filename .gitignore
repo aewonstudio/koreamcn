@@ -12,3 +12,8 @@ home-v3.html
 gemini-home-prompt.md
 koreamcn_changes.md
 coramdeo-business*.png
+projects/*/client/
+projects/*/.vercel/
+projects/*/04_build/_raw_*
+projects/*/04_build/_prompt_*
+projects/*/04_build/_hero_context*

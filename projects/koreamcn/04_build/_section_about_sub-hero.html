@@ -1,0 +1,235 @@
+<!-- TEMPLATE -->
+<div class="sub-page-header">
+  <!-- Sub-Hero: 페이지 상단 배너 -->
+  <section class="sub-hero">
+    <!-- 배경 이미지 및 다크 오버레이는 CSS ::before, ::after 유사요소로 처리됩니다 -->
+    <div class="container">
+      <div class="sub-hero__content reveal">
+        <span class="sub-hero__label">ABOUT</span>
+        <h1 class="sub-hero__title">ABOUT KM HOLDINGS</h1>
+        <p class="sub-hero__subline">한중을 잇고, 브랜드의 성장을 세계 무대로 확장합니다</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sub-Tab Navigation: 서브페이지 이동 메뉴 -->
+  <div class="sub-tab-nav-wrapper">
+    <div class="container">
+      <nav class="sub-tab-nav">
+        <a href="index.html" class="sub-tab-nav__home" aria-label="Home">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9.5L12 2L21 9.5V21C21 21.2652 20.8946 21.5196 20.7071 21.7071C20.5196 21.8946 20.2652 22 20 22H4C3.73478 22 3.48043 21.8946 3.29289 21.7071C3.10536 21.5196 3 21.2652 3 21V9.5Z"/>
+            <path d="M9 22V12H15V22"/>
+          </svg>
+        </a>
+        <div class="sub-tab-nav__links">
+          <a href="about.html" class="sub-tab-nav__link active">About</a>
+          <a href="network.html" class="sub-tab-nav__link">Global Network</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<style>
+/* 범용 컨테이너 스타일 (실제 프로젝트에 이미 정의되어 있다고 가정) */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* Sub-Hero 배너 섹션 */
+.sub-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  background-color: var(--color-bg);
+  text-align: center;
+  color: var(--color-text-on-dark);
+  overflow: hidden; /* 유사요소(배경)가 넘치지 않도록 */
+}
+
+/* Sub-Hero 배경 이미지 */
+.sub-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://placehold.co/1920x823/0A0F1C/FFFFFF?text=KM+Holdings');
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+/* Sub-Hero 다크 오버레이 */
+.sub-hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 15, 28, 0.7);
+  z-index: 2;
+}
+
+/* Sub-Hero 콘텐츠 컨테이너 */
+.sub-hero .container {
+  position: relative;
+  z-index: 3;
+}
+
+/* 카테고리 레이블 */
+.sub-hero__label {
+  display: block;
+  font-family: var(--font-accent, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 16px;
+}
+
+/* 메인 타이틀 */
+.sub-hero__title {
+  font-family: var(--font-display, 'Pretendard', sans-serif);
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 24px;
+}
+
+/* 서브타이틀 */
+.sub-hero__subline {
+  font-family: var(--font-body, 'Pretendard', sans-serif);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text-on-dark-sub);
+  margin: 0;
+}
+
+/* Sub-Tab 네비게이션 */
+.sub-tab-nav-wrapper {
+  background-color: var(--color-bg-alt);
+  border-bottom: 1px solid var(--color-border-dark);
+}
+
+.sub-tab-nav {
+  display: flex;
+  align-items: center;
+  height: 80px;
+}
+
+.sub-tab-nav__home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: var(--color-accent);
+  margin-right: 32px;
+  flex-shrink: 0; /* 크기가 줄어들지 않도록 고정 */
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.sub-tab-nav__home:hover {
+  opacity: 0.85;
+}
+
+.sub-tab-nav__links {
+  display: flex;
+  align-items: stretch; /* 링크들이 부모의 전체 높이를 차지하도록 */
+  height: 100%;
+  flex-grow: 1; /* 남은 공간을 모두 차지 */
+  min-width: 0; /* flex 아이템이 줄어들 수 있도록 허용 */
+}
+
+.sub-tab-nav__link {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-family: var(--font-body, 'Pretendard', sans-serif);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--color-text-on-dark-sub);
+  text-decoration: none;
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  border-bottom: 2px solid transparent;
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+
+.sub-tab-nav__link:hover:not(.active) {
+  color: var(--color-text-on-dark);
+}
+
+.sub-tab-nav__link.active {
+  color: var(--color-accent);
+  font-weight: 600;
+  border-bottom-color: var(--color-accent);
+}
+
+/* 반응형 스타일 (768px 이하) */
+@media (max-width: 768px) {
+  /* Sub-Hero 배너 모바일 */
+  .sub-hero {
+    height: 280px;
+  }
+
+  .sub-hero__label {
+    font-size: 13px;
+  }
+
+  .sub-hero__title {
+    font-size: 36px;
+  }
+
+  .sub-hero__subline {
+    font-size: 18px;
+  }
+
+  /* Sub-Tab 네비게이션 모바일 */
+  .sub-tab-nav {
+    height: 60px;
+  }
+  
+  .sub-tab-nav__home {
+    width: 36px;
+    height: 36px;
+    margin-right: 16px;
+  }
+
+  .sub-tab-nav__home svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .sub-tab-nav__links {
+    overflow-x: auto;
+    /* 스크롤바 숨기기 (디자인 일관성) */
+    -ms-overflow-style: none; /* IE, Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .sub-tab-nav__links::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  
+  .sub-tab-nav__link {
+    padding: 0 16px;
+  }
+}
+</style>
+
+<script>
+
+</script>

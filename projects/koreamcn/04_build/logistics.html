@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>국제 물류 서비스 — KM Holdings | 한중 크로스보더 서비스 비즈니스 파트너</title>
+
+    <!-- ✏️ Pretendard (한글) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <!-- ✏️ Inter (영문 숫자·라벨) + Noto Sans SC (중국어) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- ⚠️ GSAP 3 + ScrollTrigger + Lenis (수정 금지) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1/dist/lenis.min.js"></script>
+
+    <style>
+/* ======================================================================
+   DESIGN TOKENS (design-system.md)
+   ====================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* --- Brand --- */
+  --color-primary: #1E3A6E;
+  --color-accent: #E8603C;
+  --color-accent-soft: #E8603C;
+
+  /* --- Backgrounds --- */
+  --color-bg: #0A0F1C;
+  --color-bg-alt: #111827;
+  --color-bg-deeper: #080D18;
+  --color-bg-navy: #1E3A6E;
+  --color-bg-light: #F9F7F4;
+
+  /* --- Surfaces --- */
+  --color-surface: #111827;
+  --color-surface-glass: rgba(255, 255, 255, 0.05);
+  --glass-blur: blur(16px);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* --- Text --- */
+  --color-text-on-dark: #FFFFFF;
+  --color-text-on-dark-sub: rgba(255, 255, 255, 0.7);
+  --color-text-on-dark-muted: rgba(255, 255, 255, 0.4);
+  --color-text-on-light: #1A1D2B;
+  --color-text-on-light-sub: #6B7280;
+
+  /* --- Borders --- */
+  --color-border-dark: rgba(255, 255, 255, 0.1);
+  --color-border-dark-hover: rgba(255, 255, 255, 0.2);
+  --color-divider: rgba(255, 255, 255, 0.08);
+
+  /* --- Typography --- */
+  --font-display: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-accent: 'Inter', sans-serif;
+
+  /* --- Spacing --- */
+  --section-py: 120px;
+  --section-py-m: 80px;
+  --container-max: 1280px;
+  --container-px: 40px;
+  --container-px-m: 20px;
+  --card-gap: 24px;
+  --card-gap-m: 16px;
+  --card-pad: 32px;
+  --card-pad-m: 24px;
+
+  /* --- Components --- */
+  --radius: 0;
+
+  /* --- Motion --- */
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1.0);
+  --dur-fast: 0.3s;
+  --dur-base: 0.6s;
+}
+
+html { scroll-behavior: auto; }
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-on-dark);
+  background: var(--color-bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* ======================================================================
+   UTILITY
+   ====================================================================== */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+@media (max-width: 768px) {
+  .container { padding: 0 var(--container-px-m); }
+}
+
+/* ======================================================================
+   BUTTONS (공통)
+   ====================================================================== */
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: #fff;
+  padding: 14px 30px; font-size: 17px; font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.3); border-radius: var(--radius);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.btn-outline:hover {
+  border-color: #fff;
+  background: #fff;
+  color: #0a0f1c;
+}
+
+/* ======================================================================
+   HEADER (홈과 동일 — Business 링크 활성 상태)
+   ====================================================================== */
+.site-header {
+  position: fixed; top: 0; left: 0; width: 100%; height: 64px;
+  z-index: 1000;
+  background: transparent;
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  border-bottom: 1px solid transparent;
+}
+.site-header.is-scrolled {
+  background: rgba(10, 15, 28, 0.92);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--color-divider);
+}
+.header-inner {
+  max-width: var(--container-max); height: 100%; margin: 0 auto;
+  padding: 0 var(--container-px);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.site-logo {
+  font-family: var(--font-accent); font-size: 20px; font-weight: 800;
+  color: var(--color-text-on-dark); letter-spacing: -0.02em;
+}
+.site-nav > ul {
+  display: flex; gap: 0; list-style: none;
+  height: 64px;
+}
+.nav-link {
+  display: flex; align-items: center;
+  height: 64px; padding: 0 20px;
+  font-size: 15px; font-weight: 500;
+  color: var(--color-text-on-dark-sub);
+  transition: color var(--dur-fast), background var(--dur-fast);
+  position: relative;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.nav-link:hover {
+  color: var(--color-text-on-dark);
+  background: rgba(255, 255, 255, 0.04);
+}
+.nav-link:hover::after { transform: scaleX(1); }
+/* ✏️ 현재 페이지 (Business) 활성 상태 */
+.nav-link.is-active {
+  color: var(--color-text-on-dark);
+}
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+.header-actions { display: flex; align-items: center; gap: 16px; }
+.btn-nav-cta {
+  background: var(--color-accent); color: #fff;
+  padding: 9px 22px; font-size: 14px; font-weight: 700;
+  border-radius: var(--radius);
+  transition: transform var(--dur-fast), box-shadow var(--dur-fast);
+}
+.btn-nav-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(194, 59, 59, 0.3);
+}
+.mobile-toggle {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 40px; height: 40px; padding: 8px;
+}
+.mobile-toggle span {
+  display: block; width: 24px; height: 2px;
+  background: var(--color-text-on-dark);
+  margin: 5px 0; transition: all 0.3s;
+}
+/* 2depth 드롭다운 서브메뉴 */
+.has-sub { position: relative; }
+.sub-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  background: var(--color-bg-alt);
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  padding: 8px 0;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out), visibility 0.2s;
+  z-index: 1001;
+}
+.has-sub:hover .sub-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.sub-menu li a {
+  display: block;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.sub-menu li a:hover {
+  color: var(--color-accent);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 768px) {
+  .header-inner { padding: 0 var(--container-px-m); }
+  .site-nav, .btn-nav-cta { display: none; }
+  .mobile-toggle { display: block; }
+}
+
+/* ======================================================================
+   SUB-HERO + SUB-TAB NAV
+   ====================================================================== */
+/* ✏️ Sub-Hero 배너 — 한솔 sub-visual 패턴 */
+.sub-hero {
+  position: relative;
+  height: 480px;
+  background-color: var(--color-bg);
+  color: var(--color-text-on-dark);
+  overflow: hidden;
+}
+
+/* 배경 레이어 (이미지 + 오버레이) */
+.sub-hero__bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+/* ✏️ 배경 이미지 — 물류 창고 (실제 사진으로 교체 권장) */
+.sub-hero__img {
+  width: 100%; height: 100%;
+  background-image: url('assets/images/subhero-business.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.sub-hero__bg::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(10, 15, 28, 0.7);
+}
+
+/* 텍스트 콘텐츠 — 수직·수평 중앙 */
+.sub-hero__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding-top: 64px;
+  padding-bottom: 60px;
+}
+
+/* 메인 타이틀 */
+.sub-hero__title {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+}
+
+/* 서브타이틀 */
+.sub-hero__text {
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text-on-dark-sub);
+  margin: 0;
+}
+
+/* 앵커 네비게이션 — sub-hero 하단 glassmorphism 바 */
+.sub-anchor-nav {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--container-max);
+  padding: 0 var(--container-px);
+  z-index: 4;
+}
+.sub-anchor-nav .container {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  max-width: 100%;
+  padding: 0 24px;
+  background: rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+/* 홈 아이콘 */
+.sub-anchor-nav__home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color var(--dur-fast);
+}
+.sub-anchor-nav__home:hover { color: #fff; }
+/* 구분선 */
+.sub-anchor-nav__sep {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 12px;
+  flex-shrink: 0;
+}
+/* 앵커 링크들 */
+.sub-anchor-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 100%;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.sub-anchor-nav__links::-webkit-scrollbar { display: none; }
+.sub-anchor-nav__link {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+.sub-anchor-nav__link:hover {
+  color: #fff;
+}
+.sub-anchor-nav__link.active {
+  color: var(--color-accent);
+  font-weight: 600;
+  border-bottom-color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+  .sub-hero { height: 360px; }
+  .sub-hero__title { font-size: 36px; }
+  .sub-hero__text { font-size: 18px; }
+  .sub-anchor-nav { padding: 0 var(--container-px-m); }
+  .sub-anchor-nav .container { height: 50px; padding: 0 16px; }
+  .sub-anchor-nav__home { width: 32px; height: 32px; }
+  .sub-anchor-nav__home svg { width: 16px; height: 16px; }
+  .sub-anchor-nav__link { padding: 0 14px; font-size: 14px; }
+}
+
+/* ======================================================================
+   LOGISTICS OVERVIEW — 4PL 해외창고 운영 (DARK-2)
+   ====================================================================== */
+.logistics-overview {
+  position: relative;
+  padding: var(--section-py) 0;
+  color: var(--color-text-on-dark);
+  background: var(--color-bg-alt);
+  background-image: radial-gradient(ellipse at 30% 50%, rgba(30, 58, 110, 0.15) 0%, transparent 70%);
+}
+.logistics-overview__container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+/* ✏️ 중앙 텍스트 블록 (720px 최대폭) */
+.logistics-overview__header {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+/* 섹션 레이블 */
+.logistics-overview .section-label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+}
+/* 섹션 타이틀 */
+.logistics-overview .section-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-dark);
+  margin: 0 0 16px;
+}
+/* 본문 */
+.logistics-overview .body-text {
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-text-on-dark-sub);
+  margin: 0 0 48px;
+}
+/* ✏️ 핵심 수치 스탯 바 — 4열 그리드 */
+.logistics-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--card-gap);
+  padding-top: 32px;
+  border-top: 1px solid var(--color-divider);
+  text-align: center;
+}
+.logistics-stat__number {
+  font-family: var(--font-accent);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1.2;
+}
+.logistics-stat__label {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-text-on-dark-sub);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .logistics-overview { padding: var(--section-py-m) 0; }
+  .logistics-overview__container { padding: 0 var(--container-px-m); }
+  .logistics-overview .section-label { font-size: 13px; margin-bottom: 8px; }
+  .logistics-overview .section-title { font-size: 28px; margin-bottom: 12px; }
+  .logistics-overview .body-text { font-size: 16px; margin-bottom: 32px; }
+  .logistics-stats { grid-template-columns: repeat(2, 1fr); gap: var(--card-gap-m); padding-top: 24px; }
+  .logistics-stat__number { font-size: 24px; }
+  .logistics-stat__label { font-size: 12px; }
+}
+
+/* ======================================================================
+   INTERNATIONAL LOGISTICS — 한중 국제물류 (DARK-1)
+   ====================================================================== */
+.intl-logistics {
+  padding: var(--section-py) 0;
+  position: relative;
+  overflow: hidden;
+  color: var(--color-text-on-dark);
+}
+/* ✏️ 패럴랙스 배경 — logistics-process.jpg (about.html pillars 패턴) */
+.intl-logistics__bg {
+  position: absolute;
+  inset: -20% 0;
+  background: url('images/logistics-process.jpg') center/cover no-repeat;
+  will-change: transform;
+  z-index: 0;
+}
+/* ✏️ 어두운 오버레이 — 텍스트 가독성 확보 */
+.intl-logistics__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 15, 28, 0.93);
+  z-index: 1;
+}
+.intl-logistics__container {
+  position: relative;
+  z-index: 2;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+/* ✏️ 헤더 — 좌측 정렬 (센터와 다른 리듬) */
+.intl-logistics__header {
+  margin-bottom: 48px;
+}
+.intl-logistics .section-label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+}
+.intl-logistics .section-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-dark);
+  margin: 0 0 16px;
+}
+.intl-logistics .body-text {
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-text-on-dark-sub);
+  margin: 0;
+  max-width: 680px;
+}
+
+/* ✏️ 수치 스탯 — 3열 가로 */
+.intl-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-bottom: 48px;
+}
+.intl-stat {
+  padding: 28px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-right: none;
+  background: transparent;
+  text-align: center;
+}
+.intl-stat:last-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+.intl-stat__number {
+  font-family: var(--font-accent);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.intl-stat__label {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text-on-dark-sub);
+  line-height: 1.4;
+}
+
+/* ✏️ 프로세스 플로우 — 배경 강화 (그리드 패턴 + 방사형 그라데이션) */
+.intl-logistics {
+  background-image:
+    radial-gradient(ellipse at center bottom, rgba(194,59,59,0.06) 0%, transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 60px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 60px);
+}
+
+/* ✏️ 프로세스 다이어그램 이미지 (플로우 위 시각 자료) */
+.process-diagram {
+  position: relative;
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+.process-diagram img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  display: block;
+}
+/* ⚠️ 하단 그라데이션 오버레이 */
+.process-diagram::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 60%;
+  background: linear-gradient(to top, rgba(10,15,28,0.8) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* ✏️ 프로세스 플로우 — 수평 스텝 UI (강화) */
+/* ======================================================================
+   PROCESS FLOW — 수평 타임라인 (직선 라인 + 넘버 노드 + 카드)
+   ====================================================================== */
+.process-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  position: relative;
+}
+/* ✏️ 수평 연결선 — 스텝 간 수평선 */
+.process-flow__line {
+  position: absolute;
+  top: 20px;
+  left: calc(12.5%);
+  right: calc(12.5%);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 0;
+}
+/* ✏️ 연결선 채움 — 노드가 지나간 뒤 accent 색상 */
+.process-flow__line-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background: var(--color-accent);
+}
+/* ✏️ 이동 노드 */
+.process-flow__node {
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px rgba(194,59,59,0.6), 0 0 4px rgba(194,59,59,0.3);
+  opacity: 0;
+  z-index: 1;
+}
+
+/* ✏️ 스텝 — 넘버 노드 + 카드 수직 구조 */
+.process-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* ✏️ 넘버 노드 — 작은 크기, 라인 위 */
+.process-step__num-wrap {
+  position: relative;
+  margin-bottom: 20px;
+  z-index: 3;
+}
+.process-step__num-ring {
+  width: 48px; height: 48px;
+  border: none;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-soft));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: box-shadow var(--dur-fast);
+  border-radius: 0;
+  position: relative;
+}
+/* ✏️ 넘버 글로우 효과 */
+.process-step__num-ring::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: linear-gradient(135deg, rgba(194,59,59,0.3), rgba(232,115,74,0.15));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--dur-fast);
+}
+.process-step:hover .process-step__num-ring::after {
+  opacity: 1;
+}
+.process-step__num {
+  font-family: var(--font-accent);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+/* ✏️ 카드 영역 — outline 박스 + 서피스 배경 */
+.process-step__card {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  padding: 28px 24px;
+  flex: 1;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transition: border-color var(--dur-fast), background var(--dur-fast), box-shadow var(--dur-fast), transform var(--dur-fast);
+}
+/* ✏️ 아이콘 */
+.process-step__icon {
+  width: 30px;
+  height: 30px;
+  color: var(--color-accent);
+  margin-bottom: 14px;
+  opacity: 0.9;
+  transition: color var(--dur-fast), opacity var(--dur-fast);
+}
+/* ✏️ 타이틀 */
+.process-step__title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-text-on-dark);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+/* ✏️ 설명 */
+.process-step__desc {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--color-text-on-dark-sub);
+}
+
+/* ✏️ 호버 — 넘버 글로우 강화 */
+.process-step:hover .process-step__num-ring {
+  box-shadow: 0 0 20px rgba(194,59,59,0.35);
+}
+.process-step:hover .process-step__card {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  transform: translateY(-4px);
+}
+.process-step:hover .process-step__icon {
+  opacity: 1;
+  color: #fff;
+}
+.process-step:hover .process-step__title {
+  color: #fff;
+}
+.process-step:hover .process-step__desc {
+  color: rgba(255,255,255,0.85);
+}
+
+@media (max-width: 1024px) {
+  .intl-stats { grid-template-columns: repeat(3, 1fr); }
+  .process-flow { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .process-flow__line { display: none; }
+}
+@media (max-width: 768px) {
+  .intl-logistics { padding: var(--section-py-m) 0; }
+  .intl-logistics__container { padding: 0 var(--container-px-m); }
+  .intl-logistics .section-label { font-size: 13px; margin-bottom: 8px; }
+  .intl-logistics .section-title { font-size: 28px; margin-bottom: 12px; }
+  .intl-logistics .body-text { font-size: 16px; }
+  .intl-stats { grid-template-columns: 1fr; gap: 0; margin-bottom: 32px; }
+  .intl-stat { border-right: 1px solid rgba(255,255,255,0.25); border-bottom: none; }
+  .intl-stat:last-child { border-bottom: 1px solid rgba(255,255,255,0.25); }
+  .intl-stat__number { font-size: 28px; }
+  .process-flow__line { display: none; }
+  /* ✏️ 모바일: 수직 타임라인 */
+  .process-flow {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-left: 40px;
+    position: relative;
+  }
+  /* ✏️ 좌측 세로 연결선 */
+  .process-flow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 18px;
+    width: 2px;
+    background: rgba(255,255,255,0.1);
+  }
+  .process-step {
+    flex-direction: row;
+    align-items: stretch;
+    text-align: left;
+    padding: 0 0 24px 0;
+    gap: 0;
+  }
+  .process-step:last-child { padding-bottom: 0; }
+  .process-step__num-wrap {
+    margin-bottom: 0;
+    position: absolute;
+    left: -32px;
+    top: 0;
+  }
+  .process-step__num-ring {
+    width: 36px; height: 36px;
+  }
+  .process-step__num { font-size: 13px; }
+  .process-step__card {
+    padding: 16px;
+  }
+  .process-step__icon { width: 24px; height: 24px; margin-bottom: 10px; }
+  .process-step__title { font-size: 16px; }
+  .process-step__desc { font-size: 13px; }
+  .process-step:hover .process-step__num-ring { box-shadow: none; }
+}
+
+/* ======================================================================
+   WAREHOUSE LOCATIONS — 한국 물류 거점 (LIGHT — china-hubs 패턴)
+   ====================================================================== */
+.warehouse-section {
+  padding: var(--section-py) 0;
+  background: var(--color-bg-light);
+}
+.warehouse-section__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+.warehouse-section__header {
+  margin-bottom: 48px;
+}
+.warehouse-section .section-label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+}
+.warehouse-section .section-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-light);
+  margin: 0;
+}
+
+/* ✏️ 2단 레이아웃: 지도(좌 55%) + 카드(우 45%) */
+.warehouse-layout {
+  display: grid;
+  grid-template-columns: 55% 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+/* ✏️ 좌측: 한국 지도 */
+.korea-map {
+  padding-right: 24px;
+  max-width: 560px;
+}
+.korea-map__wrap {
+  position: relative;
+}
+.korea-map__img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+/* ✏️ 도시 마커 — absolute 위치 */
+.korea-map__marker {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  cursor: default;
+  z-index: 2;
+  transition: opacity var(--dur-fast);
+}
+.korea-map__dot {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 12px rgba(194, 59, 59, 0.6), 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform var(--dur-fast), box-shadow var(--dur-fast);
+}
+.korea-map__dot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-accent);
+  animation: koreaMapPulse 2.4s ease-out infinite;
+}
+@keyframes koreaMapPulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+.korea-map__marker:nth-child(2) .korea-map__dot::after { animation-delay: 0.6s; }
+/* 도시 라벨 */
+.korea-map__label {
+  margin-top: 6px;
+  text-align: center;
+  white-space: nowrap;
+}
+.korea-map__label-en {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-on-light);
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+}
+.korea-map__label-ko {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--color-text-on-light-sub);
+  line-height: 1.3;
+}
+/* 라벨 좌/우 위치 보정 */
+.korea-map__marker.--label-left .korea-map__label {
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  margin-top: 0;
+  text-align: right;
+}
+.korea-map__marker.--label-right .korea-map__label {
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  margin-top: 0;
+  text-align: left;
+}
+
+/* ✏️ hover 연동 — 카드 hover → 해당 마커 강조 */
+.warehouse-layout.is-hovering .korea-map__marker {
+  opacity: 0.25;
+}
+.warehouse-layout.is-hovering .korea-map__marker.is-active {
+  opacity: 1;
+}
+.korea-map__marker.is-active .korea-map__dot {
+  transform: scale(1.5);
+  box-shadow: 0 0 24px rgba(194, 59, 59, 0.8), 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ✏️ 우측: 카드 리스트 (세로 스택) */
+.warehouse-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: -48px;
+}
+.wh-card {
+  padding: 32px;
+  border: 1px solid #D1D5DB;
+  border-bottom: none;
+  position: relative;
+  transition: background var(--dur-fast), border-color var(--dur-fast);
+  cursor: default;
+}
+.wh-card:last-child {
+  border-bottom: 1px solid #D1D5DB;
+}
+.wh-card:hover {
+  background: rgba(194, 59, 59, 0.06);
+  border-color: rgba(194, 59, 59, 0.3);
+}
+.wh-card:hover + .wh-card {
+  border-top-color: rgba(194, 59, 59, 0.3);
+}
+/* 카드 상단: 넘버 + 도시명 */
+.wh-card__top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.wh-card__num {
+  font-family: var(--font-accent);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-accent);
+  letter-spacing: 0.08em;
+  line-height: 1;
+  opacity: 0.6;
+  transition: opacity var(--dur-fast);
+}
+.wh-card:hover .wh-card__num {
+  opacity: 1;
+}
+.wh-card__name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-on-light);
+  line-height: 1.3;
+  transition: color var(--dur-fast);
+}
+.wh-card:hover .wh-card__name {
+  color: var(--color-accent);
+}
+/* 주소 */
+.wh-card__address {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-text-on-light-sub);
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+/* 역할 설명 */
+.wh-card__role {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--color-text-on-light-sub);
+}
+/* 좌측 accent 바 (hover 시 등장) */
+.wh-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--color-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.wh-card:hover::before {
+  transform: scaleY(1);
+}
+
+@media (max-width: 1024px) {
+  .warehouse-layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .korea-map {
+    padding-right: 0;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+}
+@media (max-width: 768px) {
+  .warehouse-section { padding: var(--section-py-m) 0; }
+  .warehouse-section__container { padding: 0 20px; }
+  .warehouse-section .section-label { font-size: 13px; margin-bottom: 8px; }
+  .warehouse-section .section-title { font-size: 28px; }
+  .warehouse-section__header { margin-bottom: 32px; }
+  .korea-map__label-en { font-size: 10px; }
+  .korea-map__label-ko { font-size: 10px; }
+  .korea-map__dot { width: 10px; height: 10px; }
+  .wh-card { padding: 24px; }
+  .wh-card__name { font-size: 18px; }
+}
+
+/* ======================================================================
+   CTA — 2분할 패널
+   ====================================================================== */
+.cta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.cta__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 360px;
+  padding: clamp(40px, 5vw, 64px);
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  transition: opacity 0.3s;
+}
+.cta__panel:hover { opacity: 0.92; }
+.cta__panel-bg {
+  position: absolute; inset: -15% 0; z-index: 0;
+  background-size: cover; background-position: center;
+  will-change: transform;
+  transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.cta__panel:hover .cta__panel-bg { transform: scale(1.04); }
+.cta__panel-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: rgba(10,15,28,0.55);
+}
+.cta__panel-content {
+  position: relative; z-index: 2;
+  margin: auto 0;
+}
+.cta__panel-icon {
+  width: 48px; height: 48px;
+  margin-bottom: 20px;
+  color: rgba(255,255,255,0.7);
+}
+.cta__panel-title {
+  font-size: clamp(22px, 2.5vw, 28px); font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 12px;
+}
+.cta__panel-desc {
+  font-size: 15px; line-height: 1.7;
+  color: rgba(255,255,255,0.7);
+  max-width: 380px;
+  margin-bottom: 28px;
+}
+.cta__panel-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 600;
+  color: #fff;
+  padding: 12px 28px;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: transparent;
+  transition: all 0.3s var(--ease-out);
+}
+.cta__panel:hover .cta__panel-btn {
+  border-color: #fff;
+  background: #fff;
+  color: #0a0f1c;
+  gap: 14px;
+}
+.cta__panel:first-child::after {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 1px; height: 100%;
+  background: rgba(255,255,255,0.12);
+  z-index: 3;
+}
+@media (max-width: 768px) {
+  .cta { grid-template-columns: 1fr; }
+  .cta__panel { min-height: 280px; }
+  .cta__panel:first-child::after { display: none; }
+}
+
+/* ======================================================================
+   FOOTER (홈과 동일)
+   ====================================================================== */
+.footer {
+  background: var(--color-bg-deeper);
+  padding: 0;
+  color: rgba(255,255,255,0.45);
+  font-size: 13px; line-height: 1.8;
+}
+.footer__inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
+  padding: 40px 0 48px;
+}
+.footer__logo-area {
+  display: flex; align-items: flex-start; padding-top: 4px;
+}
+.footer__logo {
+  font-family: var(--font-accent); font-size: 22px; font-weight: 800;
+  color: rgba(255,255,255,0.85); letter-spacing: -0.01em;
+}
+.footer__legal-links {
+  display: flex; align-items: center; gap: 0;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.footer__legal-links a {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  padding: 0 18px;
+  border-right: 1px solid rgba(255,255,255,0.15);
+  transition: color var(--dur-fast);
+}
+.footer__legal-links a:first-child { padding-left: 0; }
+.footer__legal-links a:last-child { border-right: none; padding-right: 0; }
+.footer__legal-links a:hover { color: #fff; }
+.footer__legal-links a.--bold { font-weight: 700; color: rgba(255,255,255,0.7); }
+.footer__info-area { padding-top: 24px; }
+.footer__info {
+  font-style: normal; font-size: 13px; line-height: 1.9;
+  color: rgba(255,255,255,0.35);
+}
+.footer__info span { margin: 0 8px; color: rgba(255,255,255,0.15); }
+.footer__info a { color: rgba(255,255,255,0.35); transition: color var(--dur-fast); }
+.footer__info a:hover { color: rgba(255,255,255,0.6); }
+.footer__copy {
+  font-size: 12px; color: rgba(255,255,255,0.2);
+  margin-top: 16px;
+}
+/* TOP 버튼 */
+.btn-top {
+  position: fixed; bottom: 32px; right: 32px; z-index: 90;
+  width: 52px; height: 52px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  background: var(--color-accent); color: #fff;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  border: none; cursor: pointer;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateY(12px);
+}
+.btn-top.--visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.btn-top:hover { background: #a83232; }
+.btn-top svg { width: 16px; height: 16px; }
+
+@media (max-width: 768px) {
+  .footer__inner { grid-template-columns: 1fr; gap: 32px; }
+  .footer__legal-links a { padding: 0 12px; font-size: 12px; }
+  .footer__info br { display: none; }
+  .btn-top { bottom: 20px; right: 20px; width: 44px; height: 44px; }
+}
+
+/* ✏️ 접근성: 모션 감소 선호 사용자 대응 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><img src="assets/images/koreamcn-logo-white.png" alt="KoreaMCN" style="height:44px;width:auto;"></a>
+    <nav class="site-nav">
+      <ul>
+        <li class="has-sub">
+          <a href="about.html" class="nav-link">회사 소개</a>
+          <ul class="sub-menu">
+            <li><a href="about.html">개요</a></li>
+            <li><a href="ceo.html">CEO 인사말</a></li>
+            <li><a href="history.html">연혁</a></li>
+            <li><a href="network.html">글로벌 네트워크</a></li>
+          </ul>
+        </li>
+        <!-- ✏️ Business 드롭다운 — 현재 페이지 활성 상태 -->
+        <li class="has-sub">
+          <a href="#" class="nav-link is-active">사업 소개</a>
+          <ul class="sub-menu">
+            <li><a href="logistics.html">국제 물류 서비스</a></li>
+            <li><a href="crossborder.html">크로스보더 서비스</a></li>
+            <li><a href="live-commerce.html">라이브커머스 · MCN</a></li>
+          </ul>
+        </li>
+        <li><a href="partner.html" class="nav-link">파트너십</a></li>
+        <li><a href="seller.html" class="nav-link">셀러 모집</a></li>
+        <li><a href="news.html" class="nav-link">보도자료</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href="contact.html" class="btn-nav-cta">문의하기</a>
+      <button class="mobile-toggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     SUB-HERO + SUB-TAB NAV
+     ============================================================ -->
+<section class="sub-hero">
+  <div class="sub-hero__bg"><div class="sub-hero__img"></div></div>
+  <div class="sub-hero__inner container">
+    <h2 class="sub-hero__title">사업 소개</h2>
+    <p class="sub-hero__text">물류·유통·라이브커머스, 한중 비즈니스의 전 과정을 지원합니다</p>
+  </div>
+
+  <!-- ✏️ 앵커 네비게이션 — Business 하위 3개 링크 -->
+  <nav class="sub-anchor-nav">
+    <div class="container">
+      <a href="index.html" class="sub-anchor-nav__home" aria-label="Home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 2L21 9.5V21C21 21.2652 20.8946 21.5196 20.7071 21.7071C20.5196 21.8946 20.2652 22 20 22H4C3.73478 22 3.48043 21.8946 3.29289 21.7071C3.10536 21.5196 3 21.2652 3 21V9.5Z"/>
+          <path d="M9 22V12H15V22"/>
+        </svg>
+      </a>
+      <span class="sub-anchor-nav__sep"></span>
+      <div class="sub-anchor-nav__links">
+        <a href="logistics.html" class="sub-anchor-nav__link active">국제 물류 서비스</a>
+        <span class="sub-anchor-nav__sep"></span>
+        <a href="crossborder.html" class="sub-anchor-nav__link">크로스보더 서비스</a>
+        <span class="sub-anchor-nav__sep"></span>
+        <a href="live-commerce.html" class="sub-anchor-nav__link">라이브커머스 · MCN</a>
+      </div>
+    </div>
+  </nav>
+</section>
+
+<!-- ============================================================
+     LOGISTICS OVERVIEW — 4PL 해외창고 운영
+     ============================================================ -->
+<section id="logistics-overview" class="logistics-overview">
+  <div class="logistics-overview__container">
+    <div class="logistics-overview__header">
+      <span class="section-label">LOGISTICS</span>
+      <h2 class="section-title">국제 물류 서비스</h2>
+      <p class="body-text">4PL 해외창고를 직접 운영하며, 단순 보관이 아닌 재고 관리·주문 처리·출고까지 통합 운영합니다. 온라인 ERP 시스템으로 실시간 재고를 확인하고, B2C와 B2B 물량을 하나의 시스템에서 관리합니다.</p>
+      <!-- ✏️ 핵심 수치 4개 -->
+      <div class="logistics-stats">
+        <div class="logistics-stat">
+          <div class="logistics-stat__number">13개</div>
+          <div class="logistics-stat__label">해외 직접 운영 창고</div>
+        </div>
+        <div class="logistics-stat">
+          <div class="logistics-stat__number">Temu</div>
+          <div class="logistics-stat__label">공식 지정 해외창고</div>
+        </div>
+        <div class="logistics-stat">
+          <div class="logistics-stat__number">ERP</div>
+          <div class="logistics-stat__label">온라인 통합 관리</div>
+        </div>
+        <div class="logistics-stat">
+          <div class="logistics-stat__number">B2C·B2B</div>
+          <div class="logistics-stat__label">재고 일원화</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     INTERNATIONAL LOGISTICS — 한중 국제물류
+     ============================================================ -->
+<section id="international-logistics" class="intl-logistics">
+  <div class="intl-logistics__bg"></div>
+  <div class="intl-logistics__overlay"></div>
+  <div class="intl-logistics__container">
+    <!-- ✏️ 좌측 정렬 헤더 -->
+    <div class="intl-logistics__header">
+      <span class="section-label">INTERNATIONAL LOGISTICS</span>
+      <h2 class="section-title">한중 국제물류</h2>
+      <p class="body-text">한국 소비자의 빠른 배송 기대에 대응합니다. 웨이하이 경유 3일 배송 루트를 확보하고, 13개국 물류·통관 네트워크로 안정적인 공급망을 운영합니다.</p>
+    </div>
+
+    <!-- ✏️ 수치 스탯 3열 -->
+    <div class="intl-stats">
+      <div class="intl-stat">
+        <div class="intl-stat__number">200만 건+</div>
+        <div class="intl-stat__label">월 평균 처리량</div>
+      </div>
+      <div class="intl-stat">
+        <div class="intl-stat__number">3일</div>
+        <div class="intl-stat__label">웨이하이 경유 배송</div>
+      </div>
+      <div class="intl-stat">
+        <div class="intl-stat__number">13개국</div>
+        <div class="intl-stat__label">물류·통관 네트워크</div>
+      </div>
+    </div>
+
+    <!-- ✏️ 프로세스 플로우 — 4단계 수평 타임라인 -->
+    <div class="process-flow">
+      <!-- ✏️ 연결선 + 이동 노드 + 채움 바 -->
+      <div class="process-flow__line">
+        <div class="process-flow__line-fill"></div>
+        <div class="process-flow__node"></div>
+      </div>
+
+      <!-- 스텝 1: 상품 입고 -->
+      <div class="process-step">
+        <div class="process-step__num-wrap">
+          <div class="process-step__num-ring">
+            <div class="process-step__num">01</div>
+          </div>
+        </div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12l14-7 14 7v16L18 35 4 28V12z"/>
+            <path d="M4 12l14 7 14-7"/>
+            <path d="M18 19v16"/>
+          </svg>
+          <h3 class="process-step__title">상품 입고</h3>
+          <p class="process-step__desc">해외 창고 입고 및 검수, ERP 시스템 자동 등록</p>
+        </div>
+      </div>
+      <!-- 스텝 2: 통관·검역 -->
+      <div class="process-step">
+        <div class="process-step__num-wrap">
+          <div class="process-step__num-ring">
+            <div class="process-step__num">02</div>
+          </div>
+        </div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="4" width="24" height="28" rx="2"/>
+            <path d="M12 12h12M12 18h12M12 24h6"/>
+            <path d="M24 22l-3 3 6 6" stroke-width="2"/>
+          </svg>
+          <h3 class="process-step__title">통관·검역</h3>
+          <p class="process-step__desc">13개국 통관 네트워크, 보세 물류 처리</p>
+        </div>
+      </div>
+      <!-- 스텝 3: 국제 운송 -->
+      <div class="process-step">
+        <div class="process-step__num-wrap">
+          <div class="process-step__num-ring">
+            <div class="process-step__num">03</div>
+          </div>
+        </div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="18" r="14"/>
+            <ellipse cx="18" cy="18" rx="7" ry="14"/>
+            <path d="M4 18h28"/>
+            <path d="M7 10h22M7 26h22"/>
+          </svg>
+          <h3 class="process-step__title">국제 운송</h3>
+          <p class="process-step__desc">웨이하이 경유 3일 배송 루트, 항공·해운 최적 조합</p>
+        </div>
+      </div>
+      <!-- 스텝 4: 라스트마일 배송 -->
+      <div class="process-step">
+        <div class="process-step__num-wrap">
+          <div class="process-step__num-ring">
+            <div class="process-step__num">04</div>
+          </div>
+        </div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="10" width="20" height="16" rx="1"/>
+            <path d="M22 16h8l4 6v4h-12V16z"/>
+            <circle cx="10" cy="28" r="3"/>
+            <circle cx="28" cy="28" r="3"/>
+          </svg>
+          <h3 class="process-step__title">라스트마일 배송</h3>
+          <p class="process-step__desc">국내 풀필먼트 출고, B2C·B2B 주문 분배</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     WAREHOUSE LOCATIONS — 한국 물류 거점
+     ============================================================ -->
+<section id="warehouse-locations" class="warehouse-section">
+  <div class="warehouse-section__container">
+    <header class="warehouse-section__header">
+      <span class="section-label">WAREHOUSE LOCATIONS</span>
+      <h2 class="section-title">한국 물류 거점</h2>
+    </header>
+
+    <!-- ✏️ 2단 레이아웃: 지도(좌) + 카드(우) — china-hubs 패턴 -->
+    <div class="warehouse-layout" id="koreaHubsLayout">
+
+      <!-- 좌측: 한국 지도 -->
+      <div class="korea-map">
+        <div class="korea-map__wrap">
+          <img class="korea-map__img" src="assets/images/south-korea-grey-map-with-provinces-vector-illustration.png" alt="한국 지도 — 물류 거점 표시">
+
+          <!-- 마커: data-hub 속성으로 카드와 연결 -->
+          <div class="korea-map__marker --label-right" data-hub="incheon" style="top: 25%; left: 32%;">
+            <div class="korea-map__dot"></div>
+            <div class="korea-map__label">
+              <span class="korea-map__label-en">INCHEON</span><br>
+              <span class="korea-map__label-ko">인천</span>
+            </div>
+          </div>
+
+          <div class="korea-map__marker --label-right" data-hub="gunpo" style="top: 30%; left: 42%;">
+            <div class="korea-map__dot"></div>
+            <div class="korea-map__label">
+              <span class="korea-map__label-en">GUNPO</span><br>
+              <span class="korea-map__label-ko">군포</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 우측: 거점 카드 리스트 -->
+      <div class="warehouse-cards">
+        <div class="wh-card" data-hub="incheon">
+          <div class="wh-card__top">
+            <span class="wh-card__num">01</span>
+            <h3 class="wh-card__name">인천 보세창고</h3>
+          </div>
+          <p class="wh-card__address">인천광역시</p>
+          <p class="wh-card__role">Temu 공식 지정 해외창고 — 통관·보세 물류</p>
+        </div>
+        <div class="wh-card" data-hub="gunpo">
+          <div class="wh-card__top">
+            <span class="wh-card__num">02</span>
+            <h3 class="wh-card__name">군포 물류 창고</h3>
+          </div>
+          <p class="wh-card__address">경기도 군포시 번영로 82-23</p>
+          <p class="wh-card__role">국내 풀필먼트 — B2C·B2B 주문 출고</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA — 2분할 패널
+     ============================================================ -->
+<section class="cta" id="cta">
+  <!-- 좌: 1:1 문의하기 -->
+  <a href="contact.html" class="cta__panel">
+    <div class="cta__panel-bg" style="background-image: url('assets/images/cs.jpg');"></div>
+    <div class="cta__panel-overlay"></div>
+    <div class="cta__panel-content">
+      <svg class="cta__panel-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12a4 4 0 014-4h24a4 4 0 014 4v18a4 4 0 01-4 4H22l-8 6v-6h-2a4 4 0 01-4-4V12z"/><circle cx="18" cy="21" r="1.5"/><circle cx="24" cy="21" r="1.5"/><circle cx="30" cy="21" r="1.5"/></svg>
+      <h3 class="cta__panel-title">1:1 문의하기</h3>
+      <p class="cta__panel-desc">궁금한 사항을 편하게 문의해 주세요.</p>
+      <span class="cta__panel-btn">문의하기 <span>+</span></span>
+    </div>
+  </a>
+  <!-- 우: 파트너십 문의 -->
+  <a href="partner.html" class="cta__panel">
+    <div class="cta__panel-bg" style="background-image: url('assets/images/cta-partner.jpg');"></div>
+    <div class="cta__panel-overlay"></div>
+    <div class="cta__panel-content">
+      <svg class="cta__panel-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 28c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8"/><path d="M32 28c4.4 0 8-3.6 8-8s-3.6-8-8-8-8 3.6-8 8"/><path d="M6 40c0-5.5 4.5-10 10-10h2"/><path d="M42 40c0-5.5-4.5-10-10-10h-2"/><path d="M20 36l4 4 4-4"/></svg>
+      <h3 class="cta__panel-title">파트너십 문의</h3>
+      <p class="cta__panel-desc">물류·유통·마케팅 분야의 전략적 파트너십을 제안합니다.</p>
+      <span class="cta__panel-btn">문의하기 <span>+</span></span>
+    </div>
+  </a>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div class="footer__logo-area">
+        <a href="index.html" class="footer__logo"><img src="assets/images/koreamcn-logo-white.png" alt="KoreaMCN" style="height:36px;width:auto;"></a>
+      </div>
+      <div class="footer__content">
+        <div class="footer__legal-links">
+          <a href="#">이용약관</a>
+          <a href="#" class="--bold">개인정보처리방침</a>
+          <a href="#">이메일무단수집거부</a>
+        </div>
+        <div class="footer__info-area">
+          <address class="footer__info">
+            (주)케이엠 홀딩스<span>|</span>대표 : 장만익<span>|</span>사업자등록번호 : 191-86-03802<br>
+            경기도 군포시 번영로 82-23<span>|</span>TEL : <a href="tel:010-5650-1965">010-5650-1965</a><span>|</span>E-MAIL : <a href="mailto:woohyunkim@kmhldgs.com">woohyunkim@kmhldgs.com</a>
+          </address>
+          <p class="footer__copy">Copyright &copy; 2024 KM Holdings Co., Ltd. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- TOP 버튼 -->
+<button class="btn-top" id="btnTop" aria-label="맨 위로 이동">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12V4M4 7l4-4 4 4"/></svg>
+  TOP
+</button>
+
+<!-- ======================================================================
+     MOTION (GSAP 3 + ScrollTrigger + Lenis)
+     ====================================================================== -->
+<script>
+/* ── Lenis Smooth Scroll ── */
+const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(function(time) { lenis.raf(time * 1000); });
+gsap.ticker.lagSmoothing(0);
+
+/* ── Register ScrollTrigger ── */
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── Sticky Header ── */
+var header = document.querySelector('.site-header');
+window.addEventListener('scroll', function() {
+  header.classList.toggle('is-scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ── SUB-HERO: gsap.set + gsap.to 패턴 (깜빡임 방지) ── */
+gsap.set('.sub-hero__title', { opacity: 0, y: 30 });
+gsap.set('.sub-hero__text', { opacity: 0, y: 20 });
+gsap.to('.sub-hero__title', {
+  opacity: 1, y: 0,
+  duration: 0.7, ease: 'power3.out',
+  delay: 0.2,
+});
+gsap.to('.sub-hero__text', {
+  opacity: 1, y: 0,
+  duration: 0.6, ease: 'power3.out',
+  delay: 0.4,
+});
+
+/* ── SUB-HERO: 배경 패럴랙스 ── */
+gsap.to('.sub-hero__img', {
+  yPercent: 20,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.sub-hero',
+    start: 'top top',
+    end: 'bottom top',
+    scrub: 0.5,
+  },
+});
+
+/* ── LOGISTICS OVERVIEW: gsap.set → onEnter → gsap.to ── */
+gsap.set('.logistics-overview__header', { opacity: 0, y: 40 });
+gsap.set('.logistics-stat', { opacity: 0, y: 20 });
+ScrollTrigger.create({
+  trigger: '.logistics-overview',
+  start: 'top 75%',
+  onEnter: function() {
+    gsap.to('.logistics-overview__header', {
+      opacity: 1, y: 0,
+      duration: 0.9, ease: 'power3.out',
+    });
+    gsap.to('.logistics-stat', {
+      opacity: 1, y: 0,
+      duration: 0.6, stagger: 0.12, ease: 'power3.out',
+      delay: 0.4,
+    });
+  },
+  once: true,
+});
+
+/* ── INTERNATIONAL LOGISTICS: 배경 패럴랙스 ── */
+gsap.to('.intl-logistics__bg', {
+  yPercent: 30,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.intl-logistics',
+    start: 'top bottom',
+    end: 'bottom top',
+    scrub: 0.5,
+  },
+});
+
+/* ── INTERNATIONAL LOGISTICS: 헤더 + 스탯 + 연결선 + 노드 + 스텝 stagger ── */
+gsap.set('.intl-logistics__header', { opacity: 0, y: 40 });
+gsap.set('.intl-stat', { opacity: 0, y: 20 });
+ScrollTrigger.create({
+  trigger: '.intl-logistics',
+  start: 'top 75%',
+  onEnter: function() {
+    /* ✏️ 헤더 등장 */
+    gsap.to('.intl-logistics__header', {
+      opacity: 1, y: 0,
+      duration: 0.8, ease: 'power3.out',
+    });
+    /* ✏️ 스탯 순차 등장 */
+    gsap.to('.intl-stat', {
+      opacity: 1, y: 0,
+      duration: 0.6, stagger: 0.1, ease: 'power3.out',
+      delay: 0.3,
+    });
+
+    /* ✏️ 연결선 + 노드 이동 + 채움 애니메이션 */
+    var processLine = document.querySelector('#international-logistics .process-flow__line');
+    if (processLine) {
+      var lineFill = document.querySelector('#international-logistics .process-flow__line-fill');
+      var lineNode = document.querySelector('#international-logistics .process-flow__node');
+
+      gsap.set(processLine, { scaleX: 0, transformOrigin: 'left center' });
+      gsap.to(processLine, {
+        scaleX: 1,
+        duration: 0.8, ease: 'power2.out',
+        delay: 0.4,
+        onComplete: function() {
+          gsap.set(lineNode, { left: 0, opacity: 1 });
+          gsap.to(lineNode, {
+            left: 'calc(100% - 10px)',
+            duration: 2, ease: 'power1.inOut',
+          });
+          gsap.to(lineFill, {
+            width: '100%',
+            duration: 2, ease: 'power1.inOut',
+            onComplete: function() {
+              gsap.to(lineNode, { opacity: 0, duration: 0.4 });
+            }
+          });
+        }
+      });
+    }
+
+    /* ✏️ 스텝 순차 등장 */
+    var processSteps = document.querySelectorAll('#international-logistics .process-step');
+    gsap.set(processSteps, { opacity: 0, y: 30 });
+    gsap.to(processSteps, {
+      opacity: 1, y: 0,
+      duration: 0.6, stagger: 0.1, ease: 'power3.out',
+      delay: 0.5,
+    });
+
+    /* ✏️ 넘버 bounce 효과 */
+    var nums = document.querySelectorAll('#international-logistics .process-step__num-ring');
+    gsap.set(nums, { scale: 0.5 });
+    gsap.to(nums, {
+      scale: 1,
+      duration: 0.5,
+      stagger: 0.1,
+      ease: 'back.out(1.7)',
+      delay: 0.6,
+    });
+  },
+  once: true,
+});
+
+/* ── WAREHOUSE LOCATIONS: 헤더 + 지도 + 카드 등장 ── */
+gsap.set('.warehouse-section__header', { opacity: 0, y: 30 });
+gsap.set('.korea-map', { opacity: 0, x: -30 });
+gsap.set('.wh-card', { opacity: 0, y: 20 });
+ScrollTrigger.create({
+  trigger: '.warehouse-section',
+  start: 'top 75%',
+  onEnter: function() {
+    gsap.to('.warehouse-section__header', {
+      opacity: 1, y: 0,
+      duration: 0.7, ease: 'power3.out',
+    });
+    gsap.to('.korea-map', {
+      opacity: 1, x: 0,
+      duration: 0.8, ease: 'power3.out',
+      delay: 0.2,
+    });
+    gsap.to('.wh-card', {
+      opacity: 1, y: 0,
+      duration: 0.6, stagger: 0.12, ease: 'power3.out',
+      delay: 0.3,
+    });
+  },
+  once: true,
+});
+
+/* ── WAREHOUSE: 카드 ↔ 지도 마커 hover 연동 ── */
+(function() {
+  var layout = document.getElementById('koreaHubsLayout');
+  if (!layout) return;
+  var cards = layout.querySelectorAll('.wh-card[data-hub]');
+  var markers = layout.querySelectorAll('.korea-map__marker[data-hub]');
+
+  cards.forEach(function(card) {
+    card.addEventListener('mouseenter', function() {
+      layout.classList.add('is-hovering');
+      var hub = card.getAttribute('data-hub');
+      markers.forEach(function(m) {
+        if (m.getAttribute('data-hub') === hub) {
+          m.classList.add('is-active');
+        }
+      });
+    });
+    card.addEventListener('mouseleave', function() {
+      layout.classList.remove('is-hovering');
+      markers.forEach(function(m) { m.classList.remove('is-active'); });
+    });
+  });
+})();
+
+/* ── CTA: 패럴랙스 배경 + 패널 진입 ── */
+document.querySelectorAll('.cta__panel-bg').forEach(function(bg) {
+  gsap.fromTo(bg,
+    { yPercent: -5 },
+    { yPercent: 5, ease: 'none',
+      scrollTrigger: {
+        trigger: bg.closest('.cta__panel'),
+        start: 'top bottom', end: 'bottom top',
+        scrub: true
+      }
+    }
+  );
+});
+gsap.from('.cta__panel-content', {
+  opacity: 0, y: 40,
+  duration: 0.8, stagger: 0.15, ease: 'power3.out',
+  scrollTrigger: { trigger: '.cta', start: 'top 75%', once: true }
+});
+
+/* ── TOP 버튼 ── */
+(function() {
+  var btn = document.getElementById('btnTop');
+  if (!btn) return;
+  ScrollTrigger.create({
+    trigger: document.body,
+    start: '300px top',
+    onToggle: function(self) {
+      btn.classList.toggle('--visible', self.isActive);
+    }
+  });
+  btn.addEventListener('click', function() {
+    lenis.scrollTo(0, { duration: 1.2 });
+  });
+})();
+</script>
+
+</body>
+</html>

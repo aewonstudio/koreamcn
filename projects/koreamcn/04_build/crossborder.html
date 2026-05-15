@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crossborder Services — KM Holdings | 한중 크로스보더 서비스 비즈니스 파트너</title>
+
+    <!-- ✏️ Pretendard (한글) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <!-- ✏️ Inter (영문 숫자·라벨) + Noto Sans SC (중국어) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- ⚠️ GSAP 3 + ScrollTrigger + Lenis (수정 금지) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1/dist/lenis.min.js"></script>
+
+    <style>
+/* ======================================================================
+   DESIGN TOKENS (design-system.md)
+   ====================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* --- Brand --- */
+  --color-primary: #1E3A6E;
+  --color-accent: #E8603C;
+  --color-accent-soft: #E8603C;
+
+  /* --- Backgrounds --- */
+  --color-bg: #0A0F1C;
+  --color-bg-alt: #111827;
+  --color-bg-deeper: #080D18;
+  --color-bg-navy: #1E3A6E;
+  --color-bg-light: #F9F7F4;
+
+  /* --- Surfaces --- */
+  --color-surface: #111827;
+  --color-surface-glass: rgba(255, 255, 255, 0.05);
+  --glass-blur: blur(16px);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* --- Text --- */
+  --color-text-on-dark: #FFFFFF;
+  --color-text-on-dark-sub: rgba(255, 255, 255, 0.7);
+  --color-text-on-dark-muted: rgba(255, 255, 255, 0.4);
+  --color-text-on-light: #1A1D2B;
+  --color-text-on-light-sub: #6B7280;
+
+  /* --- Borders --- */
+  --color-border-dark: rgba(255, 255, 255, 0.1);
+  --color-border-dark-hover: rgba(255, 255, 255, 0.2);
+  --color-divider: rgba(255, 255, 255, 0.08);
+
+  /* --- Typography --- */
+  --font-display: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-accent: 'Inter', sans-serif;
+
+  /* --- Spacing --- */
+  --section-py: 120px;
+  --section-py-m: 80px;
+  --container-max: 1280px;
+  --container-px: 40px;
+  --container-px-m: 20px;
+  --card-gap: 24px;
+  --card-gap-m: 16px;
+  --card-pad: 32px;
+  --card-pad-m: 24px;
+
+  /* --- Components --- */
+  --radius: 0;
+
+  /* --- Motion --- */
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1.0);
+  --dur-fast: 0.3s;
+  --dur-base: 0.6s;
+}
+
+html { scroll-behavior: auto; }
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-on-dark);
+  background: var(--color-bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* ======================================================================
+   UTILITY
+   ====================================================================== */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+@media (max-width: 768px) {
+  .container { padding: 0 var(--container-px-m); }
+}
+
+/* ======================================================================
+   HEADER (홈과 동일 — Business 링크 활성 상태)
+   ====================================================================== */
+.site-header {
+  position: fixed; top: 0; left: 0; width: 100%; height: 64px;
+  z-index: 1000;
+  background: transparent;
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  border-bottom: 1px solid transparent;
+}
+.site-header.is-scrolled {
+  background: rgba(10, 15, 28, 0.92);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--color-divider);
+}
+.header-inner {
+  max-width: var(--container-max); height: 100%; margin: 0 auto;
+  padding: 0 var(--container-px);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.site-logo {
+  font-family: var(--font-accent); font-size: 20px; font-weight: 800;
+  color: var(--color-text-on-dark); letter-spacing: -0.02em;
+}
+.site-nav > ul {
+  display: flex; gap: 0; list-style: none;
+  height: 64px;
+}
+.nav-link {
+  display: flex; align-items: center;
+  height: 64px; padding: 0 20px;
+  font-size: 15px; font-weight: 500;
+  color: var(--color-text-on-dark-sub);
+  transition: color var(--dur-fast), background var(--dur-fast);
+  position: relative;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.nav-link:hover {
+  color: var(--color-text-on-dark);
+  background: rgba(255, 255, 255, 0.04);
+}
+.nav-link:hover::after { transform: scaleX(1); }
+/* ✏️ 현재 페이지 (Business) 활성 상태 */
+.nav-link.is-active {
+  color: var(--color-text-on-dark);
+}
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+.header-actions { display: flex; align-items: center; gap: 16px; }
+.btn-nav-cta {
+  background: var(--color-accent); color: #fff;
+  padding: 9px 22px; font-size: 14px; font-weight: 700;
+  border-radius: var(--radius);
+  transition: transform var(--dur-fast), box-shadow var(--dur-fast);
+}
+.btn-nav-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(194, 59, 59, 0.3);
+}
+.mobile-toggle {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 40px; height: 40px; padding: 8px;
+}
+.mobile-toggle span {
+  display: block; width: 24px; height: 2px;
+  background: var(--color-text-on-dark);
+  margin: 5px 0; transition: all 0.3s;
+}
+/* ⚠️ 2depth 드롭다운 서브메뉴 (수정 금지) */
+.has-sub { position: relative; }
+.sub-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  background: var(--color-bg-alt);
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  padding: 8px 0;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out), visibility 0.2s;
+  z-index: 1001;
+}
+.has-sub:hover .sub-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.sub-menu li a {
+  display: block;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.sub-menu li a:hover {
+  color: var(--color-accent);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 768px) {
+  .header-inner { padding: 0 var(--container-px-m); }
+  .site-nav, .btn-nav-cta { display: none; }
+  .mobile-toggle { display: block; }
+}
+
+/* ======================================================================
+   SUB-HERO + SUB-TAB NAV
+   ====================================================================== */
+/* ✏️ Sub-Hero 배너 — 한솔 sub-visual 패턴 */
+.sub-hero {
+  position: relative;
+  height: 480px;
+  background-color: var(--color-bg);
+  color: var(--color-text-on-dark);
+  overflow: hidden;
+}
+
+/* 배경 레이어 (이미지 + 오버레이) */
+.sub-hero__bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+.sub-hero__img {
+  width: 100%; height: 100%;
+  background-image: url('assets/images/subhero-business.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.sub-hero__bg::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(10, 15, 28, 0.7);
+}
+
+/* ✏️ 텍스트 콘텐츠 — 수직·수평 중앙 */
+.sub-hero__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding-top: 64px;
+  padding-bottom: 60px;
+}
+
+/* ✏️ 메인 타이틀 */
+.sub-hero__title {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+}
+
+/* ✏️ 서브타이틀 */
+.sub-hero__text {
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text-on-dark-sub);
+  margin: 0;
+}
+
+/* ⚠️ 앵커 네비게이션 — sub-hero 하단 glassmorphism 바 (수정 금지) */
+.sub-anchor-nav {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--container-max);
+  padding: 0 var(--container-px);
+  z-index: 4;
+}
+.sub-anchor-nav .container {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  max-width: 100%;
+  padding: 0 24px;
+  background: rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+/* 홈 아이콘 */
+.sub-anchor-nav__home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color var(--dur-fast);
+}
+.sub-anchor-nav__home:hover { color: #fff; }
+/* 구분선 */
+.sub-anchor-nav__sep {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 12px;
+  flex-shrink: 0;
+}
+/* 앵커 링크들 */
+.sub-anchor-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 100%;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.sub-anchor-nav__links::-webkit-scrollbar { display: none; }
+.sub-anchor-nav__link {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+.sub-anchor-nav__link:hover {
+  color: #fff;
+}
+.sub-anchor-nav__link.active {
+  color: var(--color-accent);
+  font-weight: 600;
+  border-bottom-color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+  .sub-hero { height: 360px; }
+  .sub-hero__title { font-size: 36px; }
+  .sub-hero__text { font-size: 18px; }
+  .sub-anchor-nav { padding: 0 var(--container-px-m); }
+  .sub-anchor-nav .container { height: 50px; padding: 0 16px; }
+  .sub-anchor-nav__home { width: 32px; height: 32px; }
+  .sub-anchor-nav__home svg { width: 16px; height: 16px; }
+  .sub-anchor-nav__link { padding: 0 14px; font-size: 14px; }
+}
+
+/* ======================================================================
+   CONSULTING OVERVIEW (크로스보더 전략 컨설팅)
+   ====================================================================== */
+/* ======================================================================
+   CONSULTING — HD Marine 비즈니스 아코디언 패턴
+   ====================================================================== */
+.consulting-section {
+  position: relative;
+  padding: var(--section-py) 0;
+  background: var(--color-bg-alt);
+  color: var(--color-text-on-dark);
+}
+.consulting-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+.consulting-header {
+  margin-bottom: 56px;
+  text-align: center;
+}
+.consulting-label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+}
+.consulting-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-dark);
+  margin: 0;
+}
+
+/* ✏️ 컨설팅 카드 그리드 — about.html pillar-card 패턴 (5열) */
+.consulting-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+}
+.consulting-card {
+  padding: 40px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-right: none;
+  background: transparent;
+  transition: background var(--dur-fast), border-color var(--dur-fast);
+  cursor: pointer;
+}
+.consulting-card:last-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+.consulting-card:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+.consulting-card__num {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-accent);
+  opacity: 0.6;
+  letter-spacing: 0.05em;
+  margin-bottom: 20px;
+  transition: opacity 0.3s, color 0.3s;
+}
+.consulting-card:hover .consulting-card__num {
+  opacity: 1;
+  color: rgba(255,255,255,0.8);
+}
+.consulting-card__icon {
+  width: 44px;
+  height: 44px;
+  color: var(--color-accent);
+  margin-bottom: 20px;
+  opacity: 0.7;
+  transition: opacity 0.3s, transform 0.3s, color 0.3s;
+}
+.consulting-card:hover .consulting-card__icon {
+  opacity: 1;
+  transform: translateY(-2px);
+  color: #fff;
+}
+.consulting-card__title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-on-dark);
+  margin-bottom: 16px;
+  line-height: 1.4;
+  transition: color 0.3s;
+}
+.consulting-card:hover .consulting-card__title {
+  color: #fff;
+}
+.consulting-card__desc {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--color-text-on-dark-sub);
+  transition: color 0.3s;
+}
+.consulting-card:hover .consulting-card__desc {
+  color: rgba(255,255,255,0.85);
+}
+
+@media (max-width: 1280px) {
+  .consulting-grid { grid-template-columns: repeat(3, 1fr); }
+  .consulting-card:nth-child(3) { border-right: 1px solid rgba(255,255,255,0.25); }
+  .consulting-card:nth-child(4),
+  .consulting-card:nth-child(5) { border-top: none; }
+}
+@media (max-width: 768px) {
+  .consulting-section { padding: var(--section-py-m) 0; }
+  .consulting-container { padding: 0 var(--container-px-m); }
+  .consulting-label { font-size: 13px; margin-bottom: 8px; }
+  .consulting-title { font-size: 28px; }
+  .consulting-header { margin-bottom: 32px; }
+  .consulting-grid { grid-template-columns: 1fr; }
+  .consulting-card {
+    border-right: 1px solid rgba(255,255,255,0.25);
+    border-bottom: none;
+  }
+  .consulting-card:last-child { border-bottom: 1px solid rgba(255,255,255,0.25); }
+  .consulting-card__num { font-size: 12px; margin-bottom: 16px; }
+  .consulting-card__title { font-size: 18px; }
+}
+
+/* ======================================================================
+   PRODUCER SERVICES (인증 · 법인 · 세무) — 수평 6단계 프로세스 플로우
+   ====================================================================== */
+/* ✏️ 프로듀서 서비스 섹션 — 배경 DARK-1 */
+.producer-section {
+  padding: var(--section-py) 0;
+  background: var(--color-bg);
+  position: relative;
+  overflow: hidden;
+}
+.producer-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+/* ✏️ 섹션 헤더 — 좌측 정렬 */
+.producer-header {
+  margin-bottom: 64px;
+}
+.producer-label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+}
+.producer-title {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-dark);
+  margin: 0;
+}
+
+/* ✏️ 프로세스 플로우 — 6단계 수평 배치 */
+.process-flow {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  position: relative;
+}
+/* ✏️ 프로세스 연결선 — 스텝 간 수평선 */
+.process-flow__line {
+  position: absolute;
+  top: 24px;
+  left: calc(100% / 12);
+  right: calc(100% / 12);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 0;
+}
+/* ✏️ 연결선 채움 — 노드가 지나간 뒤 accent 색상으로 변환 */
+.process-flow__line-fill {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 0;
+  background: var(--color-accent);
+}
+/* ✏️ 이동 노드 */
+.process-flow__node {
+  position: absolute;
+  top: -4px; left: 0;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px rgba(194,59,59,0.6), 0 0 4px rgba(194,59,59,0.3);
+  opacity: 0;
+  z-index: 1;
+}
+
+/* ✏️ 개별 프로세스 스텝 */
+.process-step {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 8px;
+}
+/* ✏️ 스텝 넘버 원형 — gradient 배경 + glow */
+.process-step__num {
+  width: 48px; height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-soft));
+  font-family: var(--font-accent);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 20px;
+  position: relative;
+  flex-shrink: 0;
+}
+/* ✏️ 넘버 글로우 효과 */
+.process-step__num::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: linear-gradient(135deg, rgba(194,59,59,0.3), rgba(232,115,74,0.15));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--dur-fast);
+}
+.process-step:hover .process-step__num::after {
+  opacity: 1;
+}
+/* ✏️ 스텝 아이콘 */
+.process-step__icon {
+  width: 24px; height: 24px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 8px;
+}
+/* ✏️ 스텝 타이틀 */
+.process-step__title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-on-dark);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+/* ✏️ 스텝 설명 */
+.process-step__desc {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text-on-dark-muted);
+}
+/* ✏️ 글래스 카드 배경 (높이 통일) */
+.process-step__card {
+  background: var(--color-surface-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  padding: 24px 16px;
+  width: 100%;
+  flex: 1;
+  transition: border-color var(--dur-fast);
+}
+.process-step__card:hover {
+  border-color: var(--color-border-dark-hover);
+}
+/* ✏️ gradient accent bar — 카드 상단 3px 바 */
+.process-step__card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-soft));
+  opacity: 0;
+  transition: opacity var(--dur-fast);
+}
+.process-step:hover .process-step__card::before {
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .process-flow { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .process-flow__line { display: none; }
+}
+@media (max-width: 768px) {
+  .producer-section { padding: var(--section-py-m) 0; }
+  .producer-container { padding: 0 var(--container-px-m); }
+  .producer-label { font-size: 13px; margin-bottom: 8px; }
+  .producer-title { font-size: 28px; }
+  .producer-header { margin-bottom: 40px; }
+  .process-flow {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-left: 40px;
+    position: relative;
+  }
+  .process-flow::before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 18px;
+    width: 2px;
+    background: rgba(255,255,255,0.1);
+  }
+  .process-step {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+    padding: 0 0 32px 0;
+    gap: 16px;
+  }
+  .process-step__num {
+    width: 40px; height: 40px;
+    font-size: 16px;
+    margin-bottom: 0;
+    position: absolute;
+    left: -40px;
+  }
+  .process-step__card { padding: 20px; }
+  .process-step__icon { display: none; }
+  .process-step + .process-step::before { display: none; }
+}
+
+/* ======================================================================
+   SERVICE FLOW (진출 프로세스) — logistics.html intl-logistics 패턴
+   ====================================================================== */
+/* ✏️ 기존 accent 색상 사용 */
+
+/* ✏️ 섹션 래퍼 — 배경 이미지 + 어두운 오버레이 */
+.sf-section {
+  padding: var(--section-py) 0;
+  position: relative;
+  overflow: hidden;
+  color: var(--color-text-on-dark);
+}
+/* ✏️ 패럴랙스 배경 이미지 */
+.sf-section__bg {
+  position: absolute;
+  inset: -20% 0;
+  background: url('images/crossborder-process.jpg') center/cover no-repeat;
+  will-change: transform;
+  z-index: 0;
+}
+/* ✏️ 어두운 오버레이 — 텍스트 가독성 확보 */
+.sf-section__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 15, 28, 0.91);
+  z-index: 1;
+}
+/* ✏️ 미세 그리드 패턴 */
+.sf-section {
+  background-image:
+    radial-gradient(ellipse at center bottom, rgba(194,59,59,0.06) 0%, transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 60px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 60px);
+}
+.sf-section__container {
+  position: relative;
+  z-index: 2;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+/* ✏️ 헤더 — 좌측 정렬 */
+.sf-section__header {
+  margin-bottom: 48px;
+}
+.sf-section .section-label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+}
+.sf-section .section-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-dark);
+  margin: 0 0 16px;
+}
+.sf-section .body-text {
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-text-on-dark-sub);
+  margin: 0;
+  max-width: 680px;
+}
+
+/* ✏️ 프로세스 플로우 — 4열 그리드 */
+#service-flow .process-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  position: relative;
+}
+/* ✏️ 수평 연결선 */
+#service-flow .process-flow__line {
+  position: absolute;
+  top: 20px;
+  left: calc(12.5%);
+  right: calc(12.5%);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 0;
+}
+#service-flow .process-flow__line-fill {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 0;
+  background: var(--color-accent);
+}
+#service-flow .process-flow__node {
+  position: absolute;
+  top: -4px; left: 0;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px rgba(194,59,59,0.6), 0 0 4px rgba(194,59,59,0.3);
+  opacity: 0;
+  z-index: 1;
+}
+/* ✏️ 스텝 */
+#service-flow .process-step {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+}
+/* ✏️ 넘버 링 — 기본: outline, hover 시 coral fill */
+#service-flow .process-step__num-wrap {
+  position: relative;
+  margin-bottom: 20px;
+  z-index: 3;
+}
+#service-flow .process-step__num-ring {
+  width: 48px; height: 48px;
+  border: none;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-soft));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--dur-fast), border-color var(--dur-fast), box-shadow var(--dur-fast);
+  border-radius: 0;
+  position: relative;
+}
+/* ✏️ hover 시 coral gradient fill */
+#service-flow .process-step:hover .process-step__num-ring {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-soft));
+  border-color: var(--color-accent);
+  box-shadow: 0 0 20px rgba(194,59,59,0.35);
+}
+/* ✏️ 넘버 글로우 효과 */
+#service-flow .process-step__num-ring::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: linear-gradient(135deg, rgba(194,59,59,0.3), rgba(232,115,74,0.15));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--dur-fast);
+}
+#service-flow .process-step:hover .process-step__num-ring::after {
+  opacity: 1;
+}
+/* ✏️ 넘버 텍스트 */
+#service-flow .process-step__num {
+  width: auto;
+  height: auto;
+  background: none;
+  margin-bottom: 0;
+  font-family: var(--font-accent);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+#service-flow .process-step__num::after { display: none; }
+/* ✏️ 카드 */
+#service-flow .process-step__card {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  padding: 28px 24px;
+  flex: 1;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transition: border-color var(--dur-fast), background var(--dur-fast), box-shadow var(--dur-fast), transform var(--dur-fast);
+}
+#service-flow .process-step__icon {
+  width: 30px; height: 30px;
+  color: var(--color-accent);
+  margin-bottom: 14px;
+  opacity: 0.9;
+  transition: color var(--dur-fast), opacity var(--dur-fast);
+}
+#service-flow .process-step__title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-text-on-dark);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+#service-flow .process-step__desc {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--color-text-on-dark-sub);
+}
+/* ✏️ 카드 hover — coral 배경 전환 */
+#service-flow .process-step:hover .process-step__card {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  transform: translateY(-4px);
+}
+#service-flow .process-step:hover .process-step__icon {
+  opacity: 1;
+  color: #fff;
+}
+#service-flow .process-step:hover .process-step__title {
+  color: #fff;
+}
+#service-flow .process-step:hover .process-step__desc {
+  color: rgba(255,255,255,0.85);
+}
+
+/* ✏️ 태블릿 */
+@media (max-width: 1024px) {
+  #service-flow .process-flow { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  #service-flow .process-flow__line { display: none; }
+}
+/* ✏️ 모바일 */
+@media (max-width: 768px) {
+  .sf-section { padding: var(--section-py-m) 0; }
+  .sf-section__container { padding: 0 var(--container-px-m); }
+  .sf-section .section-label { font-size: 13px; margin-bottom: 8px; }
+  .sf-section .section-title { font-size: 28px; margin-bottom: 12px; }
+  .sf-section .body-text { font-size: 16px; }
+  #service-flow .process-flow__line { display: none; }
+  #service-flow .process-flow {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-left: 40px;
+    position: relative;
+  }
+  #service-flow .process-flow::before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 18px;
+    width: 2px;
+    background: rgba(255,255,255,0.1);
+  }
+  #service-flow .process-step {
+    flex-direction: row;
+    align-items: stretch;
+    text-align: left;
+    padding: 0 0 24px 0;
+    gap: 0;
+  }
+  #service-flow .process-step:last-child { padding-bottom: 0; }
+  #service-flow .process-step__num-wrap {
+    margin-bottom: 0;
+    position: absolute;
+    left: -32px;
+    top: 0;
+  }
+  #service-flow .process-step__num-ring {
+    width: 36px; height: 36px;
+  }
+  #service-flow .process-step__num { font-size: 13px; }
+  #service-flow .process-step__card { padding: 16px; }
+  #service-flow .process-step__icon { width: 24px; height: 24px; margin-bottom: 10px; }
+  #service-flow .process-step__title { font-size: 16px; }
+  #service-flow .process-step__desc { font-size: 13px; }
+  #service-flow .process-step:hover .process-step__num-ring { box-shadow: none; }
+}
+
+/* ======================================================================
+   CTA — 2분할 패널
+   ====================================================================== */
+.cta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.cta__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 360px;
+  padding: clamp(40px, 5vw, 64px);
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  transition: opacity 0.3s;
+}
+.cta__panel:hover { opacity: 0.92; }
+.cta__panel-bg {
+  position: absolute; inset: -15% 0; z-index: 0;
+  background-size: cover; background-position: center;
+  will-change: transform;
+  transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.cta__panel:hover .cta__panel-bg { transform: scale(1.04); }
+.cta__panel-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: rgba(10,15,28,0.55);
+}
+.cta__panel-content {
+  position: relative; z-index: 2;
+  margin: auto 0;
+}
+.cta__panel-icon {
+  width: 48px; height: 48px;
+  margin-bottom: 20px;
+  color: rgba(255,255,255,0.7);
+}
+.cta__panel-title {
+  font-size: clamp(22px, 2.5vw, 28px); font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 12px;
+}
+.cta__panel-desc {
+  font-size: 15px; line-height: 1.7;
+  color: rgba(255,255,255,0.7);
+  max-width: 380px;
+  margin-bottom: 28px;
+}
+.cta__panel-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 600;
+  color: #fff;
+  padding: 12px 28px;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: transparent;
+  transition: all 0.3s var(--ease-out);
+}
+.cta__panel:hover .cta__panel-btn {
+  border-color: #fff;
+  background: #fff;
+  color: #0a0f1c;
+  gap: 14px;
+}
+.cta__panel:first-child::after {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 1px; height: 100%;
+  background: rgba(255,255,255,0.12);
+  z-index: 3;
+}
+@media (max-width: 768px) {
+  .cta { grid-template-columns: 1fr; }
+  .cta__panel { min-height: 280px; }
+  .cta__panel:first-child::after { display: none; }
+}
+
+/* ======================================================================
+   FOOTER (홈과 동일)
+   ====================================================================== */
+.footer {
+  background: var(--color-bg-deeper);
+  padding: 0;
+  color: rgba(255,255,255,0.45);
+  font-size: 13px; line-height: 1.8;
+}
+.footer__inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
+  padding: 40px 0 48px;
+}
+.footer__logo-area {
+  display: flex; align-items: flex-start; padding-top: 4px;
+}
+.footer__logo {
+  font-family: var(--font-accent); font-size: 22px; font-weight: 800;
+  color: rgba(255,255,255,0.85); letter-spacing: -0.01em;
+}
+.footer__legal-links {
+  display: flex; align-items: center; gap: 0;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.footer__legal-links a {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  padding: 0 18px;
+  border-right: 1px solid rgba(255,255,255,0.15);
+  transition: color var(--dur-fast);
+}
+.footer__legal-links a:first-child { padding-left: 0; }
+.footer__legal-links a:last-child { border-right: none; padding-right: 0; }
+.footer__legal-links a:hover { color: #fff; }
+.footer__legal-links a.--bold { font-weight: 700; color: rgba(255,255,255,0.7); }
+.footer__info-area { padding-top: 24px; }
+.footer__info {
+  font-style: normal; font-size: 13px; line-height: 1.9;
+  color: rgba(255,255,255,0.35);
+}
+.footer__info span { margin: 0 8px; color: rgba(255,255,255,0.15); }
+.footer__info a { color: rgba(255,255,255,0.35); transition: color var(--dur-fast); }
+.footer__info a:hover { color: rgba(255,255,255,0.6); }
+.footer__copy {
+  font-size: 12px; color: rgba(255,255,255,0.2);
+  margin-top: 16px;
+}
+/* ⚠️ TOP 버튼 (수정 금지) */
+.btn-top {
+  position: fixed; bottom: 32px; right: 32px; z-index: 90;
+  width: 52px; height: 52px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  background: var(--color-accent); color: #fff;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  border: none; cursor: pointer;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateY(12px);
+}
+.btn-top.--visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.btn-top:hover { background: #a83232; }
+.btn-top svg { width: 16px; height: 16px; }
+
+@media (max-width: 768px) {
+  .footer__inner { grid-template-columns: 1fr; gap: 32px; }
+  .footer__legal-links a { padding: 0 12px; font-size: 12px; }
+  .footer__info br { display: none; }
+  .btn-top { bottom: 20px; right: 20px; width: 44px; height: 44px; }
+}
+
+/* ✏️ 접근성: 모션 감소 선호 사용자 대응 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><img src="assets/images/koreamcn-logo-white.png" alt="KoreaMCN" style="height:44px;width:auto;"></a>
+    <nav class="site-nav">
+      <ul>
+        <li class="has-sub">
+          <a href="about.html" class="nav-link">회사 소개</a>
+          <ul class="sub-menu">
+            <li><a href="about.html">개요</a></li>
+            <li><a href="ceo.html">CEO 인사말</a></li>
+            <li><a href="history.html">연혁</a></li>
+            <li><a href="network.html">글로벌 네트워크</a></li>
+          </ul>
+        </li>
+        <li class="has-sub">
+          <a href="#" class="nav-link is-active">사업 소개</a>
+          <ul class="sub-menu">
+            <li><a href="logistics.html">국제 물류 서비스</a></li>
+            <li><a href="crossborder.html">크로스보더 서비스</a></li>
+            <li><a href="live-commerce.html">라이브커머스 · MCN</a></li>
+          </ul>
+        </li>
+        <li><a href="partner.html" class="nav-link">파트너십</a></li>
+        <li><a href="seller.html" class="nav-link">셀러 모집</a></li>
+        <li><a href="news.html" class="nav-link">보도자료</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href="contact.html" class="btn-nav-cta">문의하기</a>
+      <button class="mobile-toggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     SUB-HERO + SUB-TAB NAV (Business 하위 앵커)
+     ============================================================ -->
+<section class="sub-hero">
+  <div class="sub-hero__bg"><div class="sub-hero__img"></div></div>
+  <div class="sub-hero__inner container">
+    <h2 class="sub-hero__title">사업 소개</h2>
+    <p class="sub-hero__text">물류·유통·라이브커머스, 한중 비즈니스의 전 과정을 지원합니다</p>
+  </div>
+
+  <!-- ✏️ 앵커 네비게이션 (Business 하위 3개 링크) -->
+  <nav class="sub-anchor-nav">
+    <div class="container">
+      <a href="index.html" class="sub-anchor-nav__home" aria-label="Home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 2L21 9.5V21C21 21.2652 20.8946 21.5196 20.7071 21.7071C20.5196 21.8946 20.2652 22 20 22H4C3.73478 22 3.48043 21.8946 3.29289 21.7071C3.10536 21.5196 3 21.2652 3 21V9.5Z"/>
+          <path d="M9 22V12H15V22"/>
+        </svg>
+      </a>
+      <span class="sub-anchor-nav__sep"></span>
+      <div class="sub-anchor-nav__links">
+        <a href="logistics.html" class="sub-anchor-nav__link">국제 물류 서비스</a>
+        <span class="sub-anchor-nav__sep"></span>
+        <a href="crossborder.html" class="sub-anchor-nav__link active">크로스보더 서비스</a>
+        <span class="sub-anchor-nav__sep"></span>
+        <a href="live-commerce.html" class="sub-anchor-nav__link">라이브커머스 · MCN</a>
+      </div>
+    </div>
+  </nav>
+</section>
+
+<!-- ============================================================
+     CONSULTING OVERVIEW (Crossborder Strategy & Consulting)
+     ============================================================ -->
+<section id="consulting-overview" class="consulting-section">
+  <div class="consulting-container">
+    <div class="consulting-header">
+      <span class="consulting-label">CROSSBORDER</span>
+      <h2 class="consulting-title">크로스보더 서비스</h2>
+      <p style="font-size:18px;color:var(--color-text-sub);line-height:1.6;margin:16px auto 0;max-width:640px;">한국 시장 진출 전략 수립부터 인증·법인 설립·유통 채널 운영까지, 전 과정을 원스톱으로 컨설팅합니다.</p>
+    </div>
+
+    <!-- ✏️ 컨설팅 카드 그리드 — about.html pillar-card 패턴 (5열) -->
+    <div class="consulting-grid">
+
+      <!-- 01. 전문 인력 — 인력 아이콘 -->
+      <div class="consulting-card">
+        <div class="consulting-card__num">01</div>
+        <svg class="consulting-card__icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="22" cy="14" r="6"/>
+          <path d="M10 38c0-6.6 5.4-12 12-12s12 5.4 12 12"/>
+          <circle cx="34" cy="14" r="4"/>
+          <path d="M38 26c0-3.3-1.8-6-4-7.5"/>
+        </svg>
+        <h3 class="consulting-card__title">전문 인력</h3>
+        <p class="consulting-card__desc">중·한 이중언어 컨설턴트, 회계사, 크로스보더 전문 변호사 협업</p>
+      </div>
+
+      <!-- 02. 현지화 자원 — 파트너십 아이콘 -->
+      <div class="consulting-card">
+        <div class="consulting-card__num">02</div>
+        <svg class="consulting-card__icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 22h6l4-8 6 16 4-8h12"/>
+          <rect x="4" y="32" width="16" height="8" rx="2"/>
+          <rect x="24" y="32" width="16" height="8" rx="2"/>
+          <path d="M12 32v-4M32 32v-4"/>
+        </svg>
+        <h3 class="consulting-card__title">현지화 자원</h3>
+        <p class="consulting-card__desc">한국 TOP급 세무서·로펌 장기 파트너십 기반 컴플라이언스 서비스</p>
+      </div>
+
+      <!-- 03. 전 과정 동반 지원 — 체크리스트 아이콘 -->
+      <div class="consulting-card">
+        <div class="consulting-card__num">03</div>
+        <svg class="consulting-card__icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="8" y="4" width="28" height="36" rx="2"/>
+          <path d="M16 14h12M16 20h12M16 26h8"/>
+          <circle cx="30" cy="32" r="6" fill="var(--color-bg)" stroke="currentColor"/>
+          <path d="M28 32l1.5 1.5 3-3"/>
+        </svg>
+        <h3 class="consulting-card__title">전 과정 동반 지원</h3>
+        <p class="consulting-card__desc">자격 취득부터 정부기관 대응, 사후 관리까지 전 주기 지원</p>
+      </div>
+
+      <!-- 04. 신속한 실행력 — 타이머 아이콘 -->
+      <div class="consulting-card">
+        <div class="consulting-card__num">04</div>
+        <svg class="consulting-card__icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="22" cy="24" r="14"/>
+          <path d="M22 16v8l5 5"/>
+          <path d="M18 4h8M22 4v6"/>
+        </svg>
+        <h3 class="consulting-card__title">신속한 실행력</h3>
+        <p class="consulting-card__desc">표준화 프로세스로 20~25 영업일 내 법인 설립 완료</p>
+      </div>
+
+      <!-- 05. 유통 채널 설계 — 유통 네트워크 아이콘 -->
+      <div class="consulting-card">
+        <div class="consulting-card__num">05</div>
+        <svg class="consulting-card__icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="22" cy="12" r="4"/>
+          <circle cx="10" cy="32" r="4"/>
+          <circle cx="22" cy="32" r="4"/>
+          <circle cx="34" cy="32" r="4"/>
+          <path d="M22 16v12M22 20l-10 8M22 20l10 8"/>
+        </svg>
+        <h3 class="consulting-card__title">유통 채널 설계</h3>
+        <p class="consulting-card__desc">오프라인 체인, 플랫폼, 총판, 라이브커머스 — 상품에 맞는 판매 경로 다각화</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PRODUCER SERVICES (인증 · 법인 · 세무) — 수평 6단계 프로세스 플로우
+     ============================================================ -->
+<section id="producer-services" class="producer-section">
+  <div class="producer-container">
+    <!-- ✏️ 섹션 헤더 — 좌측 정렬 -->
+    <header class="producer-header">
+      <p class="producer-label">PRODUCER SERVICES</p>
+      <h2 class="producer-title">인증 · 법인 · 세무</h2>
+    </header>
+
+    <!-- ✏️ 6단계 프로세스 플로우 -->
+    <div class="process-flow">
+      <!-- ✏️ 연결선 + 이동 노드 + 채움 바 -->
+      <div class="process-flow__line">
+        <div class="process-flow__line-fill"></div>
+        <div class="process-flow__node"></div>
+      </div>
+
+      <!-- 스텝 1: KC인증 -->
+      <div class="process-step">
+        <div class="process-step__num">01</div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+          <h3 class="process-step__title">KC인증</h3>
+          <p class="process-step__desc">한국 시장 판매를 위한 필수 인증 취득</p>
+        </div>
+      </div>
+
+      <!-- 스텝 2: KFDA인증 -->
+      <div class="process-step">
+        <div class="process-step__num">02</div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <path d="M14 2v6h6M9 15l2 2 4-4"/>
+          </svg>
+          <h3 class="process-step__title">KFDA인증</h3>
+          <p class="process-step__desc">식품·화장품 수입 승인</p>
+        </div>
+      </div>
+
+      <!-- 스텝 3: 상표 등록 -->
+      <div class="process-step">
+        <div class="process-step__num">03</div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9 12h6M12 9v6"/>
+          </svg>
+          <h3 class="process-step__title">상표 등록</h3>
+          <p class="process-step__desc">브랜드의 법적 보호 확보</p>
+        </div>
+      </div>
+
+      <!-- 스텝 4: 특허 출원 -->
+      <div class="process-step">
+        <div class="process-step__num">04</div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          <h3 class="process-step__title">특허 출원</h3>
+          <p class="process-step__desc">기업의 지식재산권 보호 지원</p>
+        </div>
+      </div>
+
+      <!-- 스텝 5: 한국 법인 설립 -->
+      <div class="process-step">
+        <div class="process-step__num">05</div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="0"/>
+            <path d="M3 9h18M9 3v18"/>
+          </svg>
+          <h3 class="process-step__title">한국 법인 설립</h3>
+          <p class="process-step__desc">20~25 영업일 내 법인 설립 완료</p>
+        </div>
+      </div>
+
+      <!-- 스텝 6: 세무 신고 -->
+      <div class="process-step">
+        <div class="process-step__num">06</div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 20V10M12 20V4M6 20v-6"/>
+          </svg>
+          <h3 class="process-step__title">세무 신고</h3>
+          <p class="process-step__desc">분기별 세무 신고 대행</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SERVICE FLOW (진출 프로세스) — logistics.html intl-logistics 패턴
+     ============================================================ -->
+<section id="service-flow" class="sf-section">
+  <!-- ✏️ 배경 이미지 (기존 crossborder-process.jpg) -->
+  <div class="sf-section__bg"></div>
+  <!-- ✏️ 어두운 오버레이 -->
+  <div class="sf-section__overlay"></div>
+  <div class="sf-section__container">
+    <!-- ✏️ 좌측 정렬 헤더 -->
+    <div class="sf-section__header">
+      <span class="section-label">PROCESS</span>
+      <h2 class="section-title">진출 프로세스</h2>
+      <p class="body-text">각 단계를 직렬이 아닌 병렬로 진행합니다. 인증 진행 중에 물류를 세팅하고, 동시에 판매 채널을 준비합니다.</p>
+    </div>
+
+    <!-- ✏️ 4단계 프로세스 플로우 -->
+    <div class="process-flow">
+      <!-- ✏️ 연결선 + 이동 노드 + 채움 바 -->
+      <div class="process-flow__line">
+        <div class="process-flow__line-fill"></div>
+        <div class="process-flow__node"></div>
+      </div>
+
+      <!-- 스텝 1: 전략 컨설팅 -->
+      <div class="process-step">
+        <div class="process-step__num-wrap">
+          <div class="process-step__num-ring">
+            <div class="process-step__num">01</div>
+          </div>
+        </div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 5a9 9 0 0 1 5.5 16.1c-.6.5-1 1.2-1.2 2H13.7c-.2-.8-.6-1.5-1.2-2A9 9 0 0 1 18 5z"/>
+            <path d="M14 27h8M15 30h6"/>
+          </svg>
+          <h3 class="process-step__title">전략 컨설팅</h3>
+          <p class="process-step__desc">시장 분석, 진입 전략 수립, 타깃 채널 선정</p>
+        </div>
+      </div>
+
+      <!-- 스텝 2: 인증/법인 설립 -->
+      <div class="process-step">
+        <div class="process-step__num-wrap">
+          <div class="process-step__num-ring">
+            <div class="process-step__num">02</div>
+          </div>
+        </div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 2L6 8v8c0 7.7 5.1 14.9 12 17 6.9-2.1 12-9.3 12-17V8L18 2z"/>
+            <path d="M13 18l3.5 3.5L23 15"/>
+          </svg>
+          <h3 class="process-step__title">인증/법인 설립</h3>
+          <p class="process-step__desc">KC·KFDA 인증, 법인 설립, 상표 등록</p>
+        </div>
+      </div>
+
+      <!-- 스텝 3: 물류/창고 세팅 -->
+      <div class="process-step">
+        <div class="process-step__num-wrap">
+          <div class="process-step__num-ring">
+            <div class="process-step__num">03</div>
+          </div>
+        </div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12l14-7 14 7v16L18 35 4 28V12z"/>
+            <path d="M4 12l14 7 14-7"/>
+            <path d="M18 19v16"/>
+          </svg>
+          <h3 class="process-step__title">물류/창고 세팅</h3>
+          <p class="process-step__desc">물류 거점 확보, 창고 운영, 배송 체계 구축</p>
+        </div>
+      </div>
+
+      <!-- 스텝 4: 유통/마케팅 채널 가동 -->
+      <div class="process-step">
+        <div class="process-step__num-wrap">
+          <div class="process-step__num-ring">
+            <div class="process-step__num">04</div>
+          </div>
+        </div>
+        <div class="process-step__card">
+          <svg class="process-step__icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- 확성기(메가폰) — 마케팅 채널 -->
+            <path d="M6 16v4a2 2 0 002 2h2l6 8h2V6h-2l-6 8H8a2 2 0 00-2 2z"/>
+            <path d="M24 11c2 1.5 3 4 3 7s-1 5.5-3 7"/>
+            <path d="M28 7c3 2.5 5 6.5 5 11s-2 8.5-5 11"/>
+          </svg>
+          <h3 class="process-step__title">유통/마케팅 채널 가동</h3>
+          <p class="process-step__desc">플랫폼 입점, 마케팅 채널 개설, 판매 개시</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA — 2분할 패널
+     ============================================================ -->
+<section class="cta" id="cta">
+  <!-- 좌: 1:1 문의하기 -->
+  <a href="contact.html" class="cta__panel">
+    <div class="cta__panel-bg" style="background-image: url('assets/images/cs.jpg');"></div>
+    <div class="cta__panel-overlay"></div>
+    <div class="cta__panel-content">
+      <svg class="cta__panel-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12a4 4 0 014-4h24a4 4 0 014 4v18a4 4 0 01-4 4H22l-8 6v-6h-2a4 4 0 01-4-4V12z"/><circle cx="18" cy="21" r="1.5"/><circle cx="24" cy="21" r="1.5"/><circle cx="30" cy="21" r="1.5"/></svg>
+      <h3 class="cta__panel-title">1:1 문의하기</h3>
+      <p class="cta__panel-desc">궁금한 사항을 편하게 문의해 주세요.</p>
+      <span class="cta__panel-btn">문의하기 <span>+</span></span>
+    </div>
+  </a>
+  <!-- 우: 파트너십 문의 -->
+  <a href="partner.html" class="cta__panel">
+    <div class="cta__panel-bg" style="background-image: url('assets/images/cta-partner.jpg');"></div>
+    <div class="cta__panel-overlay"></div>
+    <div class="cta__panel-content">
+      <svg class="cta__panel-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 28c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8"/><path d="M32 28c4.4 0 8-3.6 8-8s-3.6-8-8-8-8 3.6-8 8"/><path d="M6 40c0-5.5 4.5-10 10-10h2"/><path d="M42 40c0-5.5-4.5-10-10-10h-2"/><path d="M20 36l4 4 4-4"/></svg>
+      <h3 class="cta__panel-title">파트너십 문의</h3>
+      <p class="cta__panel-desc">물류·유통·마케팅 분야의 전략적 파트너십을 제안합니다.</p>
+      <span class="cta__panel-btn">문의하기 <span>+</span></span>
+    </div>
+  </a>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div class="footer__logo-area">
+        <a href="index.html" class="footer__logo"><img src="assets/images/koreamcn-logo-white.png" alt="KoreaMCN" style="height:36px;width:auto;"></a>
+      </div>
+      <div class="footer__content">
+        <div class="footer__legal-links">
+          <a href="#">이용약관</a>
+          <a href="#" class="--bold">개인정보처리방침</a>
+          <a href="#">이메일무단수집거부</a>
+        </div>
+        <div class="footer__info-area">
+          <address class="footer__info">
+            (주)케이엠 홀딩스<span>|</span>대표 : 장만익<span>|</span>사업자등록번호 : 191-86-03802<br>
+            경기도 군포시 번영로 82-23<span>|</span>TEL : <a href="tel:010-5650-1965">010-5650-1965</a><span>|</span>E-MAIL : <a href="mailto:woohyunkim@kmhldgs.com">woohyunkim@kmhldgs.com</a>
+          </address>
+          <p class="footer__copy">Copyright &copy; 2024 KM Holdings Co., Ltd. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- TOP 버튼 -->
+<button class="btn-top" id="btnTop" aria-label="맨 위로 이동">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12V4M4 7l4-4 4 4"/></svg>
+  TOP
+</button>
+
+<!-- ======================================================================
+     MOTION (GSAP 3 + ScrollTrigger + Lenis)
+     ====================================================================== -->
+<script>
+/* ── Lenis Smooth Scroll ── */
+const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(function(time) { lenis.raf(time * 1000); });
+gsap.ticker.lagSmoothing(0);
+
+/* ── Register ScrollTrigger ── */
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── Sticky Header ── */
+var header = document.querySelector('.site-header');
+window.addEventListener('scroll', function() {
+  header.classList.toggle('is-scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ── SUB-HERO: gsap.set + gsap.to 패턴 ── */
+gsap.set('.sub-hero__inner', { opacity: 0, y: 30 });
+gsap.to('.sub-hero__inner', {
+  opacity: 1, y: 0,
+  duration: 0.6, ease: 'power3.out',
+  delay: 0.2,
+});
+
+/* ── CONSULTING OVERVIEW: 헤더 + 카드 순차 등장 ── */
+gsap.set('.consulting-header', { opacity: 0, y: 40 });
+gsap.set('.consulting-card', { opacity: 0, y: 40 });
+
+ScrollTrigger.create({
+  trigger: '.consulting-section',
+  start: 'top 75%',
+  onEnter: function() {
+    gsap.to('.consulting-header', {
+      opacity: 1, y: 0,
+      duration: 0.8, ease: 'power3.out',
+    });
+    gsap.to('.consulting-card', {
+      opacity: 1, y: 0,
+      duration: 0.6, stagger: 0.1, ease: 'power3.out',
+      delay: 0.3,
+    });
+  },
+  once: true,
+});
+
+/* ── PRODUCER SERVICES: 헤더 + 연결선 + 스텝 stagger + 넘버 bounce ── */
+ScrollTrigger.create({
+  trigger: '#producer-services',
+  start: 'top 75%',
+  onEnter: function() {
+    var processHeader = document.querySelector('.producer-header');
+    var processSteps = document.querySelectorAll('#producer-services .process-step');
+    var processLine = document.querySelector('#producer-services .process-flow__line');
+
+    /* ✏️ 헤더 등장 */
+    gsap.set(processHeader, { opacity: 0, y: 30 });
+    gsap.to(processHeader, {
+      opacity: 1, y: 0,
+      duration: 0.7, ease: 'power3.out',
+    });
+
+    /* ✏️ 연결선 + 노드 이동 + 채움 애니메이션 */
+    if (processLine) {
+      var lineFill = document.querySelector('#producer-services .process-flow__line-fill');
+      var lineNode = document.querySelector('#producer-services .process-flow__node');
+
+      gsap.set(processLine, { scaleX: 0, transformOrigin: 'left center' });
+      gsap.to(processLine, {
+        scaleX: 1,
+        duration: 0.8, ease: 'power2.out',
+        delay: 0.3,
+        onComplete: function() {
+          gsap.set(lineNode, { left: 0, opacity: 1 });
+          gsap.to(lineNode, {
+            left: 'calc(100% - 10px)',
+            duration: 2, ease: 'power1.inOut',
+          });
+          gsap.to(lineFill, {
+            width: '100%',
+            duration: 2, ease: 'power1.inOut',
+            onComplete: function() {
+              gsap.to(lineNode, { opacity: 0, duration: 0.4 });
+            }
+          });
+        }
+      });
+    }
+
+    /* ✏️ 스텝 순차 등장 */
+    gsap.set(processSteps, { opacity: 0, y: 30 });
+    gsap.to(processSteps, {
+      opacity: 1, y: 0,
+      duration: 0.6, stagger: 0.1, ease: 'power3.out',
+      delay: 0.4,
+    });
+
+    /* ✏️ 넘버 bounce 효과 */
+    var nums = document.querySelectorAll('#producer-services .process-step__num');
+    gsap.set(nums, { scale: 0.5 });
+    gsap.to(nums, {
+      scale: 1,
+      duration: 0.5,
+      stagger: 0.1,
+      ease: 'back.out(1.7)',
+      delay: 0.5,
+    });
+  },
+  once: true,
+});
+
+/* ── SERVICE FLOW: 배경 패럴랙스 ── */
+gsap.to('.sf-section__bg', {
+  yPercent: 30,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.sf-section',
+    start: 'top bottom',
+    end: 'bottom top',
+    scrub: 0.5,
+  },
+});
+
+/* ── SERVICE FLOW: 헤더 + 연결선 + 노드 + 스텝 stagger + 넘버 bounce ── */
+gsap.set('.sf-section__header', { opacity: 0, y: 40 });
+ScrollTrigger.create({
+  trigger: '#service-flow',
+  start: 'top 75%',
+  onEnter: function() {
+    /* ✏️ 헤더 등장 */
+    gsap.to('.sf-section__header', {
+      opacity: 1, y: 0,
+      duration: 0.8, ease: 'power3.out',
+    });
+
+    /* ✏️ 연결선 + 노드 이동 + 채움 애니메이션 */
+    var flowLine = document.querySelector('#service-flow .process-flow__line');
+    if (flowLine) {
+      var lineFill = document.querySelector('#service-flow .process-flow__line-fill');
+      var lineNode = document.querySelector('#service-flow .process-flow__node');
+
+      gsap.set(flowLine, { scaleX: 0, transformOrigin: 'left center' });
+      gsap.to(flowLine, {
+        scaleX: 1,
+        duration: 0.8, ease: 'power2.out',
+        delay: 0.4,
+        onComplete: function() {
+          gsap.set(lineNode, { left: 0, opacity: 1 });
+          gsap.to(lineNode, {
+            left: 'calc(100% - 10px)',
+            duration: 2, ease: 'power1.inOut',
+          });
+          gsap.to(lineFill, {
+            width: '100%',
+            duration: 2, ease: 'power1.inOut',
+            onComplete: function() {
+              gsap.to(lineNode, { opacity: 0, duration: 0.4 });
+            }
+          });
+        }
+      });
+    }
+
+    /* ✏️ 스텝 순차 등장 */
+    var flowSteps = document.querySelectorAll('#service-flow .process-step');
+    gsap.set(flowSteps, { opacity: 0, y: 30 });
+    gsap.to(flowSteps, {
+      opacity: 1, y: 0,
+      duration: 0.6, stagger: 0.1, ease: 'power3.out',
+      delay: 0.5,
+    });
+
+    /* ✏️ 넘버 bounce 효과 */
+    var nums = document.querySelectorAll('#service-flow .process-step__num-ring');
+    gsap.set(nums, { scale: 0.5 });
+    gsap.to(nums, {
+      scale: 1,
+      duration: 0.5,
+      stagger: 0.1,
+      ease: 'back.out(1.7)',
+      delay: 0.6,
+    });
+  },
+  once: true,
+});
+
+/* ── CTA: 패럴랙스 배경 + 패널 진입 ── */
+document.querySelectorAll('.cta__panel-bg').forEach(function(bg) {
+  gsap.fromTo(bg,
+    { yPercent: -5 },
+    { yPercent: 5, ease: 'none',
+      scrollTrigger: {
+        trigger: bg.closest('.cta__panel'),
+        start: 'top bottom', end: 'bottom top',
+        scrub: true
+      }
+    }
+  );
+});
+gsap.from('.cta__panel-content', {
+  opacity: 0, y: 40,
+  duration: 0.8, stagger: 0.15, ease: 'power3.out',
+  scrollTrigger: { trigger: '.cta', start: 'top 75%', once: true }
+});
+
+/* ── TOP 버튼 ── */
+(function() {
+  var btn = document.getElementById('btnTop');
+  if (!btn) return;
+  ScrollTrigger.create({
+    trigger: document.body,
+    start: '300px top',
+    onToggle: function(self) {
+      btn.classList.toggle('--visible', self.isActive);
+    }
+  });
+  btn.addEventListener('click', function() {
+    lenis.scrollTo(0, { duration: 1.2 });
+  });
+})();
+</script>
+
+</body>
+</html>
