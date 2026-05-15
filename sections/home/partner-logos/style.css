@@ -1,0 +1,139 @@
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.partner-logos {
+  /* 배경 리듬: 유일한 밝은 섹션 */
+  background-color: var(--color-bg-light);
+  padding-top: var(--section-padding-desktop);
+  padding-bottom: var(--section-padding-desktop);
+  overflow: hidden; /* 마퀴 애니메이션이 섹션 밖으로 나가지 않도록 */
+}
+
+.partner-logos__container {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding-desktop);
+  padding-right: var(--container-padding-desktop);
+}
+
+.partner-logos__header {
+  text-align: center;
+  margin-bottom: 48px; /* 타이틀 -> 카드그리드 간격 */
+}
+
+.partner-logos__title {
+  /* 타이포그래피: Section Title */
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-light);
+  margin: 0 0 16px 0; /* 타이틀 -> 본문 간격 */
+}
+
+.partner-logos__subline {
+  /* 타이포그래피: Body */
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-text-on-light-sub);
+  margin: 0;
+  max-width: 500px; /* 가독성을 위한 최대 너비 설정 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.partner-logos__marquee {
+  display: flex;
+  flex-direction: column;
+  gap: 32px; /* 두 마퀴 트랙 사이의 간격 */
+}
+
+.partner-logos__track {
+  display: flex;
+  flex-shrink: 0;
+  gap: 40px; /* 로고 아이템 사이의 간격 */
+  animation: marqueeScroll 40s linear infinite;
+}
+
+.partner-logos__track--reverse {
+  animation-direction: reverse;
+  animation-duration: 45s; /* 속도에 미세한 변화를 줌 */
+}
+
+.partner-logos__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.partner-logos__item img {
+  display: block;
+  max-width: 160px;
+  height: 60px;
+  object-fit: contain;
+  /* 기본 상태: 흑백 + 약간 투명 */
+  filter: grayscale(100%);
+  opacity: 0.6;
+  transition: filter var(--duration-fast) var(--ease-out), opacity var(--duration-fast) var(--ease-out);
+}
+
+.partner-logos__item:hover img {
+  /* 호버 상태: 컬러 + 불투명 */
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+/* ========== 반응형: 모바일 (768px 이하) ========== */
+@media (max-width: 768px) {
+  .partner-logos {
+    padding-top: var(--section-padding-mobile);
+    padding-bottom: var(--section-padding-mobile);
+  }
+
+  .partner-logos__container {
+    padding-left: var(--container-padding-mobile);
+    padding-right: var(--container-padding-mobile);
+  }
+
+  .partner-logos__header {
+    margin-bottom: 32px; /* 타이틀 -> 카드그리드 간격 (모바일) */
+  }
+
+  .partner-logos__title {
+    font-size: 28px;
+    margin-bottom: 12px; /* 타이틀 -> 본문 간격 (모바일) */
+  }
+
+  .partner-logos__subline {
+    font-size: 16px;
+  }
+
+  .partner-logos__marquee {
+    gap: 24px;
+  }
+
+  .partner-logos__track {
+    gap: 32px; /* 모바일 로고 아이템 간격 */
+    animation-duration: 30s; /* 모바일에서 속도 증가 */
+  }
+
+  .partner-logos__track--reverse {
+    animation-duration: 35s;
+  }
+
+  .partner-logos__item img {
+    max-width: 120px;
+    height: 45px;
+  }
+}

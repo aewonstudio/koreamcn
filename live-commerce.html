@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Commerce & MCN — KM Holdings | 한중 크로스보더 서비스 비즈니스 파트너</title>
+
+    <!-- ✏️ Pretendard (한글) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <!-- ✏️ Inter (영문 숫자·라벨) + Noto Sans SC (중국어) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- ⚠️ GSAP 3 + ScrollTrigger + Lenis (수정 금지) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1/dist/lenis.min.js"></script>
+
+    <style>
+/* ======================================================================
+   DESIGN TOKENS (design-system.md)
+   ====================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* --- Brand --- */
+  --color-primary: #1E3A6E;
+  --color-accent: #E8603C;
+  --color-accent-soft: #E8603C;
+
+  /* --- Backgrounds --- */
+  --color-bg: #0A0F1C;
+  --color-bg-alt: #111827;
+  --color-bg-deeper: #080D18;
+  --color-bg-navy: #1E3A6E;
+  --color-bg-light: #F9F7F4;
+
+  /* --- Surfaces --- */
+  --color-surface: #111827;
+  --color-surface-glass: rgba(255, 255, 255, 0.05);
+  --glass-blur: blur(16px);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* --- Text --- */
+  --color-text-on-dark: #FFFFFF;
+  --color-text-on-dark-sub: rgba(255, 255, 255, 0.7);
+  --color-text-on-dark-muted: rgba(255, 255, 255, 0.4);
+  --color-text-on-light: #1A1D2B;
+  --color-text-on-light-sub: #6B7280;
+
+  /* --- Borders --- */
+  --color-border-dark: rgba(255, 255, 255, 0.1);
+  --color-border-dark-hover: rgba(255, 255, 255, 0.2);
+  --color-divider: rgba(255, 255, 255, 0.08);
+
+  /* --- Typography --- */
+  --font-display: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-accent: 'Inter', sans-serif;
+
+  /* --- Spacing --- */
+  --section-py: 120px;
+  --section-py-m: 80px;
+  --container-max: 1280px;
+  --container-px: 40px;
+  --container-px-m: 20px;
+  --card-gap: 24px;
+  --card-gap-m: 16px;
+  --card-pad: 32px;
+  --card-pad-m: 24px;
+
+  /* --- Components --- */
+  --radius: 0;
+
+  /* --- Motion --- */
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1.0);
+  --dur-fast: 0.3s;
+  --dur-base: 0.6s;
+}
+
+html { scroll-behavior: auto; }
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-on-dark);
+  background: var(--color-bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* ======================================================================
+   UTILITY
+   ====================================================================== */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+@media (max-width: 768px) {
+  .container { padding: 0 var(--container-px-m); }
+}
+
+/* ======================================================================
+   HEADER (홈과 동일 — Business 링크 활성 상태)
+   ====================================================================== */
+.site-header {
+  position: fixed; top: 0; left: 0; width: 100%; height: 64px;
+  z-index: 1000;
+  background: transparent;
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  border-bottom: 1px solid transparent;
+}
+.site-header.is-scrolled {
+  background: rgba(10, 15, 28, 0.92);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--color-divider);
+}
+.header-inner {
+  max-width: var(--container-max); height: 100%; margin: 0 auto;
+  padding: 0 var(--container-px);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.site-logo {
+  font-family: var(--font-accent); font-size: 20px; font-weight: 800;
+  color: var(--color-text-on-dark); letter-spacing: -0.02em;
+}
+.site-nav > ul {
+  display: flex; gap: 0; list-style: none;
+  height: 64px;
+}
+.nav-link {
+  display: flex; align-items: center;
+  height: 64px; padding: 0 20px;
+  font-size: 15px; font-weight: 500;
+  color: var(--color-text-on-dark-sub);
+  transition: color var(--dur-fast), background var(--dur-fast);
+  position: relative;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.nav-link:hover {
+  color: var(--color-text-on-dark);
+  background: rgba(255, 255, 255, 0.04);
+}
+.nav-link:hover::after { transform: scaleX(1); }
+/* ✏️ 현재 페이지 (Business) 활성 상태 */
+.nav-link.is-active {
+  color: var(--color-text-on-dark);
+}
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+.header-actions { display: flex; align-items: center; gap: 16px; }
+.btn-nav-cta {
+  background: var(--color-accent); color: #fff;
+  padding: 9px 22px; font-size: 14px; font-weight: 700;
+  border-radius: var(--radius);
+  transition: transform var(--dur-fast), box-shadow var(--dur-fast);
+}
+.btn-nav-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(194, 59, 59, 0.3);
+}
+.mobile-toggle {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 40px; height: 40px; padding: 8px;
+}
+.mobile-toggle span {
+  display: block; width: 24px; height: 2px;
+  background: var(--color-text-on-dark);
+  margin: 5px 0; transition: all 0.3s;
+}
+/* 2depth 드롭다운 서브메뉴 */
+.has-sub { position: relative; }
+.sub-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  background: var(--color-bg-alt);
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  padding: 8px 0;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out), visibility 0.2s;
+  z-index: 1001;
+}
+.has-sub:hover .sub-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.sub-menu li a {
+  display: block;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.sub-menu li a:hover {
+  color: var(--color-accent);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 768px) {
+  .header-inner { padding: 0 var(--container-px-m); }
+  .site-nav, .btn-nav-cta { display: none; }
+  .mobile-toggle { display: block; }
+}
+
+/* ======================================================================
+   SUB-HERO + SUB-TAB NAV
+   ====================================================================== */
+/* Sub-Hero 배너 — 한솔 sub-visual 패턴 */
+.sub-hero {
+  position: relative;
+  height: 480px;
+  background-color: var(--color-bg);
+  color: var(--color-text-on-dark);
+  overflow: hidden;
+}
+
+/* 배경 레이어 (이미지 + 오버레이) */
+.sub-hero__bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+.sub-hero__img {
+  width: 100%; height: 100%;
+  background-image: url('assets/images/subhero-business.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.sub-hero__bg::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(10, 15, 28, 0.7);
+}
+
+/* 텍스트 콘텐츠 — 수직·수평 중앙 */
+.sub-hero__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding-top: 64px;
+  padding-bottom: 60px;
+}
+
+/* 메인 타이틀 */
+.sub-hero__title {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+}
+
+/* 서브타이틀 */
+.sub-hero__text {
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text-on-dark-sub);
+  margin: 0;
+}
+
+/* 앵커 네비게이션 — sub-hero 하단 glassmorphism 바 */
+.sub-anchor-nav {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--container-max);
+  padding: 0 var(--container-px);
+  z-index: 4;
+}
+.sub-anchor-nav .container {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  max-width: 100%;
+  padding: 0 24px;
+  background: rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+/* 홈 아이콘 */
+.sub-anchor-nav__home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color var(--dur-fast);
+}
+.sub-anchor-nav__home:hover { color: #fff; }
+/* 구분선 */
+.sub-anchor-nav__sep {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 12px;
+  flex-shrink: 0;
+}
+/* 앵커 링크들 */
+.sub-anchor-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 100%;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.sub-anchor-nav__links::-webkit-scrollbar { display: none; }
+.sub-anchor-nav__link {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+.sub-anchor-nav__link:hover {
+  color: #fff;
+}
+.sub-anchor-nav__link.active {
+  color: var(--color-accent);
+  font-weight: 600;
+  border-bottom-color: var(--color-accent);
+}
+
+/* ✏️ TikTok MCN 인증 뱃지 — accent 보더 pill */
+.sub-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  padding: 10px 24px;
+  border: 1px solid var(--color-accent);
+  border-radius: 100px;
+  background: rgba(194, 59, 59, 0.08);
+}
+.sub-hero__badge-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.sub-hero__badge-text {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .sub-hero { height: 360px; }
+  .sub-hero__title { font-size: 36px; }
+  .sub-hero__text { font-size: 18px; }
+  .sub-hero__badge { padding: 8px 18px; gap: 8px; }
+  .sub-hero__badge-text { font-size: 12px; }
+  .sub-anchor-nav { padding: 0 var(--container-px-m); }
+  .sub-anchor-nav .container { height: 50px; padding: 0 16px; }
+  .sub-anchor-nav__home { width: 32px; height: 32px; }
+  .sub-anchor-nav__home svg { width: 16px; height: 16px; }
+  .sub-anchor-nav__link { padding: 0 14px; font-size: 14px; }
+}
+
+/* ======================================================================
+   공통 섹션 레이블·타이틀 스타일
+   ====================================================================== */
+.section-label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  /* ✏️ 레이블→타이틀 간격: 12px (모바일 8px) */
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-dark);
+  /* ✏️ 타이틀→본문 간격: 16px (모바일 12px) */
+  margin: 0 0 16px;
+}
+.section-body {
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-text-on-dark-sub);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .section-label { font-size: 13px; margin-bottom: 8px; }
+  .section-title { font-size: 28px; margin-bottom: 12px; }
+  .section-body { font-size: 16px; }
+}
+
+/* ======================================================================
+   MCN OVERVIEW — DARK-2, 4열 보더 카드 그리드
+   ====================================================================== */
+.mcn-overview {
+  padding: var(--section-py) 0;
+  background: var(--color-bg-alt);
+}
+.mcn-overview__container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+/* ✏️ 섹션 헤더 — 중앙 정렬 */
+.mcn-overview__header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+/* ✏️ 4열 보더 카드 그리드 */
+.mcn-overview__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+/* ✏️ 카드 — 보더 구분선, hover 시 accent fill */
+.mcn-card {
+  padding: 40px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-right: none;
+  background: transparent;
+  transition: background 0.3s, border-color 0.3s;
+  cursor: pointer;
+}
+.mcn-card:last-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+.mcn-card:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+.mcn-card:hover + .mcn-card {
+  border-left-color: var(--color-accent);
+}
+/* ✏️ 카드 넘버 */
+.mcn-card__num {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  margin-bottom: 20px;
+}
+.mcn-card:hover .mcn-card__num { color: #fff; }
+/* ✏️ 카드 아이콘 */
+.mcn-card__icon {
+  width: 40px;
+  height: 40px;
+  color: var(--color-accent);
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+.mcn-card:hover .mcn-card__icon { color: #fff; }
+/* ✏️ 카드 타이틀 */
+.mcn-card__title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-on-dark);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+.mcn-card:hover .mcn-card__title { color: #fff; }
+/* ✏️ 카드 설명 */
+.mcn-card__desc {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-text-on-dark-sub);
+}
+.mcn-card:hover .mcn-card__desc { color: rgba(255, 255, 255, 0.85); }
+
+@media (max-width: 1024px) {
+  .mcn-overview__grid { grid-template-columns: repeat(2, 1fr); }
+  .mcn-card:nth-child(2n) { border-right: 1px solid rgba(255, 255, 255, 0.25); }
+}
+@media (max-width: 768px) {
+  .mcn-overview { padding: var(--section-py-m) 0; }
+  .mcn-overview__container { padding: 0 var(--container-px-m); }
+  .mcn-overview__grid { grid-template-columns: 1fr; }
+  .mcn-card { border-right: 1px solid rgba(255, 255, 255, 0.25); padding: 32px 24px; }
+}
+
+/* ======================================================================
+   LIVE FRAMEWORK — 대형 이니셜 가로 행 레이아웃
+   배경: DARK-1
+   ====================================================================== */
+.live-framework {
+  padding: var(--section-py) 0;
+  background: var(--color-bg);
+  position: relative;
+}
+.live-framework__container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+  position: relative;
+  z-index: 1;
+}
+.live-framework__header {
+  margin-bottom: 64px;
+}
+
+/* ✏️ LIVE 행 리스트 — 각 글자가 한 행 차지 */
+.framework-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ✏️ 개별 행 — 대형 이니셜(좌) + 내용(우) */
+.framework-row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  align-items: center;
+  gap: 32px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--color-border-dark);
+  transition: background 0.3s;
+  cursor: default;
+}
+.framework-row:first-child {
+  border-top: 1px solid var(--color-border-dark);
+}
+.framework-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* ✏️ 대형 이니셜 — 80px accent, hover 시 glow */
+.framework-row__letter {
+  font-family: var(--font-accent);
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-accent);
+  transition: text-shadow 0.3s;
+  text-align: center;
+}
+.framework-row:hover .framework-row__letter {
+  text-shadow: 0 0 40px rgba(194, 59, 59, 0.3);
+}
+
+/* ✏️ 우측 콘텐츠 — 영문 단어 + 설명 */
+.framework-row__content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.framework-row__word {
+  font-family: var(--font-accent);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-on-dark);
+  line-height: 1.3;
+}
+.framework-row__desc {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text-on-dark-sub);
+  max-width: 520px;
+}
+
+@media (max-width: 768px) {
+  .live-framework { padding: var(--section-py-m) 0; }
+  .live-framework__container { padding: 0 var(--container-px-m); }
+  .live-framework__header { margin-bottom: 40px; }
+  .framework-row {
+    grid-template-columns: 56px 1fr;
+    gap: 16px;
+    padding: 20px 0;
+  }
+  .framework-row__letter { font-size: 36px; }
+  .framework-row__word { font-size: 16px; }
+  .framework-row__desc { font-size: 14px; }
+}
+
+/* ======================================================================
+   PORTFOLIO
+   배경: DARK-2
+   ====================================================================== */
+.portfolio-section {
+  padding: var(--section-py) 0;
+  background: var(--color-bg-alt);
+}
+.portfolio-section__container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+.portfolio-section__header {
+  /* ✏️ 타이틀→카드그리드 간격: 48px (모바일 32px) */
+  margin-bottom: 48px;
+}
+
+/* ✏️ 카테고리 행 — 3열 구조 (카테고리별 1행씩) */
+.portfolio-row {
+  margin-bottom: 48px;
+}
+.portfolio-row:last-child {
+  margin-bottom: 0;
+}
+/* ✏️ 카테고리 타이틀 */
+.portfolio-row__title {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-on-dark);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.portfolio-row__title::before {
+  content: '';
+  display: block;
+  width: 3px;
+  height: 18px;
+  background: var(--color-accent);
+  border-radius: 2px;
+}
+
+/* ✏️ 캐러셀 뷰포트 — 컨테이너 밖으로 확장 */
+.portfolio-carousel {
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
+  margin-left: calc(-1 * ((100vw - var(--container-max)) / 2 + var(--container-px)));
+}
+/* ✏️ 캐러셀 트랙 — CSS 무한 자동 스크롤 */
+.portfolio-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: portfolioScroll 30s linear infinite;
+}
+.portfolio-track:hover {
+  animation-play-state: paused;
+}
+/* ✏️ 짝수 행은 반대 방향으로 스크롤 */
+.portfolio-row:nth-child(even) .portfolio-track {
+  animation-name: portfolioScrollReverse;
+}
+@keyframes portfolioScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes portfolioScrollReverse {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* ✏️ 캐러셀 아이템 — 도우인 4:3, 나머지 16:9 */
+.portfolio-slide {
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+/* ✏️ 도우인 (4:3 비율) — 너비 480px, 높이 360px */
+.portfolio-row--douyin .portfolio-slide {
+  width: 480px;
+}
+.portfolio-row--douyin .portfolio-slide__img {
+  height: 360px;
+}
+/* ✏️ 네이버&쿠팡, 티몰 (16:9 비율) — 너비 520px, 높이 292px */
+.portfolio-row--wide .portfolio-slide {
+  width: 520px;
+}
+.portfolio-row--wide .portfolio-slide__img {
+  height: 292px;
+}
+.portfolio-slide__img {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s var(--ease-out);
+}
+.portfolio-slide:hover .portfolio-slide__img {
+  transform: scale(1.05);
+}
+
+@media (max-width: 1024px) {
+  .portfolio-carousel {
+    margin-left: calc(-1 * var(--container-px));
+  }
+  .portfolio-row--douyin .portfolio-slide { width: 380px; }
+  .portfolio-row--douyin .portfolio-slide__img { height: 285px; }
+  .portfolio-row--wide .portfolio-slide { width: 420px; }
+  .portfolio-row--wide .portfolio-slide__img { height: 236px; }
+}
+@media (max-width: 768px) {
+  .portfolio-section { padding: var(--section-py-m) 0; }
+  .portfolio-section__container { padding: 0 var(--container-px-m); }
+  .portfolio-section__header { margin-bottom: 24px; }
+  .portfolio-row { margin-bottom: 32px; }
+  .portfolio-row__title { font-size: 16px; margin-bottom: 16px; }
+  .portfolio-carousel {
+    margin-left: calc(-1 * var(--container-px-m));
+  }
+  .portfolio-row--douyin .portfolio-slide { width: 300px; }
+  .portfolio-row--douyin .portfolio-slide__img { height: 225px; }
+  .portfolio-row--wide .portfolio-slide { width: 340px; }
+  .portfolio-row--wide .portfolio-slide__img { height: 191px; }
+  .portfolio-track { gap: 12px; }
+}
+
+
+/* ======================================================================
+   CTA — 2분할 패널 (홈과 동일 패턴)
+   ====================================================================== */
+.cta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.cta__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 360px;
+  padding: clamp(40px, 5vw, 64px);
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  transition: opacity 0.3s;
+}
+.cta__panel:hover { opacity: 0.92; }
+/* ✏️ 배경 이미지 — 패럴랙스용 여유 높이 */
+.cta__panel-bg {
+  position: absolute; inset: -15% 0; z-index: 0;
+  background-size: cover; background-position: center;
+  will-change: transform;
+  transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.cta__panel:hover .cta__panel-bg { transform: scale(1.04); }
+/* ✏️ 오버레이 */
+.cta__panel-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: rgba(10,15,28,0.55);
+}
+/* ✏️ 콘텐츠 */
+.cta__panel-content {
+  position: relative; z-index: 2;
+  margin: auto 0;
+}
+.cta__panel-icon {
+  width: 48px; height: 48px;
+  margin-bottom: 20px;
+  color: rgba(255,255,255,0.7);
+}
+.cta__panel-title {
+  font-size: clamp(22px, 2.5vw, 28px); font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 12px;
+}
+.cta__panel-desc {
+  font-size: 15px; line-height: 1.7;
+  color: rgba(255,255,255,0.7);
+  max-width: 380px;
+  margin-bottom: 28px;
+}
+/* ✏️ 패널 내 버튼 */
+.cta__panel-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 600;
+  color: #fff;
+  padding: 12px 28px;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: transparent;
+  transition: all 0.3s var(--ease-out);
+}
+.cta__panel:hover .cta__panel-btn {
+  border-color: #fff;
+  background: #fff;
+  color: #0a0f1c;
+  gap: 14px;
+}
+/* ✏️ 패널 사이 세로 구분선 */
+.cta__panel:first-child::after {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 1px; height: 100%;
+  background: rgba(255,255,255,0.12);
+  z-index: 3;
+}
+
+@media (max-width: 768px) {
+  .cta { grid-template-columns: 1fr; }
+  .cta__panel { min-height: 280px; }
+  .cta__panel:first-child::after { display: none; }
+}
+
+/* ======================================================================
+   FOOTER (홈과 동일)
+   ====================================================================== */
+.footer {
+  background: var(--color-bg-deeper);
+  padding: 0;
+  color: rgba(255,255,255,0.45);
+  font-size: 13px; line-height: 1.8;
+}
+.footer__inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
+  padding: 40px 0 48px;
+}
+.footer__logo-area {
+  display: flex; align-items: flex-start; padding-top: 4px;
+}
+.footer__logo {
+  font-family: var(--font-accent); font-size: 22px; font-weight: 800;
+  color: rgba(255,255,255,0.85); letter-spacing: -0.01em;
+}
+.footer__legal-links {
+  display: flex; align-items: center; gap: 0;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.footer__legal-links a {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  padding: 0 18px;
+  border-right: 1px solid rgba(255,255,255,0.15);
+  transition: color var(--dur-fast);
+}
+.footer__legal-links a:first-child { padding-left: 0; }
+.footer__legal-links a:last-child { border-right: none; padding-right: 0; }
+.footer__legal-links a:hover { color: #fff; }
+.footer__legal-links a.--bold { font-weight: 700; color: rgba(255,255,255,0.7); }
+.footer__info-area { padding-top: 24px; }
+.footer__info {
+  font-style: normal; font-size: 13px; line-height: 1.9;
+  color: rgba(255,255,255,0.35);
+}
+.footer__info span { margin: 0 8px; color: rgba(255,255,255,0.15); }
+.footer__info a { color: rgba(255,255,255,0.35); transition: color var(--dur-fast); }
+.footer__info a:hover { color: rgba(255,255,255,0.6); }
+.footer__copy {
+  font-size: 12px; color: rgba(255,255,255,0.2);
+  margin-top: 16px;
+}
+/* TOP 버튼 */
+.btn-top {
+  position: fixed; bottom: 32px; right: 32px; z-index: 90;
+  width: 52px; height: 52px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  background: var(--color-accent); color: #fff;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  border: none; cursor: pointer;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateY(12px);
+}
+.btn-top.--visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.btn-top:hover { background: #a83232; }
+.btn-top svg { width: 16px; height: 16px; }
+
+@media (max-width: 768px) {
+  .footer__inner { grid-template-columns: 1fr; gap: 32px; }
+  .footer__legal-links a { padding: 0 12px; font-size: 12px; }
+  .footer__info br { display: none; }
+  .btn-top { bottom: 20px; right: 20px; width: 44px; height: 44px; }
+}
+
+/* ✏️ 접근성: 모션 감소 선호 사용자 대응 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER (Business 드롭다운 활성 상태)
+     ============================================================ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><img src="assets/images/koreamcn-logo-white.png" alt="KoreaMCN" style="height:44px;width:auto;"></a>
+    <nav class="site-nav">
+      <ul>
+        <li class="has-sub">
+          <a href="about.html" class="nav-link">회사 소개</a>
+          <ul class="sub-menu">
+            <li><a href="about.html">개요</a></li>
+            <li><a href="ceo.html">CEO 인사말</a></li>
+            <li><a href="history.html">연혁</a></li>
+            <li><a href="network.html">글로벌 네트워크</a></li>
+          </ul>
+        </li>
+        <li class="has-sub">
+          <!-- ✏️ Business 메뉴 활성 상태 -->
+          <a href="#" class="nav-link is-active">사업 소개</a>
+          <ul class="sub-menu">
+            <li><a href="logistics.html">국제 물류 서비스</a></li>
+            <li><a href="crossborder.html">크로스보더 서비스</a></li>
+            <li><a href="live-commerce.html">라이브커머스 · MCN</a></li>
+          </ul>
+        </li>
+        <li><a href="partner.html" class="nav-link">파트너십</a></li>
+        <li><a href="seller.html" class="nav-link">셀러 모집</a></li>
+        <li><a href="news.html" class="nav-link">보도자료</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href="contact.html" class="btn-nav-cta">문의하기</a>
+      <button class="mobile-toggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     SUB-HERO + SUB-TAB NAV (Business 하위 네비게이션)
+     ============================================================ -->
+<section class="sub-hero">
+  <div class="sub-hero__bg"><div class="sub-hero__img"></div></div>
+  <div class="sub-hero__inner container">
+    <h2 class="sub-hero__title">사업 소개</h2>
+    <p class="sub-hero__text">물류·유통·라이브커머스, 한중 비즈니스의 전 과정을 지원합니다</p>
+    <!-- ✏️ TikTok MCN 공식 인증 뱃지 -->
+    <div class="sub-hero__badge">
+      <svg class="sub-hero__badge-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.51a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.7a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.26a8.28 8.28 0 004.84 1.56V7.34a4.85 4.85 0 01-1.08-.65z" fill="#fff"/>
+      </svg>
+      <span class="sub-hero__badge-text">TikTok Korea Top MCN 공식 파트너</span>
+    </div>
+  </div>
+
+  <!-- ✏️ 앵커 네비게이션 — Business 하위 3개 링크 -->
+  <nav class="sub-anchor-nav">
+    <div class="container">
+      <a href="index.html" class="sub-anchor-nav__home" aria-label="Home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 2L21 9.5V21C21 21.2652 20.8946 21.5196 20.7071 21.7071C20.5196 21.8946 20.2652 22 20 22H4C3.73478 22 3.48043 21.8946 3.29289 21.7071C3.10536 21.5196 3 21.2652 3 21V9.5Z"/>
+          <path d="M9 22V12H15V22"/>
+        </svg>
+      </a>
+      <span class="sub-anchor-nav__sep"></span>
+      <div class="sub-anchor-nav__links">
+        <a href="logistics.html" class="sub-anchor-nav__link">국제 물류 서비스</a>
+        <span class="sub-anchor-nav__sep"></span>
+        <a href="crossborder.html" class="sub-anchor-nav__link">크로스보더 서비스</a>
+        <span class="sub-anchor-nav__sep"></span>
+        <!-- ✏️ 현재 페이지 활성 -->
+        <a href="live-commerce.html" class="sub-anchor-nav__link active">라이브커머스 · MCN</a>
+      </div>
+    </div>
+  </nav>
+</section>
+
+<!-- ============================================================
+     MCN OVERVIEW — TikTok Korea Top MCN
+     배경: DARK-2 (--color-bg-alt)
+     ============================================================ -->
+<section id="mcn-overview" class="mcn-overview">
+  <div class="mcn-overview__container">
+    <!-- ✏️ 섹션 헤더 -->
+    <div class="mcn-overview__header">
+      <span class="section-label">LIVE COMMERCE</span>
+      <h2 class="section-title">라이브커머스 · MCN</h2>
+      <p style="font-size:18px;color:var(--color-text-sub);line-height:1.6;margin:16px auto 0;max-width:480px;">TikTok Korea Top MCN 공식 파트너로서, 기획·촬영·송출·성과 분석까지 라이브커머스 전 과정을 운영합니다.</p>
+    </div>
+
+    <!-- ✏️ 4열 보더 카드 그리드 -->
+    <div class="mcn-overview__grid">
+      <!-- 카드 1: 체계적인 프로세스 -->
+      <div class="mcn-card">
+        <div class="mcn-card__num">01</div>
+        <svg class="mcn-card__icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <!-- 체크리스트 — 체계적 프로세스 -->
+          <rect x="6" y="4" width="28" height="32" rx="1"/>
+          <path d="M14 14h12M14 20h12M14 26h8"/>
+          <path d="M10 14h1M10 20h1M10 26h1"/>
+        </svg>
+        <h3 class="mcn-card__title">체계적인 프로세스</h3>
+        <p class="mcn-card__desc">전략적인 라이브 방송 선택(단계별), 체계적인 기획 및 운영, 양질의 방송을 지향</p>
+      </div>
+
+      <!-- 카드 2: 자체 스튜디오 보유 -->
+      <div class="mcn-card">
+        <div class="mcn-card__num">02</div>
+        <svg class="mcn-card__icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <!-- 카메라+모니터 — 스튜디오 -->
+          <rect x="4" y="6" width="32" height="22" rx="1"/>
+          <path d="M16 17l8-4v8z"/>
+          <path d="M12 32h16"/>
+          <path d="M20 28v4"/>
+        </svg>
+        <h3 class="mcn-card__title">자체 스튜디오 보유</h3>
+        <p class="mcn-card__desc">자체 전문 스튜디오·촬영 장비 다수 보유, 진행 시 필요한 판넬 제작</p>
+      </div>
+
+      <!-- 카드 3: 원활한 소통 -->
+      <div class="mcn-card">
+        <div class="mcn-card__num">03</div>
+        <svg class="mcn-card__icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <!-- 말풍선 — 양방향 소통 -->
+          <path d="M8 8h16a2 2 0 012 2v8a2 2 0 01-2 2H14l-4 4v-4H8a2 2 0 01-2-2v-8a2 2 0 012-2z"/>
+          <path d="M16 24h16a2 2 0 012 2v8a2 2 0 01-2 2h-2v4l-4-4H16a2 2 0 01-2-2v-8a2 2 0 012-2z"/>
+        </svg>
+        <h3 class="mcn-card__title">원활한 소통</h3>
+        <p class="mcn-card__desc">판매-구매자 간 양방향 소통, 제품 피드백 기반 개선, 시청자 질의응답</p>
+      </div>
+
+      <!-- 카드 4: 성과 분석 -->
+      <div class="mcn-card">
+        <div class="mcn-card__num">04</div>
+        <svg class="mcn-card__icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <!-- 차트 — 성과 분석 -->
+          <path d="M6 32V14l8 10 8-16 12 8v16z"/>
+          <path d="M6 32h28"/>
+          <circle cx="14" cy="24" r="2"/>
+          <circle cx="22" cy="8" r="2"/>
+          <circle cx="34" cy="16" r="2"/>
+        </svg>
+        <h3 class="mcn-card__title">성과 분석</h3>
+        <p class="mcn-card__desc">조회수·전환율·고객 피드백 분석, 지속적 효율 개선 중심의 라이브 커머스 운영</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     LIVE FRAMEWORK
+     배경: DARK-1 (--color-bg) + 대각선 그리드 + 하단 액센트 글로우
+     ============================================================ -->
+<section id="live-framework" class="live-framework">
+  <div class="live-framework__container">
+    <header class="live-framework__header">
+      <span class="section-label">Framework</span>
+      <h2 class="section-title">LIVE Framework</h2>
+    </header>
+
+    <!-- ✏️ L-I-V-E 가로 행 레이아웃 — 대형 이니셜 + 설명 -->
+    <div class="framework-rows">
+      <div class="framework-row">
+        <div class="framework-row__letter">L</div>
+        <div class="framework-row__content">
+          <h3 class="framework-row__word">Listen</h3>
+          <p class="framework-row__desc">시장·소비자 분석, 상품 특성 파악. 타겟 고객과 채널 전략을 먼저 설계합니다.</p>
+        </div>
+      </div>
+      <div class="framework-row">
+        <div class="framework-row__letter">I</div>
+        <div class="framework-row__content">
+          <h3 class="framework-row__word">Interact</h3>
+          <p class="framework-row__desc">실시간 양방향 소통. 시청자 질의응답과 피드백을 즉시 반영합니다.</p>
+        </div>
+      </div>
+      <div class="framework-row">
+        <div class="framework-row__letter">V</div>
+        <div class="framework-row__content">
+          <h3 class="framework-row__word">Visualize</h3>
+          <p class="framework-row__desc">시각적 콘텐츠 기획·제작. 자체 스튜디오에서 고퀄리티 방송을 만듭니다.</p>
+        </div>
+      </div>
+      <div class="framework-row">
+        <div class="framework-row__letter">E</div>
+        <div class="framework-row__content">
+          <h3 class="framework-row__word">Engage</h3>
+          <p class="framework-row__desc">시청자 참여 유도, 전환 설계. 조회수·전환율 분석으로 지속적 효율을 개선합니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PORTFOLIO
+     배경: DARK-2 (--color-bg-alt)
+     ============================================================ -->
+<section id="portfolio" class="portfolio-section">
+  <div class="portfolio-section__container">
+    <header class="portfolio-section__header">
+      <span class="section-label">On Air</span>
+      <h2 class="section-title">LIVE 현장</h2>
+    </header>
+
+    <!-- ✏️ 1행: 네이버 & 쿠팡 라이브 커머스 (16:9 비율) -->
+    <div class="portfolio-row portfolio-row--wide">
+      <h3 class="portfolio-row__title">네이버 & 쿠팡 라이브 커머스</h3>
+      <div class="portfolio-carousel">
+        <div class="portfolio-track">
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/nc_01.jpg" alt="네이버 & 쿠팡 라이브 01"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/nc_02.jpg" alt="네이버 & 쿠팡 라이브 02"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/nc_03.jpg" alt="네이버 & 쿠팡 라이브 03"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/nc_04.jpg" alt="네이버 & 쿠팡 라이브 04"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/nc_05.jpg" alt="네이버 & 쿠팡 라이브 05"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/nc_06.jpg" alt="네이버 & 쿠팡 라이브 06"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/nc_07.jpg" alt="네이버 & 쿠팡 라이브 07"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/nc_08.jpg" alt="네이버 & 쿠팡 라이브 08"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/nc_09.jpg" alt="네이버 & 쿠팡 라이브 09"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/nc_10.jpg" alt="네이버 & 쿠팡 라이브 10"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/nc_11.jpg" alt="네이버 & 쿠팡 라이브 11"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/nc_12.jpg" alt="네이버 & 쿠팡 라이브 12"></div>
+          <!-- ⚠️ 무한 루프용 복제 — JS에서 자동 생성 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ✏️ 2행: 중국 티몰 라이브 커머스 (16:9 비율) -->
+    <div class="portfolio-row portfolio-row--wide">
+      <h3 class="portfolio-row__title">중국 티몰 라이브 커머스</h3>
+      <div class="portfolio-carousel">
+        <div class="portfolio-track">
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/timall_01.jpg" alt="티몰 라이브 커머스 01"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/timall_02.jpg" alt="티몰 라이브 커머스 02"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/timall_03.jpg" alt="티몰 라이브 커머스 03"></div>
+          <!-- ⚠️ 무한 루프용 복제 — JS에서 자동 생성 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ✏️ 3행: 도우인 라이브 커머스 (4:3 비율) -->
+    <div class="portfolio-row portfolio-row--douyin">
+      <h3 class="portfolio-row__title">도우인 라이브 커머스</h3>
+      <div class="portfolio-carousel">
+        <div class="portfolio-track">
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/korea_live_01.jpg" alt="도우인 라이브 커머스 01"></div>
+          <div class="portfolio-slide"><img class="portfolio-slide__img" src="../client/livecommerce/korea_live_02.jpg" alt="도우인 라이브 커머스 02"></div>
+          <!-- ⚠️ 무한 루프용 복제 — JS에서 자동 생성 -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CTA — 2분할 패널
+     ============================================================ -->
+<section class="cta" id="cta">
+  <!-- 좌: 1:1 문의하기 -->
+  <a href="contact.html" class="cta__panel">
+    <div class="cta__panel-bg" style="background-image: url('assets/images/cs.jpg');"></div>
+    <div class="cta__panel-overlay"></div>
+    <div class="cta__panel-content">
+      <svg class="cta__panel-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12a4 4 0 014-4h24a4 4 0 014 4v18a4 4 0 01-4 4H22l-8 6v-6h-2a4 4 0 01-4-4V12z"/><circle cx="18" cy="21" r="1.5"/><circle cx="24" cy="21" r="1.5"/><circle cx="30" cy="21" r="1.5"/></svg>
+      <h3 class="cta__panel-title">1:1 문의하기</h3>
+      <p class="cta__panel-desc">궁금한 사항을 편하게 문의해 주세요.</p>
+      <span class="cta__panel-btn">문의하기 <span>+</span></span>
+    </div>
+  </a>
+  <!-- 우: 셀러 입점 신청 -->
+  <a href="seller.html" class="cta__panel">
+    <div class="cta__panel-bg" style="background-image: url('assets/images/cta-seller.jpg');"></div>
+    <div class="cta__panel-overlay"></div>
+    <div class="cta__panel-content">
+      <svg class="cta__panel-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="6" width="32" height="36" rx="2"/><path d="M16 6v8a8 8 0 0016 0V6"/><circle cx="24" cy="30" r="4"/><path d="M20 42v-4a4 4 0 018 0v4"/></svg>
+      <h3 class="cta__panel-title">셀러 입점 신청</h3>
+      <p class="cta__panel-desc">라이브커머스 셀러를 모집합니다.</p>
+      <span class="cta__panel-btn">지원하기 <span>+</span></span>
+    </div>
+  </a>
+</section>
+
+<!-- ============================================================
+     FOOTER (about.html과 동일)
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div class="footer__logo-area">
+        <a href="index.html" class="footer__logo"><img src="assets/images/koreamcn-logo-white.png" alt="KoreaMCN" style="height:36px;width:auto;"></a>
+      </div>
+      <div class="footer__content">
+        <div class="footer__legal-links">
+          <a href="#">이용약관</a>
+          <a href="#" class="--bold">개인정보처리방침</a>
+          <a href="#">이메일무단수집거부</a>
+        </div>
+        <div class="footer__info-area">
+          <address class="footer__info">
+            (주)케이엠 홀딩스<span>|</span>대표 : 장만익<span>|</span>사업자등록번호 : 191-86-03802<br>
+            경기도 군포시 번영로 82-23<span>|</span>TEL : <a href="tel:010-5650-1965">010-5650-1965</a><span>|</span>E-MAIL : <a href="mailto:woohyunkim@kmhldgs.com">woohyunkim@kmhldgs.com</a>
+          </address>
+          <p class="footer__copy">Copyright &copy; 2024 KM Holdings Co., Ltd. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- TOP 버튼 -->
+<button class="btn-top" id="btnTop" aria-label="맨 위로 이동">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12V4M4 7l4-4 4 4"/></svg>
+  TOP
+</button>
+
+<!-- ======================================================================
+     MOTION (GSAP 3 + ScrollTrigger + Lenis)
+     ====================================================================== -->
+<script>
+/* ── Lenis Smooth Scroll ── */
+const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(function(time) { lenis.raf(time * 1000); });
+gsap.ticker.lagSmoothing(0);
+
+/* ── Register ScrollTrigger ── */
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── Sticky Header ── */
+var header = document.querySelector('.site-header');
+window.addEventListener('scroll', function() {
+  header.classList.toggle('is-scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ── SUB-HERO: 초기 상태 설정 후 등장 (뱃지 포함) ── */
+gsap.set('.sub-hero__title', { opacity: 0, y: 30 });
+gsap.set('.sub-hero__text', { opacity: 0, y: 20 });
+gsap.set('.sub-hero__badge', { opacity: 0, y: 20 });
+gsap.to('.sub-hero__title', {
+  opacity: 1, y: 0,
+  duration: 0.6, ease: 'power3.out',
+  delay: 0.2
+});
+gsap.to('.sub-hero__text', {
+  opacity: 1, y: 0,
+  duration: 0.6, ease: 'power3.out',
+  delay: 0.35
+});
+gsap.to('.sub-hero__badge', {
+  opacity: 1, y: 0,
+  duration: 0.6, ease: 'power3.out',
+  delay: 0.5
+});
+
+/* ── SUB-HERO: 배경 패럴랙스 ── */
+gsap.to('.sub-hero__img', {
+  yPercent: 20,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.sub-hero',
+    start: 'top top',
+    end: 'bottom top',
+    scrub: 0.5
+  }
+});
+
+/* ── MCN OVERVIEW: 헤더 + 카드 stagger 리빌 ── */
+var mcnHeader = document.querySelector('.mcn-overview__header');
+var mcnCards = document.querySelectorAll('.mcn-card');
+gsap.set(mcnHeader, { opacity: 0, y: 30 });
+gsap.set(mcnCards, { opacity: 0, y: 40 });
+ScrollTrigger.create({
+  trigger: '.mcn-overview',
+  start: 'top 75%',
+  onEnter: function() {
+    gsap.to(mcnHeader, {
+      opacity: 1, y: 0,
+      duration: 0.6, ease: 'power3.out'
+    });
+    gsap.to(mcnCards, {
+      opacity: 1, y: 0,
+      duration: 0.6, stagger: 0.12, ease: 'power3.out',
+      delay: 0.2
+    });
+  },
+  once: true
+});
+
+/* ── LIVE FRAMEWORK: 헤더 + 행 순차 등장 ── */
+gsap.set('.live-framework__header', { opacity: 0, y: 30 });
+gsap.set('.framework-row', { opacity: 0, x: -30 });
+
+ScrollTrigger.create({
+  trigger: '.live-framework',
+  start: 'top 75%',
+  onEnter: function() {
+    gsap.to('.live-framework__header', {
+      opacity: 1, y: 0,
+      duration: 0.6, ease: 'power3.out'
+    });
+    gsap.to('.framework-row', {
+      opacity: 1, x: 0,
+      duration: 0.7, stagger: 0.15, ease: 'power3.out',
+      delay: 0.25
+    });
+  },
+  once: true
+});
+
+/* ── PORTFOLIO: 헤더 + 3행 캐러셀 순차 등장 ── */
+gsap.set('.portfolio-section__header', { opacity: 0, y: 30 });
+gsap.set('.portfolio-row', { opacity: 0, y: 30 });
+
+ScrollTrigger.create({
+  trigger: '.portfolio-section',
+  start: 'top 75%',
+  onEnter: function() {
+    gsap.to('.portfolio-section__header', {
+      opacity: 1, y: 0,
+      duration: 0.6, ease: 'power3.out'
+    });
+    gsap.to('.portfolio-row', {
+      opacity: 1, y: 0,
+      duration: 0.6, stagger: 0.2, ease: 'power3.out',
+      delay: 0.2
+    });
+  },
+  once: true
+});
+
+/* ── PORTFOLIO: 각 행 무한 캐러셀 복제 ── */
+(function() {
+  var tracks = document.querySelectorAll('.portfolio-track');
+  tracks.forEach(function(track) {
+    var slides = Array.from(track.querySelectorAll('.portfolio-slide'));
+    if (slides.length === 0) return;
+
+    /* ✏️ 슬라이드 복제 — 원본 + 복사 3세트 = 4세트 (적은 이미지도 자연스럽게) */
+    var html = track.innerHTML;
+    var repeatCount = slides.length < 5 ? 4 : 2;
+    var repeated = '';
+    for (var i = 0; i < repeatCount; i++) { repeated += html; }
+    track.innerHTML = repeated;
+
+    /* ✏️ 속도 조정 — 슬라이드 수에 비례 (이미지 적을수록 느리게) */
+    var speed = Math.max(slides.length * 8, 25);
+    track.style.animationDuration = speed + 's';
+  });
+})();
+
+
+/* ── CTA: 패럴랙스 배경 + 패널 진입 ── */
+document.querySelectorAll('.cta__panel-bg').forEach(function(bg) {
+  gsap.fromTo(bg,
+    { yPercent: -5 },
+    { yPercent: 5, ease: 'none',
+      scrollTrigger: {
+        trigger: bg.closest('.cta__panel'),
+        start: 'top bottom', end: 'bottom top',
+        scrub: true
+      }
+    }
+  );
+});
+gsap.from('.cta__panel-content', {
+  opacity: 0, y: 40,
+  duration: 0.8, stagger: 0.15, ease: 'power3.out',
+  scrollTrigger: { trigger: '.cta', start: 'top 75%', once: true }
+});
+
+/* ── TOP 버튼 ── */
+(function() {
+  var btn = document.getElementById('btnTop');
+  if (!btn) return;
+  ScrollTrigger.create({
+    trigger: document.body,
+    start: '300px top',
+    onToggle: function(self) {
+      btn.classList.toggle('--visible', self.isActive);
+    }
+  });
+  btn.addEventListener('click', function() {
+    lenis.scrollTo(0, { duration: 1.2 });
+  });
+})();
+</script>
+
+</body>
+</html>

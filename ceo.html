@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO 인사말 — KM Holdings | 한중 크로스보더 서비스 비즈니스 파트너</title>
+
+    <!-- Pretendard (한글) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <!-- Inter (영문 숫자·라벨) + Noto Sans SC (중국어) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- GSAP 3 + ScrollTrigger + Lenis -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1/dist/lenis.min.js"></script>
+
+    <style>
+/* ======================================================================
+   DESIGN TOKENS
+   ====================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --color-primary: #1E3A6E;
+  --color-accent: #E8603C;
+  --color-accent-soft: #E8603C;
+  --color-bg: #0A0F1C;
+  --color-bg-alt: #111827;
+  --color-bg-deeper: #080D18;
+  --color-bg-navy: #1E3A6E;
+  --color-bg-light: #F9F7F4;
+  --color-surface: #111827;
+  --color-surface-glass: rgba(255, 255, 255, 0.05);
+  --glass-blur: blur(16px);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+  --color-text-on-dark: #FFFFFF;
+  --color-text-on-dark-sub: rgba(255, 255, 255, 0.7);
+  --color-text-on-dark-muted: rgba(255, 255, 255, 0.4);
+  --color-text-on-light: #1A1D2B;
+  --color-text-on-light-sub: #6B7280;
+  --color-border-dark: rgba(255, 255, 255, 0.1);
+  --color-border-dark-hover: rgba(255, 255, 255, 0.2);
+  --color-divider: rgba(255, 255, 255, 0.08);
+  --font-display: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-accent: 'Inter', sans-serif;
+  --section-py: 120px;
+  --section-py-m: 80px;
+  --container-max: 1280px;
+  --container-px: 40px;
+  --container-px-m: 20px;
+  --card-gap: 24px;
+  --card-gap-m: 16px;
+  --card-pad: 32px;
+  --card-pad-m: 24px;
+  --radius: 0;
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1.0);
+  --dur-fast: 0.3s;
+  --dur-base: 0.6s;
+}
+
+html { scroll-behavior: auto; }
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-on-dark);
+  background: var(--color-bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* ======================================================================
+   UTILITY
+   ====================================================================== */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+@media (max-width: 768px) {
+  .container { padding: 0 var(--container-px-m); }
+}
+
+/* ======================================================================
+   HEADER
+   ====================================================================== */
+.site-header {
+  position: fixed; top: 0; left: 0; width: 100%; height: 64px;
+  z-index: 1000;
+  background: transparent;
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  border-bottom: 1px solid transparent;
+}
+.site-header.is-scrolled {
+  background: rgba(10, 15, 28, 0.92);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--color-divider);
+}
+.header-inner {
+  max-width: var(--container-max); height: 100%; margin: 0 auto;
+  padding: 0 var(--container-px);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.site-logo {
+  font-family: var(--font-accent); font-size: 20px; font-weight: 800;
+  color: var(--color-text-on-dark); letter-spacing: -0.02em;
+}
+.site-nav > ul {
+  display: flex; gap: 0; list-style: none;
+  height: 64px;
+}
+.nav-link {
+  display: flex; align-items: center;
+  height: 64px; padding: 0 20px;
+  font-size: 15px; font-weight: 500;
+  color: var(--color-text-on-dark-sub);
+  transition: color var(--dur-fast), background var(--dur-fast);
+  position: relative;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.nav-link:hover {
+  color: var(--color-text-on-dark);
+  background: rgba(255, 255, 255, 0.04);
+}
+.nav-link:hover::after { transform: scaleX(1); }
+.nav-link.is-active { color: var(--color-text-on-dark); }
+.nav-link.is-active::after { transform: scaleX(1); }
+.header-actions { display: flex; align-items: center; gap: 16px; }
+.btn-nav-cta {
+  background: var(--color-accent); color: #fff;
+  padding: 9px 22px; font-size: 14px; font-weight: 700;
+  border-radius: var(--radius);
+  transition: transform var(--dur-fast), box-shadow var(--dur-fast);
+}
+.btn-nav-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(194, 59, 59, 0.3);
+}
+.mobile-toggle {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 40px; height: 40px; padding: 8px;
+}
+.mobile-toggle span {
+  display: block; width: 24px; height: 2px;
+  background: var(--color-text-on-dark);
+  margin: 5px 0; transition: all 0.3s;
+}
+/* 2depth 드롭다운 */
+.has-sub { position: relative; }
+.sub-menu {
+  position: absolute; top: 100%; left: 0;
+  min-width: 180px; background: var(--color-bg-alt);
+  list-style: none; display: flex; flex-direction: column;
+  height: auto; padding: 8px 0; margin: 0;
+  opacity: 0; visibility: hidden; transform: translateY(4px);
+  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out), visibility 0.2s;
+  z-index: 1001;
+}
+.has-sub:hover .sub-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+.sub-menu li a {
+  display: block; padding: 10px 20px;
+  font-size: 14px; font-weight: 400;
+  color: rgba(255, 255, 255, 0.6); white-space: nowrap;
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.sub-menu li a:hover { color: var(--color-accent); background: rgba(255, 255, 255, 0.04); }
+
+@media (max-width: 768px) {
+  .header-inner { padding: 0 var(--container-px-m); }
+  .site-nav, .btn-nav-cta { display: none; }
+  .mobile-toggle { display: block; }
+}
+
+/* ======================================================================
+   SUB-HERO + SUB-TAB NAV
+   ====================================================================== */
+.sub-hero {
+  position: relative; height: 480px;
+  background-color: var(--color-bg);
+  color: var(--color-text-on-dark); overflow: hidden;
+}
+.sub-hero__bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.sub-hero__img {
+  width: 100%; height: 100%;
+  background-image: url('assets/images/subhero-company.jpg');
+  background-size: cover; background-position: center;
+}
+.sub-hero__bg::after {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(10, 15, 28, 0.7);
+}
+.sub-hero__inner {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 100%; text-align: center;
+  padding-top: 64px; padding-bottom: 60px;
+}
+.sub-hero__title {
+  font-family: var(--font-display); font-size: 56px; font-weight: 800;
+  line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 20px;
+}
+.sub-hero__text {
+  font-family: var(--font-body); font-size: 20px; font-weight: 400;
+  line-height: 1.6; color: var(--color-text-on-dark-sub); margin: 0;
+}
+/* 앵커 네비게이션 */
+.sub-anchor-nav {
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: var(--container-max);
+  padding: 0 var(--container-px); z-index: 4;
+}
+.sub-anchor-nav .container {
+  display: flex; align-items: center; height: 60px;
+  max-width: 100%; padding: 0 24px;
+  background: rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+}
+.sub-anchor-nav__home {
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; margin-right: 8px; flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.5); transition: color var(--dur-fast);
+}
+.sub-anchor-nav__home:hover { color: #fff; }
+.sub-anchor-nav__sep {
+  width: 1px; height: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 12px; flex-shrink: 0;
+}
+.sub-anchor-nav__links {
+  display: flex; align-items: center; gap: 0; height: 100%;
+  overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;
+}
+.sub-anchor-nav__links::-webkit-scrollbar { display: none; }
+.sub-anchor-nav__link {
+  display: flex; align-items: center; height: 100%;
+  padding: 0 20px; font-family: var(--font-body);
+  font-size: 15px; font-weight: 400;
+  color: rgba(255, 255, 255, 0.6); white-space: nowrap;
+  text-decoration: none; border-bottom: 2px solid transparent;
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+.sub-anchor-nav__link:hover { color: #fff; }
+.sub-anchor-nav__link.active {
+  color: var(--color-accent); font-weight: 600;
+  border-bottom-color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+  .sub-hero { height: 360px; }
+  .sub-hero__title { font-size: 36px; }
+  .sub-hero__text { font-size: 18px; }
+  .sub-anchor-nav { padding: 0 var(--container-px-m); }
+  .sub-anchor-nav .container { height: 50px; padding: 0 16px; }
+  .sub-anchor-nav__home { width: 32px; height: 32px; }
+  .sub-anchor-nav__home svg { width: 16px; height: 16px; }
+  .sub-anchor-nav__link { padding: 0 14px; font-size: 14px; }
+}
+
+/* ======================================================================
+   CEO 인사말 — 가운데 배치, 왼쪽 정렬 (UX: 65-75자 line-length)
+   ====================================================================== */
+.ceo-section {
+  background-color: var(--color-bg-alt);
+  padding: 120px 0;
+  color: var(--color-text-on-dark);
+  position: relative;
+  overflow: hidden;
+}
+/* 배경 장식: 큰 따옴표 워터마크 (스크롤 패럴랙스 연동) */
+.ceo-section { --quote-y: 0px; }
+.ceo-section::before {
+  content: '\201C';
+  position: absolute;
+  top: 60px; right: 10%;
+  font-size: 360px; font-family: Georgia, serif;
+  color: rgba(255,255,255,0.015);
+  line-height: 1; pointer-events: none;
+  transform: translateY(var(--quote-y));
+  will-change: transform;
+}
+/* 컨테이너: 720px 가운데 정렬 */
+.ceo-container {
+  max-width: 720px; margin: 0 auto; padding: 0 40px;
+  text-align: center;
+}
+/* 섹션 헤더 — label(12px)→title(16px→body) 디자인 시스템 간격 */
+.ceo-header { margin-bottom: 16px; }
+/* 섹션 레이블 — label→title 간격 12px */
+.ceo-section .section-label {
+  font-family: var(--font-accent); font-size: 14px; font-weight: 600;
+  line-height: 1.5; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--color-accent); margin-bottom: 12px;
+}
+/* 섹션 타이틀 */
+.ceo-section .section-title {
+  font-family: var(--font-display); font-size: 44px; font-weight: 700;
+  line-height: 1.2; letter-spacing: -0.02em;
+  color: var(--color-text-on-dark); margin: 0;
+}
+/* 본문 영역 — 좌측 정렬 (가독성) */
+.ceo-message {
+  text-align: left;
+  font-family: var(--font-body); font-size: 17px; font-weight: 400;
+  line-height: 1.9; color: var(--color-text-on-dark-sub);
+}
+.ceo-message p { margin: 0 0 24px; }
+.ceo-message p:last-child { margin-bottom: 0; }
+/* CEO 서명 — 구분선 draw 애니메이션 */
+.ceo-signature {
+  text-align: left;
+  margin-top: 56px; padding-top: 32px;
+  border-top: none; position: relative;
+  display: flex; align-items: baseline; gap: 16px;
+}
+.ceo-signature::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 100%; height: 1px;
+  background: rgba(255,255,255,0.08);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.8s var(--ease-out);
+}
+.ceo-signature.is-visible::before {
+  transform: scaleX(1);
+}
+.ceo-signature__name {
+  font-family: var(--font-display); font-size: 20px; font-weight: 700;
+  color: var(--color-text-on-dark);
+}
+.ceo-signature__title {
+  font-family: var(--font-accent); font-size: 14px; font-weight: 500;
+  color: var(--color-text-on-dark-muted);
+}
+
+@media (max-width: 768px) {
+  .ceo-section { padding: 80px 0; }
+  .ceo-section::before { display: none; }
+  .ceo-container { padding: 0 20px; }
+  .ceo-section .section-label { font-size: 13px; margin-bottom: 8px; }
+  .ceo-section .section-title { font-size: 28px; }
+  .ceo-header { margin-bottom: 12px; }
+  .ceo-message { font-size: 16px; line-height: 1.8; }
+  .ceo-message p { margin-bottom: 20px; }
+  .ceo-signature { margin-top: 40px; padding-top: 24px; flex-direction: column; gap: 4px; }
+}
+
+/* ======================================================================
+   FOOTER
+   ====================================================================== */
+.footer {
+  background: var(--color-bg-deeper); padding: 0;
+  color: rgba(255,255,255,0.45); font-size: 13px; line-height: 1.8;
+}
+.footer__inner {
+  display: grid; grid-template-columns: 200px 1fr;
+  gap: 0; padding: 40px 0 48px;
+}
+.footer__logo-area { display: flex; align-items: flex-start; padding-top: 4px; }
+.footer__logo {
+  font-family: var(--font-accent); font-size: 22px; font-weight: 800;
+  color: rgba(255,255,255,0.85); letter-spacing: -0.01em;
+}
+.footer__legal-links {
+  display: flex; align-items: center; gap: 0;
+  padding-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.footer__legal-links a {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  padding: 0 18px; border-right: 1px solid rgba(255,255,255,0.15);
+  transition: color var(--dur-fast);
+}
+.footer__legal-links a:first-child { padding-left: 0; }
+.footer__legal-links a:last-child { border-right: none; padding-right: 0; }
+.footer__legal-links a:hover { color: #fff; }
+.footer__legal-links a.--bold { font-weight: 700; color: rgba(255,255,255,0.7); }
+.footer__info-area { padding-top: 24px; }
+.footer__info {
+  font-style: normal; font-size: 13px; line-height: 1.9;
+  color: rgba(255,255,255,0.35);
+}
+.footer__info span { margin: 0 8px; color: rgba(255,255,255,0.15); }
+.footer__info a { color: rgba(255,255,255,0.35); transition: color var(--dur-fast); }
+.footer__info a:hover { color: rgba(255,255,255,0.6); }
+.footer__copy { font-size: 12px; color: rgba(255,255,255,0.2); margin-top: 16px; }
+/* TOP 버튼 */
+.btn-top {
+  position: fixed; bottom: 32px; right: 32px; z-index: 90;
+  width: 52px; height: 52px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  background: var(--color-accent); color: #fff;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  border: none; cursor: pointer;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s; transform: translateY(12px);
+}
+.btn-top.--visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.btn-top:hover { background: #a83232; }
+.btn-top svg { width: 16px; height: 16px; }
+
+@media (max-width: 768px) {
+  .footer__inner { grid-template-columns: 1fr; gap: 32px; }
+  .footer__legal-links a { padding: 0 12px; font-size: 12px; }
+  .footer__info br { display: none; }
+  .btn-top { bottom: 20px; right: 20px; width: 44px; height: 44px; }
+}
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><img src="assets/images/koreamcn-logo-white.png" alt="KoreaMCN" style="height:44px;width:auto;"></a>
+    <nav class="site-nav">
+      <ul>
+        <li class="has-sub">
+          <a href="about.html" class="nav-link is-active">회사 소개</a>
+          <ul class="sub-menu">
+            <li><a href="about.html">개요</a></li>
+            <li><a href="ceo.html">CEO 인사말</a></li>
+            <li><a href="history.html">연혁</a></li>
+            <li><a href="network.html">글로벌 네트워크</a></li>
+          </ul>
+        </li>
+        <li class="has-sub">
+          <a href="logistics.html" class="nav-link">사업 소개</a>
+          <ul class="sub-menu">
+            <li><a href="logistics.html">국제 물류 서비스</a></li>
+            <li><a href="crossborder.html">크로스보더 서비스</a></li>
+            <li><a href="live-commerce.html">라이브커머스 · MCN</a></li>
+          </ul>
+        </li>
+        <li><a href="partner.html" class="nav-link">파트너십</a></li>
+        <li><a href="seller.html" class="nav-link">셀러 모집</a></li>
+        <li><a href="news.html" class="nav-link">보도자료</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href="contact.html" class="btn-nav-cta">문의하기</a>
+      <button class="mobile-toggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     SUB-HERO
+     ============================================================ -->
+<section class="sub-hero">
+  <div class="sub-hero__bg"><div class="sub-hero__img"></div></div>
+  <div class="sub-hero__inner container">
+    <h2 class="sub-hero__title">회사 소개</h2>
+    <p class="sub-hero__text">한중을 잇고, 브랜드의 성장을 세계 무대로 확장합니다</p>
+  </div>
+
+  <nav class="sub-anchor-nav">
+    <div class="container">
+      <a href="index.html" class="sub-anchor-nav__home" aria-label="Home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 2L21 9.5V21C21 21.2652 20.8946 21.5196 20.7071 21.7071C20.5196 21.8946 20.2652 22 20 22H4C3.73478 22 3.48043 21.8946 3.29289 21.7071C3.10536 21.5196 3 21.2652 3 21V9.5Z"/>
+          <path d="M9 22V12H15V22"/>
+        </svg>
+      </a>
+      <span class="sub-anchor-nav__sep"></span>
+      <div class="sub-anchor-nav__links">
+        <a href="about.html" class="sub-anchor-nav__link">개요</a>
+        <span class="sub-anchor-nav__sep"></span>
+        <a href="ceo.html" class="sub-anchor-nav__link active">CEO 인사말</a>
+        <span class="sub-anchor-nav__sep"></span>
+        <a href="history.html" class="sub-anchor-nav__link">연혁</a>
+        <span class="sub-anchor-nav__sep"></span>
+        <a href="network.html" class="sub-anchor-nav__link">글로벌 네트워크</a>
+      </div>
+    </div>
+  </nav>
+</section>
+
+<!-- ============================================================
+     CEO 인사말 — 가운데 배치, 좌측 정렬
+     ============================================================ -->
+<section id="ceo-message" class="ceo-section">
+  <div class="ceo-container">
+    <header class="ceo-header">
+      <span class="section-label">CEO MESSAGE</span>
+      <h2 class="section-title">CEO 인사말</h2>
+    </header>
+    <div class="ceo-message">
+      <p>안녕하십니까.<br/>저희 회사를 방문해주신 여러분께 깊이 감사드립니다.</p>
+      <p>저희는 중국의 우수한 제품을 발굴하고, 한국 시장에 적합한 브랜딩과 사업 전략을 통해 새로운 부가가치를 창출하며, 이를 한국·중국 및 글로벌 시장으로 확장하는 통합형 브랜드 비즈니스를 추진하고 있습니다.</p>
+      <p>급변하는 디지털 전환 시대와 글로벌 유통 환경 속에서 기업은 단순한 상품 경쟁을 넘어 브랜드 경쟁력, 시장 대응력, 유통 실행력을 동시에 갖추어야 합니다. 저희는 이러한 변화에 발맞추어 제품 발굴부터 브랜드 기획, 마케팅, 판매 채널 운영, 파트너 협업 구조 구축까지 전 과정을 체계적으로 연결하고 있습니다.</p>
+      <p>특히 다양한 판매 네트워크와 콘텐츠 기반 커머스 환경을 바탕으로, 제품이 시장에서 브랜드로 성장하고 더 넓은 무대에서 경쟁력을 확보할 수 있도록 실질적인 비즈니스 기반을 제공하고 있습니다.</p>
+      <p>앞으로도 저희는 혁신적인 시각과 책임 있는 실행으로 더 큰 시장과 더 많은 기회를 만들어가겠습니다. 고객과 파트너, 그리고 브랜드가 함께 성장하는 미래를 위해 최선을 다하겠습니다.</p>
+      <p>감사합니다.</p>
+    </div>
+    <div class="ceo-signature">
+      <div class="ceo-signature__name">대표이사</div>
+      <div class="ceo-signature__title">KM Holdings</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div class="footer__logo-area">
+        <a href="index.html" class="footer__logo"><img src="assets/images/koreamcn-logo-white.png" alt="KoreaMCN" style="height:36px;width:auto;"></a>
+      </div>
+      <div class="footer__content">
+        <div class="footer__legal-links">
+          <a href="#">이용약관</a>
+          <a href="#" class="--bold">개인정보처리방침</a>
+          <a href="#">이메일무단수집거부</a>
+        </div>
+        <div class="footer__info-area">
+          <address class="footer__info">
+            (주)케이엠 홀딩스<span>|</span>대표 : 장만익<span>|</span>사업자등록번호 : 191-86-03802<br>
+            경기도 군포시 번영로 82-23<span>|</span>TEL : <a href="tel:010-5650-1965">010-5650-1965</a><span>|</span>E-MAIL : <a href="mailto:woohyunkim@kmhldgs.com">woohyunkim@kmhldgs.com</a>
+          </address>
+          <p class="footer__copy">Copyright &copy; 2024 KM Holdings Co., Ltd. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- TOP 버튼 -->
+<button class="btn-top" id="btnTop" aria-label="맨 위로 이동">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12V4M4 7l4-4 4 4"/></svg>
+  TOP
+</button>
+
+<!-- ======================================================================
+     MOTION
+     ====================================================================== -->
+<script>
+/* Lenis Smooth Scroll */
+const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+
+gsap.registerPlugin(ScrollTrigger);
+
+/* Sticky Header */
+const header = document.querySelector('.site-header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('is-scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* SUB-HERO: Fade In */
+gsap.from('.sub-hero__inner', {
+  opacity: 0, y: 30,
+  duration: 0.6, ease: 'power3.out',
+  delay: 0.2,
+});
+
+/* SUB-HERO: 배경 패럴랙스 */
+gsap.to('.sub-hero__img', {
+  y: 80,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.sub-hero',
+    start: 'top top',
+    end: 'bottom top',
+    scrub: 0.5,
+  }
+});
+
+/* CEO: 따옴표 워터마크 패럴랙스 (CSS 커스텀 속성으로 ::before 연동) */
+gsap.to('.ceo-section', {
+  '--quote-y': '-60px',
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.ceo-section',
+    start: 'top bottom',
+    end: 'bottom top',
+    scrub: 0.5,
+  }
+});
+
+/* CEO 인사말: 순차 등장 — 타이밍 정교화 */
+ScrollTrigger.create({
+  trigger: '.ceo-section',
+  start: 'top 75%',
+  onEnter: function() {
+    var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    tl.from('.ceo-section .section-label', { x: -20, opacity: 0, duration: 0.5 })
+      .from('.ceo-section .section-title', { y: 20, opacity: 0, duration: 0.6 }, '-=0.3')
+      .from('.ceo-message p', { y: 20, opacity: 0, duration: 0.5, stagger: 0.08 }, '-=0.2')
+      .from('.ceo-signature', {
+        y: 16, opacity: 0, duration: 0.5,
+        onComplete: function() {
+          document.querySelector('.ceo-signature').classList.add('is-visible');
+        }
+      }, '-=0.1');
+  },
+  once: true,
+});
+
+/* TOP 버튼 */
+(function() {
+  const btn = document.getElementById('btnTop');
+  if (!btn) return;
+  ScrollTrigger.create({
+    trigger: document.body,
+    start: '300px top',
+    onToggle: function(self) {
+      btn.classList.toggle('--visible', self.isActive);
+    }
+  });
+  btn.addEventListener('click', function() {
+    lenis.scrollTo(0, { duration: 1.2 });
+  });
+})();
+</script>
+
+</body>
+</html>

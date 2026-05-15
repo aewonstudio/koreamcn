@@ -1,0 +1,145 @@
+/* ----------------------------------------
+   CTA Section
+------------------------------------------- */
+
+.cta-section {
+  background-color: var(--color-bg-navy);
+  padding-top: var(--section-padding-desktop);
+  padding-bottom: var(--section-padding-desktop);
+  text-align: center;
+  overflow: hidden; /* 애니메이션 요소가 넘치는 것을 방지 */
+}
+
+/* CTA 섹션의 컨텐츠를 감싸는 컨테이너 */
+.cta-section .container {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding-desktop);
+  padding-right: var(--container-padding-desktop);
+}
+
+.cta-section__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px; /* 타이틀과 액션 그룹 사이의 간격 */
+}
+
+/* CTA 섹션 타이틀 */
+.cta-section__title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text-on-dark);
+  margin: 0;
+}
+
+/* 메인 CTA와 서브 링크를 포함하는 그룹 */
+.cta-section__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px; /* 메인 CTA와 서브 링크 그룹 사이의 간격 */
+}
+
+/* Primary Button (디자인 시스템 공통 스타일 재확인) */
+.btn.btn-primary {
+  display: inline-block;
+  background-color: var(--color-accent);
+  color: #FFFFFF;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  padding: 16px 32px;
+  border-radius: var(--radius);
+  transition: filter var(--duration-fast) var(--ease-default);
+}
+
+.btn.btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+/* 파트너/셀러 링크를 포함하는 그룹 */
+.cta-section__sub-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* 서브 링크 개별 스타일 */
+.sub-link {
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--color-text-on-dark-sub);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-default), text-decoration-color var(--duration-fast) var(--ease-default);
+  text-underline-offset: 4px;
+}
+
+.sub-link:hover {
+  color: var(--color-text-on-dark);
+  text-decoration: underline;
+}
+
+/* 서브 링크 사이의 구분선 */
+.sub-link-divider {
+  width: 1px;
+  height: 14px;
+  background-color: var(--color-border-dark);
+}
+
+/* ----------------------------------------
+   Responsive (Mobile)
+------------------------------------------- */
+@media (max-width: 768px) {
+  .cta-section {
+    padding-top: var(--section-padding-mobile);
+    padding-bottom: var(--section-padding-mobile);
+  }
+
+  .cta-section .container {
+    padding-left: var(--container-padding-mobile);
+    padding-right: var(--container-padding-mobile);
+  }
+
+  .cta-section__content {
+    gap: 32px; /* 모바일 타이틀-액션 그룹 간격 */
+  }
+
+  .cta-section__title {
+    font-size: 28px;
+  }
+
+  .cta-section__actions {
+    width: 100%; /* 버튼이 전체 너비를 차지하도록 */
+    gap: 20px;
+  }
+
+  .btn.btn-primary {
+    font-size: 16px;
+    padding: 16px 24px;
+    width: 100%; /* 버튼 너비를 꽉 채움 */
+    box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+  }
+
+  /* 모바일에서는 서브 링크를 세로로 쌓음 */
+  .cta-section__sub-links {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sub-link {
+    font-size: 16px;
+  }
+
+  /* 모바일에서는 구분선 숨김 */
+  .sub-link-divider {
+    display: none;
+  }
+}
