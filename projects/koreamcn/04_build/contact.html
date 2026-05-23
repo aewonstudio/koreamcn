@@ -173,7 +173,7 @@ a { text-decoration: none; color: inherit; }
 
 .mobile-toggle {
   display: none; background: none; border: none; cursor: pointer;
-  width: 40px; height: 40px; padding: 8px;
+  width: 44px; height: 44px; padding: 8px; /* ✏️ 모바일 터치 타겟 보정 */
 }
 .mobile-toggle span {
   display: block; width: 24px; height: 2px;
@@ -216,6 +216,134 @@ a { text-decoration: none; color: inherit; }
   .header-inner { padding: 0 var(--container-px-m); }
   .site-nav, .btn-nav-cta { display: none; }
   .mobile-toggle { display: block; }
+  .site-logo img { height: 32px !important; }
+}
+/* ✏️ 모바일 메뉴 오버레이 — 아코디언 네비 (UAN 참고, 다크 테마) */
+/* ✏️ 네비 열릴 때 헤더를 오버레이 위로 올림 (로고 표시) */
+/* ⚠️ backdrop-filter 제거 필수 — 있으면 containing block이 생겨 자식 fixed 요소가 뷰포트 기준이 아니게 됨 */
+.site-header.nav-open {
+  z-index: 10001;
+  background: #0A0F1C;
+  border-bottom-color: rgba(255,255,255,0.06);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.site-nav.is-open {
+  display: flex !important;
+  position: fixed;
+  top: 64px; left: 0; right: 0; bottom: 0;
+  z-index: 9999;
+  background: #0A0F1C;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0 0 80px;
+  overflow-y: auto;
+}
+.site-nav.is-open > ul {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+  height: auto;
+}
+.site-nav.is-open .nav-link {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  height: auto;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.85);
+  transition: color 0.2s, background 0.2s;
+}
+.site-nav.is-open .nav-link::after { display: none; }
+.site-nav.is-open .has-sub > .nav-link::before {
+  content: '';
+  order: 2;
+  width: 8px; height: 8px;
+  border-right: 2px solid rgba(255,255,255,0.4);
+  border-bottom: 2px solid rgba(255,255,255,0.4);
+  transform: rotate(45deg);
+  transition: transform 0.25s var(--ease-out), border-color 0.25s;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+.site-nav.is-open .has-sub.sub-open > .nav-link {
+  color: var(--color-accent);
+  background: rgba(255,255,255,0.03);
+}
+.site-nav.is-open .has-sub.sub-open > .nav-link::before {
+  transform: rotate(-135deg);
+  border-color: var(--color-accent);
+}
+.site-nav.is-open .has-sub .sub-menu {
+  position: static;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  background: rgba(255,255,255,0.02);
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s var(--ease-out);
+}
+.site-nav.is-open .has-sub.sub-open .sub-menu {
+  display: flex;
+  max-height: 400px;
+}
+.site-nav.is-open .sub-menu li a {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 14px 24px 14px 40px;
+  text-align: left;
+  color: rgba(255,255,255,0.5);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  transition: color 0.2s, background 0.2s, padding-left 0.2s;
+}
+.site-nav.is-open .sub-menu li:last-child a {
+  border-bottom: none;
+}
+.site-nav.is-open .sub-menu li a:hover,
+.site-nav.is-open .sub-menu li a:active {
+  color: var(--color-accent);
+  background: rgba(232,96,60,0.06);
+  padding-left: 44px;
+}
+.site-nav.is-open li:not(.has-sub) .nav-link:hover,
+.site-nav.is-open li:not(.has-sub) .nav-link:active {
+  color: var(--color-accent);
+  background: rgba(255,255,255,0.03);
+}
+.btn-nav-cta.mobile-show {
+  display: flex !important;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  padding: 18px 24px;
+  font-size: 15px; font-weight: 700;
+  background: var(--color-accent);
+  color: #fff;
+  border-radius: 0;
+  letter-spacing: 0.02em;
+}
+.mobile-toggle.is-active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.mobile-toggle.is-active span:nth-child(2) {
+  opacity: 0;
+}
+.mobile-toggle.is-active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+.mobile-toggle.is-active {
+  z-index: 10002;
 }
 
 /* ======================================================================
@@ -417,9 +545,12 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* --- 우측: 연락처 정보 카드 --- */
-/* ✏️ NAVY 배경 카드, border-radius 12px (contact.md 명시 예외) */
+/* ✏️ 글래스 카드, border-radius 12px (contact.md 명시 예외) */
 .contact-info-card {
-  background: var(--color-bg-navy);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   padding: 40px;
 }
@@ -568,7 +699,7 @@ a { text-decoration: none; color: inherit; }
 
 @media (max-width: 768px) {
   .footer__inner { grid-template-columns: 1fr; gap: 32px; }
-  .footer__legal-links a { padding: 0 12px; font-size: 12px; }
+  .footer__legal-links a { padding: 12px 12px; font-size: 12px; } /* ✏️ 모바일 터치 타겟 보정 */
   .footer__info br { display: none; }
   .btn-top { bottom: 20px; right: 20px; width: 44px; height: 44px; }
 }
@@ -877,5 +1008,50 @@ if (!prefersReducedMotion) {
 })();
 </script>
 
+<script>
+/* ✏️ 모바일 메뉴 토글 */
+(function() {
+  var toggle = document.querySelector('.mobile-toggle');
+  var nav = document.querySelector('.site-nav');
+  var cta = document.querySelector('.btn-nav-cta');
+  var header = document.querySelector('.site-header');
+  if (!toggle || !nav) return;
+
+  toggle.addEventListener('click', function() {
+    var isOpen = nav.classList.toggle('is-open');
+    toggle.classList.toggle('is-active');
+    if (header) header.classList.toggle('nav-open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    toggle.setAttribute('aria-label', isOpen ? '메뉴 닫기' : '메뉴 열기');
+    if (cta) cta.classList.toggle('mobile-show', isOpen);
+  });
+
+  /* 하위 메뉴 아코디언 토글 (모바일 — 한 번에 하나만 열림) */
+  nav.querySelectorAll('.has-sub > .nav-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      if (nav.classList.contains('is-open')) {
+        e.preventDefault();
+        var parent = this.parentElement;
+        var wasOpen = parent.classList.contains('sub-open');
+        nav.querySelectorAll('.has-sub.sub-open').forEach(function(el) {
+          el.classList.remove('sub-open');
+        });
+        if (!wasOpen) parent.classList.add('sub-open');
+      }
+    });
+  });
+
+  /* 메뉴 링크 클릭 시 닫기 */
+  nav.querySelectorAll('a:not(.nav-link)').forEach(function(link) {
+    link.addEventListener('click', function() {
+      nav.classList.remove('is-open');
+      toggle.classList.remove('is-active');
+      if (header) header.classList.remove('nav-open');
+      document.body.style.overflow = '';
+      if (cta) cta.classList.remove('mobile-show');
+    });
+  });
+})();
+</script>
 </body>
 </html>
